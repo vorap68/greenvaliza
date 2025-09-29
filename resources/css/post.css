@@ -1,0 +1,53 @@
+.post-content body {
+      font-family: Georgia, serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 1rem;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+      background: #fafafa;
+      color: #222;
+    }
+
+    .post-conten header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .post-conten header h1 {
+      font-size: 2rem;
+      margin: 1rem 0;
+    }
+
+    .post-conten a {
+      color: #0056b3;
+      text-decoration: none;
+    }
+
+   .post-conten a:hover {
+      text-decoration: underline;
+    }
+
+    .post-conten p {
+      margin-bottom: 1.2rem;
+      text-align: justify;
+    }
+
+    .post-conten figure {
+      margin: 1.5rem auto;
+      text-align: center;
+    }
+
+    .post-conten figure img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .post-conten figure figcaption {
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: 0.4rem;
+    }

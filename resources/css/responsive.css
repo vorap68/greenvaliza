@@ -1,0 +1,39 @@
+@media screen and (max-width: 768px) {
+
+	#qubez{
+		display: none;
+	}
+	.slicknav_menu{
+	    display: block;
+	}
+	.welcome-section h2,.sub-header h1{
+		font-size: 42px;
+	}
+	.post-container-block .content-block{
+		padding:50px 0%;
+	}
+	.post-navigation .nav-previous,
+	.post-navigation .nav-next{
+		width: 100%;
+	}	
+	.post-navigation .nav-previous{
+		border-bottom: 1px solid #f4f4f4;
+	}
+}
+
+@media screen and (max-width: 480px) {
+
+	#callout-section .row .cstext{
+		width:100%;
+		text-align: center;
+		padding: 0px 0px;
+		margin:0px 0px;
+	}
+
+	#callout-section .row .csbutton{
+		position: relative;
+		margin-top:30px;
+		width:100%;
+		text-align: center;
+	}
+}
