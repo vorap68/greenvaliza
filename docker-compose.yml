@@ -39,7 +39,7 @@ services:
         #    - /var/www/node_modules 
            
         container_name: project_vite
-        command: ["npm", "run", "dev"]
+        # command: ["npm", "run", "dev"]
 
  
     db:

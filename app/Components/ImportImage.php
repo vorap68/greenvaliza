@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 class ImportImage
 {
    public function imagesGet($html, $slug) {
-     
+      
             // Извлечение всех изображений из HTML
               $dom  = new DOMDocument();
             @$dom->loadHTML('<?xml encoding="utf-8" ?>' . $html);
@@ -18,7 +18,7 @@ class ImportImage
             foreach ($nodes as $node) {
              
                 $src= $node->getAttribute("src");
-                dd($src);
+                //dd($src);
                  $images[]= $src;
                  //dd($src);
                

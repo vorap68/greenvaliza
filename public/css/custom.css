@@ -1,0 +1,70 @@
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/fonts/Montserrat-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/fonts/Montserrat-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+#masthead,
+.sidetrigger,
+#infinite-handle span,
+.slicknav_nav,
+#comments ol.comment-list li .reply a,
+.paginate .navigation ul li.active a,
+#comments #respond #commentform p.form-submit input.submit {
+   
+	 background:#257759 !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat' !important;
+    font-weight: 700 !important;
+}
+
+body {
+    font-family: 'Montserrat' !important;
+}
+
+#masthead {
+  padding: 5px 0;
+}
+
+#masthead h1 {
+  margin: 0;
+}
+
+
+
+
+#comments #respond #commentform p.form-submit input.submit {
+    border-color: #769A38  /* primary */
+}
+
+
+#callout-section,
+.st-menu {
+    background: transparent; /* secondary, пока пусто */
+}
+
+#callout-section .row .csbutton a {
+    color: #769A38; /* primary */
+}
+
+/* Links */
+a:link,
+a:visited {
+    color: #0066cc; /* link */
+}
+
+a:hover,
+a:focus,
+a:active {
+    color: #cc0000; /* hover */
+    text-decoration: none;
+}

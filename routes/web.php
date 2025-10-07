@@ -1,12 +1,15 @@
 <?php
 
+use App\Models\MyBooks;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\AdviceController;
 use App\Http\Controllers\TravelController;
+use App\Http\Controllers\MyBooksController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\GuidebookController;
 use App\Http\Controllers\PostImageController;
@@ -22,10 +25,10 @@ use App\Http\Controllers\PostImageController;
 |
 */
 
-Route::get('/', [CategoryController::class, 'index'])->name('categories.index');
-// Route::get('/',function(){
-//     return view('main');
-// });
+//Route::get('/', [CategoryController::class, 'index'])->name('categories.index');
+Route::get('/',function(){
+    return view('app');
+});
 
 
 
@@ -34,19 +37,19 @@ Auth::routes();
 Route::get('/admin', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('admin.dashboard');
 
 Route::get('test', function () {
-   
+   dd( asset('fonts/Montserrat-Regular.woff2'));
     dd(storage_path().'/app/public/images/categories');
         $category_id = Category::inRandomOrder()->first()->id;
         dd($category_id); 
 })->name('test');
-Route::resource('category', CategoryController::class);
+ Route::resource('category', CategoryController::class);
 Route::resource('post', PostController::class);
 Route::resource('postImage', PostImageController::class);
 
 //Путеводители
 Route::get('/nashi-puteshestviya', [TravelController::class, 'index'])->name('nashi-puteshestviya');
-Route::get('/sovety-i-poleznosti', [GuidebookController::class, 'index'])->name('sovety-i-poleznosti');
-Route::get('/ya-i-moi-knigi', [GuidebookController::class, 'index'])->name('ya-i-moi-knigi');
+Route::get('/sovety-i-poleznosti', [AdviceController::class, 'index'])->name('sovety-i-poleznosti');
+Route::get('/ya-i-moi-knigi', [MyBooksController::class, 'index'])->name('ya-i-moi-knigi');
 Route::get('/putevoditeli', [GuidebookController::class, 'index'])->name('putevoditeli');
 Route::get('/putevoditeli/{slug}', [GuidebookController::class, 'single'])->name('putevoditel.item');
 

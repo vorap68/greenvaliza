@@ -20,13 +20,11 @@ class ImageService
 
     }
 
-    public function dirToName(string $folder1, string $folder2 ): void
+    public function dirToName(string $folder1,  $folder2 = null ): void
     {
         $dir = Storage::disk('public')->path('/images/' . $folder1.$folder2);
-        dump("folder1: ".$folder1);
-        dump("folder2: ".$folder2);
-       // dd($dir);
-
+      
+        //dd($dir);
         $rii = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS)
         );
@@ -50,15 +48,16 @@ class ImageService
     public function saveResizedImages($source, $lastdir,$folder1,$folder2 ): array
     {
         // Размеры: ключ => [width, height, use_as_width_for_srcset]
-        $sizes = [
-            'thumb'  => [150, 150],
-            'onesmall'  => [200, 200],
-            'small'  => [400, 400],
-            'medium' => [600, 400],
-            '768x768' => [768, 768],
-            'large'  => [1200, 800],
-            'og'     => [1200, 630],
+      $sizes = [
+            'thumb'     => [150, 150, 'cover'],   // квадрат, как fit
+            'onesmall'  => [200, 200, 'cover'],
+            'small'     => [400, 400, 'resize'],
+            'medium'    => [600, 400, 'resize'],
+            '768x768'   => [768, 768, 'cover'],   // квадрат с кропом
+            'large'     => [1200, 800, 'resize'],
+            'og'        => [1200, 630, 'resize'],
         ];
+
 
         // Получаем контент изображения / путь
         $imageData = $this->loadImageData($source);
@@ -73,31 +72,34 @@ class ImageService
         // Кодируем исход в строку, чтобы многократно делать make() без побочек
         $originalBlob = $imageData['contents'];
 
-        foreach ($sizes as $key => [$w, $h]) {
+        foreach ($sizes as $key =>[$w, $h, $mode]) {
             $filename = "{$basename}_{$key}";
             // $ext    = $format === 'png' ? 'png' : 'jpg';
 
-            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-           // $path = "images/categoryMenu/nashi-puteshestviya/$lastdir/{$filename}.{$imageExten}";
+         
             $path = "images/{$folder1}/{$folder2}/$lastdir/{$filename}.{$imageExten}";
-           // $path = "images/categories/$lastdir/{$filename}.{$imageExten}";
-
-            //dd($path);
-
-            try {
+          
+    try {
                 // каждый раз делаем новый объект из исходных байтов
                 $img = $this->manager->read($originalBlob);
 
                 // учитывать ориентацию EXIF (если есть)
                 if (method_exists($img, 'orientate')) {
-                    @$img->orientate();
+                      $img->orient();
                 }
 
-                // ресайз — сохраняем пропорции, без увеличения
-                $img->resize($w, $h, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                });
+
+                   
+                if ($mode === 'cover') {
+                    // аналог fit()
+                    $img->cover($w, $h);
+                } elseif ($mode === 'resize') {
+                    $img->resize($w, $h, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    });
+                }
+
 
                 switch ($imageExten) {
                     case 'jpg':
@@ -111,8 +113,7 @@ class ImageService
                         $encoded = $img->encode(new JpegEncoder(quality: 90));
                 }
 
-                //
-                //dd(Storage::disk('public')->url($path));
+             
                 Storage::disk('public')->put($path, $encoded);
                 $results[$key] = Storage::url($path);
 
@@ -132,9 +133,7 @@ class ImageService
         dump($srcsetParts);
         $results['srcset'] = implode(', ', $srcsetParts);
 
-        print_r($results);
-        // die();
-        return $results;
+              return $results;
     }
 
     protected function loadImageData($source): array

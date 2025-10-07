@@ -272,6 +272,7 @@ input,
 select,
 textarea {
 	color: #515151;
+	font-family: 'PT Serif';
 	font-family: 'PT Serif',sans-serif;
 	font-size: 16px;
 	font-size: 1rem;
@@ -286,6 +287,7 @@ h5,
 h6 {
 	clear: both;
 	font-family: 'Montserrat', sans-serif;
+	font-family: 'Montserrat';
 	line-height: 1.2;
 }
 

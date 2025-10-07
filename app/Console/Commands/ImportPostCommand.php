@@ -2,32 +2,34 @@
 
 namespace App\Console\Commands;
 
+use App\Components\ImportPost;
 use Illuminate\Console\Command;
-use App\Components\ImportCategory;
 
-class ImportCategoryCommand extends Command
+class ImportPostCommand extends Command
 {
-    /**
+      /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'import:category';
+    protected $signature = 'import:post';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description =  'Import categories from greenvaliza';
-
+    protected $description = 'Import posts from greenvaliza';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-         $importer = new ImportCategory();
-        $categories  = $importer->getGategories(20, 1);
+
+        $importer = new ImportPost();
+        $posts    = $importer->getPosts(1, 1);
+     
+
     }
 }

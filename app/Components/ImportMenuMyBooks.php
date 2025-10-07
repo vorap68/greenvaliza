@@ -1,12 +1,15 @@
 <?php
 namespace App\Components;
-
+ 
 use App\Models\Post;
+use App\Models\Travel;
 use GuzzleHttp\Client;
-use App\Models\Category;
+use App\Models\Guidebook;
+use App\Components\ImportImage;
+use App\Models\MyBooks;
 use Illuminate\Support\Facades\Storage;
 
-class ImportCategory  
+class ImportMenuMyBooks
 {
     public $client;
 
@@ -21,16 +24,20 @@ class ImportCategory
     /**
      * Получить посты
      */
-    public function getGategories($perPage = 100, $page = 1)
+    public function getMyBooksMenu($perPage = 100, $page = 1)
     {
         
-        $response = $this->client->get('categories', [
+        $response = $this->client->get('posts', [
             'verify' => false, // отключает SSL проверку
             'query'  => [
                 'per_page'   => $perPage,
                 'page'       => $page,
-                'parent' => 0, 
-              
+                'categories' => 3, 
+                // здесь меняем id категории и получаем посты этой категории
+                // 3 - я и мои книги
+             
+
+                 '_fields'    => 'title, id,slug,link,excerpt,jetpack_featured_media_url' 
             ],
         ]);
 
@@ -53,8 +60,8 @@ class ImportCategory
                 $imageExten = pathinfo($filename, PATHINFO_EXTENSION);
              
                 // Save the image content to a local file
-               
-                 $relativePath = "images/categories/{$slug}/{$imageName}.{$imageExten}";// для путешествия
+                // Здесь меняем путь в зависимости от категории
+                 $relativePath = "images/categoryMenu/ya-i-moi-knigi/{$slug}/{$imageName}.{$imageExten}";// для путеводителей
                 Storage::disk('public')->put($relativePath, $imageContent);
       
             $item_current  = [
@@ -66,7 +73,7 @@ class ImportCategory
             ];
 
              // Здесь меняем Класс в зависимости от категории
-             Category::create($item_current);// для путешествия
+             MyBooks::create($item_current); // для путеводителей
           }
 
     }

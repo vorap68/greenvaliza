@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Str;
 use App\Models\Category;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Resources\CategoryResourse;
 
 class CategoryController extends Controller
 {
@@ -13,8 +14,12 @@ class CategoryController extends Controller
      */
     public function index()
     {
+       
        $categories = Category::all();
-        return view('main', compact('categories'));
+       //dd($categories);
+       return  view('main', compact('categories'));
+       //return response()->json(777);
+       // return CategoryResourse::collection($categories);
     }
 
     /**

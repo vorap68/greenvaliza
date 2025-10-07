@@ -2,10 +2,10 @@
 namespace App\Components;
  
 use App\Models\Post;
-use App\Models\Travel;
 use GuzzleHttp\Client;
-use App\Models\Guidebook;
 use App\Components\ImportImage;
+use App\Models\Guidebook;
+use App\Models\MyBooks;
 use Illuminate\Support\Facades\Storage;
 
 class ImportMenuGuides
@@ -33,7 +33,7 @@ class ImportMenuGuides
                 'page'       => $page,
                 'categories' => 86, 
                 // здесь меняем id категории и получаем посты этой категории
-                // 86 - Путеводители
+                // 86 - путеводители
              
 
                  '_fields'    => 'title, id,slug,link,excerpt,jetpack_featured_media_url' 

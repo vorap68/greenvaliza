@@ -36,7 +36,9 @@ class ImageResizeCommand extends Command
         $this->info("Starting image resizing in directory: {$dir}");
         new ImageService;
         
-        $success = $imageService->dirToName($dir);
+        $success = $imageService->dirToName( $dir);
+        if (!$success) {
+            $this->error("Failed to resize images in directory: {$dir}");
         
         // Here you would add the logic to resize images in the specified directory.
         // This is a placeholder for demonstration purposes.
@@ -45,4 +47,5 @@ class ImageResizeCommand extends Command
         $this->info("Image resizing completed in directory: {$dir}");
         return 0;
     }
+}
 }

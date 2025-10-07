@@ -1,9 +1,6 @@
 FROM php:8.2-fpm
 
-# новое  Здесь добавляем пользователя vorap с твоим UID и GID
-# ARG UID
-# ARG GID
-#------------------------
+
 
 # Установка зависимостей
 RUN apt-get update && apt-get install -y \
@@ -35,21 +32,6 @@ RUN echo "upload_max_filesize=10M" >> /usr/local/etc/php/conf.d/uploads.ini && \
 # Установка Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-
-
-
-# новое для vorap
-# RUN groupadd -g ${GID} vorap && \
-#     useradd -u ${UID} -g ${GID} -m vorap
-
-# RUN if ! getent group ${GID} >/dev/null; then \
-#     groupadd -g ${GID} vorap; \
-#     fi && \
-#     useradd -u ${UID} -g ${GID} -m vorap    
-
-# Переключаемся на пользователя vorap
-#USER vorap
-#-------------------------
 
 WORKDIR /var/www
 COPY . .

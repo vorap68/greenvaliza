@@ -1,17 +1,9 @@
 @extends('layouts.category')
 @section('title', 'Путеводители')
 @section('content')
-<div class="container">
-	<div class="row">
-		<div class="col-md-12">
 
-			<div class="welcome-section sub-header">
-				<h1 class="page-title">Путеводители</h1>
-			</div>
-		</div>
-		<div class="col-md-12">
-			<div id="primary" class="content-area">
-				<main id="main" class="site-main row" role="main">
+	<div class="row">
+		
                      @foreach ($guidebooks as $guidebook)
 					<div class="col-sm-6 col-md-4">
 						<article id="post-63989" class="grid post-63989 post type-post status-publish format-standard has-post-thumbnail hentry guidebook-putevoditeli">
@@ -25,7 +17,10 @@
     {{ Storage:: url('/images/categoryMenu/putevoditeli/'.$guidebook->slug.'/'.$guidebook->imageName.'_200x200.'.$guidebook->imageExten) }} 200w,
    {{ Storage:: url('/images/categoryMenu/putevoditeli/'.$guidebook->slug.'/'.$guidebook->imageName.'_768x768.'.$guidebook->imageExten) }} 768w
   "
-  sizes="(max-width: 576px) 150px, (max-width: 992px) 200px, 768px" 
+    sizes="(max-width: 576px) 100vw,   
+         (max-width: 992px) 50vw,    
+         (max-width: 1400px) 33vw,   
+         25vw"      
                             data-ll-status="loaded"
                           />
 							  <noscript><img class="post-thumb" src="https://greenvaliza.co.ua/wp-content/uploads/2025/05/riga40-768x768.jpg" alt="Рига. Путеводитель" /></noscript>
@@ -44,8 +39,6 @@
 						</article>
 					</div>
     @endforeach
-                </main>
-             </div>
-        </div>
-     </div>
+               
  </div>
+ @endsection

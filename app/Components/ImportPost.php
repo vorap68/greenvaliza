@@ -20,20 +20,21 @@ class ImportPost
     /**
      * Получить посты
      */
-    public function getPosts($perPage = 20, $page = 1)
+    public function getPosts($perPage = 1, $page = 1)
     {
         $response = $this->client->get('posts', [
             'verify' => false, // отключает SSL проверку
             'query'  => [
                 'per_page'   => $perPage,
                 'page'       => $page,
-                'categories' => 86, // ID  категории
+                'categories' => 2, // ID  категории
+                  '_fields'    => 'id,title,slug,excerpt,content', // Ограничение полей для оптимизации
             ],
         ]);
         $putevoditeli = [];
         $data         = json_decode($response->getBody()->getContents(), true);
       
-
+        //dd($data);
         foreach ($data as $item) {
              //dd($item);
             $html = $item['content']['rendered'];
@@ -51,13 +52,13 @@ class ImportPost
            $images->imagesGet($html, $slug);
             $post_current  = [
                 'content'     => $cleanedText,
-                'category_id'    => 2,
+                'travel_id'    => 2,
                 'title'       => $item['title']['rendered'],
                 'slug'        => $slug,
                 'description' => $description,
             ];
              Post::create($post_current);
-             //$putevoditeli[] = $post_current;
+             //$putevoditeli[] = $post_current; 
           }
 
     }
