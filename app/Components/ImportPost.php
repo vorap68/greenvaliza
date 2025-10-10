@@ -27,22 +27,23 @@ class ImportPost
             'query'  => [
                 'per_page'   => $perPage,
                 'page'       => $page,
-                'categories' => 2, // ID  категории
+                'categories' => 2, // ID  категории 2-Наши путешествия , 86-Путеводители
                   '_fields'    => 'id,title,slug,excerpt,content', // Ограничение полей для оптимизации
             ],
         ]);
+       
         $putevoditeli = [];
-        $data         = json_decode($response->getBody()->getContents(), true);
+        $data = json_decode($response->getBody()->getContents(), true);
       
-        //dd($data);
+       // dd($data);
         foreach ($data as $item) {
-             //dd($item);
+             dump($item);
             $html = $item['content']['rendered'];
             // Извлечение текста из HTML
             $text = strip_tags($html);
             // Удаление лишних пробелов и переносов строк
             $cleanedText = preg_replace('/\s+/', ' ', $html);
-            // dd($cleanedText);
+            dd($cleanedText);
             $description = strip_tags($item['excerpt']['rendered']);
             $description = preg_replace('/\s+/', ' ', $description);
             // dd($description);

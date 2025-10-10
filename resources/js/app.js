@@ -1,22 +1,20 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import router from './src/route/router.js'; 
 
-
-createApp(App).mount('#app')
-
+const app = createApp(App);
+app.use(router);
+app.mount('#app');
 
  import '../sass/app.scss';
 
-
  import axios  from 'axios';
-
 
 import * as bootstrap from 'bootstrap';
 window.bootstrap = bootstrap;
 
 import 'admin-lte/dist/css/adminlte.min.css';
 import 'admin-lte';
-
 
 
 axios.defaults.withCredentials = true

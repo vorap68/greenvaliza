@@ -6,7 +6,7 @@ use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\CategoryResourse;
+use App\Http\Resources\CategoryResource;
 
 class CategoryController extends Controller
 {
@@ -17,7 +17,7 @@ class CategoryController extends Controller
     {
        $categories = Category::all();
        //return response()->json(777);
-        return CategoryResourse::collection($categories);
+        return CategoryResource::collection($categories);
     }
 
     /**

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->boolean('is_published')->default(false);
             $table->boolean('is_visual')->default(false);
-            $table->unsignedBigInteger('travel_id');
+            $table->unsignedBigInteger('travels_id');
 
             $table->foreign('travels_id')->references('id')->on('travels')->onDelete('cascade');
             $table->timestamps();

@@ -2,17 +2,19 @@
 
 use App\Models\MyBooks;
 use App\Models\Category;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\AdviceController;
-use App\Http\Controllers\TravelController;
-use App\Http\Controllers\MyBooksController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\GuidebookController;
 use App\Http\Controllers\PostImageController;
+use App\Http\Controllers\Web\TravelController;
+use App\Http\Controllers\Web\MyBooksController;
+use App\Http\Controllers\Web\CategoryController;
+use App\Http\Controllers\Web\GuidebookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +39,9 @@ Auth::routes();
 Route::get('/admin', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('admin.dashboard');
 
 Route::get('test', function () {
+    //  if(Schema::dropIfExists('post_images')) dump('table post_images dropped');
+    //  else dump('table post_images not exists');
+    // die();
    dd( asset('fonts/Montserrat-Regular.woff2'));
     dd(storage_path().'/app/public/images/categories');
         $category_id = Category::inRandomOrder()->first()->id;
@@ -47,11 +52,11 @@ Route::resource('post', PostController::class);
 Route::resource('postImage', PostImageController::class);
 
 //Путеводители
-Route::get('/nashi-puteshestviya', [TravelController::class, 'index'])->name('nashi-puteshestviya');
-Route::get('/sovety-i-poleznosti', [AdviceController::class, 'index'])->name('sovety-i-poleznosti');
-Route::get('/ya-i-moi-knigi', [MyBooksController::class, 'index'])->name('ya-i-moi-knigi');
-Route::get('/putevoditeli', [GuidebookController::class, 'index'])->name('putevoditeli');
-Route::get('/putevoditeli/{slug}', [GuidebookController::class, 'single'])->name('putevoditel.item');
+// Route::get('/nashi-puteshestviya', [TravelController::class, 'index'])->name('nashi-puteshestviya');
+// Route::get('/sovety-i-poleznosti', [AdviceController::class, 'index'])->name('sovety-i-poleznosti');
+// Route::get('/ya-i-moi-knigi', [MyBooksController::class, 'index'])->name('ya-i-moi-knigi');
+// Route::get('/putevoditeli', [GuidebookController::class, 'index'])->name('putevoditeli');
+// Route::get('/putevoditeli/{slug}', [GuidebookController::class, 'single'])->name('putevoditel.item');
 
 // Роут для загрузки фото в разных размерах
 

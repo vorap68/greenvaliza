@@ -12,7 +12,7 @@ class ImageService
 {
     protected ImageManager $manager;
     protected string $disk = 'public';
-    public $path;
+    public $path; 
 
     public function __construct()
     {
@@ -24,7 +24,7 @@ class ImageService
     {
         $dir = Storage::disk('public')->path('/images/' . $folder1.$folder2);
       
-        //dd($dir);
+        // Рекурсивный итератор для обхода всех файлов в директории и поддиректориях
         $rii = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS)
         );
@@ -37,7 +37,7 @@ class ImageService
             $fileName[] = $file->getPathname();
         }
        
-        // dump(basename($fileName[0]));
+        // Перебираем все файлы и создаём нужные размеры
         foreach ($fileName as $file) {
              $lastdir = basename(dirname($file));
             $this->saveResizedImages($file, $lastdir, $folder1,$folder2 );
@@ -61,10 +61,9 @@ class ImageService
 
         // Получаем контент изображения / путь
         $imageData = $this->loadImageData($source);
-        // Сделаем базовое имя
+        // Сделаем базовое имя и расширение
         $basename   = pathinfo($imageData['filename'], PATHINFO_FILENAME);
         $imageExten = pathinfo($imageData['filename'], PATHINFO_EXTENSION);
-        //$basename = Str::slug($basename);
         dump($lastdir, $basename, $imageExten);
 
         $results = [];
@@ -74,10 +73,7 @@ class ImageService
 
         foreach ($sizes as $key =>[$w, $h, $mode]) {
             $filename = "{$basename}_{$key}";
-            // $ext    = $format === 'png' ? 'png' : 'jpg';
-
-         
-            $path = "images/{$folder1}/{$folder2}/$lastdir/{$filename}.{$imageExten}";
+           $path = "images/{$folder1}/{$folder2}/$lastdir/{$filename}.{$imageExten}";
           
     try {
                 // каждый раз делаем новый объект из исходных байтов
@@ -87,9 +83,6 @@ class ImageService
                 if (method_exists($img, 'orientate')) {
                       $img->orient();
                 }
-
-
-                   
                 if ($mode === 'cover') {
                     // аналог fit()
                     $img->cover($w, $h);

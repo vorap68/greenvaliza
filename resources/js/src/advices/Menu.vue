@@ -1,14 +1,13 @@
 <template>
     <div class="row">
 
-        <div class="col-sm-6 col-md-4" v-for="guidebook in guidebooks">
+        <div class="col-sm-6 col-md-4" v-for="advice in advices">
             <article id="post-63989"
-                class="grid post-63989 post type-post status-publish format-standard has-post-thumbnail hentry guidebook-putevoditeli">
+                class="grid post-63989 post type-post status-publish format-standard has-post-thumbnail hentry advice-putevoditeli">
                 <figure class="effect-smart">
                     <a href="#">
-                        <ResponsiveImage class="post-thumb lazyloaded" folder="categoryMenu/putevoditeli/"
-                            :slug="guidebook.slug" :imageName="guidebook.imageName"
-                            :imageExten="guidebook.imageExten" />
+                        <ResponsiveImage class="post-thumb lazyloaded" folder="categoryMenu/sovety-i-poleznosti/"
+                            :slug="advice.slug" :imageName="advice.imageName" :imageExten="advice.imageExten" />
 
                         <!-- <noscript><img class="post-thumb"
                                 src="https://greenvaliza.co.ua/wp-content/uploads/2025/05/riga40-768x768.jpg"
@@ -20,9 +19,9 @@
                             <a href="#">
 
                             </a>
-                            <a href="#" rel="bookmark">{{ guidebook.title }}</a>
+                            <a href="#" rel="bookmark">{{ advice.title }}</a>
                         </h2>
-                        <p>{{ guidebook.description }}</p>
+                        <p>{{ advice.description }}</p>
                     </figcaption>
                 </figure>
             </article>
@@ -37,14 +36,14 @@ export default {
     name: 'Menu',
 
     mounted() {
-        this.GetGuidebooks();
+        this.GetAdvices();
         console.log('Menu component mounted.');
     },
 
     components: { ResponsiveImage },
     data() {
         return {
-            guidebooks: [],
+            advices: [],
             imageUrl: '',
             imageName: '',
             imageExten: '',
@@ -52,16 +51,16 @@ export default {
         }
     },
     methods: {
-        async GetGuidebooks() {
+        async GetAdvices() {
             try {
-                const response = await axios.get('/api/guidebooks');
+                const response = await axios.get('/api/advices');
                 if (!response.data) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                this.guidebooks = response.data.data;
-                console.table(this.guidebooks);
+                this.advices = response.data.data;
+                console.table(this.advices);
             } catch (error) {
-                console.error('Error fetching guidebooks:', error);
+                console.error('Error fetching advices:', error);
             }
         }
     }

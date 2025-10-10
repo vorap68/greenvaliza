@@ -26,12 +26,13 @@ export default {
         folder: {
             type: String,
             required: true
-        }
+        },
+
     },
 
     computed: {
         basesrc() {
-            return `/storage/images/${this.folder}/${this.slug}/${this.imageName}_768х768.${this.imageExten}`;
+            return `/storage/images/${this.folder}/${this.slug}/${this.imageName}_768x768.${this.imageExten}`;
         },
         srcSet() {
             return `/storage/images/${this.folder}/${this.slug}/${this.imageName}_thumb.${this.imageExten} 150w,

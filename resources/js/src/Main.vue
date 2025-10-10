@@ -1,27 +1,25 @@
-<template>
-
+`<template>
     <div class="row">
-
         <div class="col-sm-6 col-md-4" v-for="category in categories">
 
-            <!-- Блок 1 -->
-
             <article class="grid hentry">
-
                 <figure class="effect-smart">
-                    <a href="#" rel="bookmark">
+                    <router-link :to="{ name: 'Category', params: { slug: category.slug } }">
 
                         <ResponsiveImage class="post-thumb lazyloaded" :slug="category.slug"
                             :imageName="category.imageName" :imageExten="category.imageExten" folder="categories" />
                         <noscript>
                             <img class="post-thumb" :src="imageUrl" alt="Изображение" />
                         </noscript>
-                    </a>
+                    </router-link>
+
                     <figcaption>
                         <h2 class="entry-title">
-                            <a href="#" rel="bookmark">
-                                <!-- {{ category.title }} -->
-                            </a>
+                            <router-link :to="{ name: 'Category', params: { slug: category.slug } }">
+                                {{ category.title }}
+
+                            </router-link>
+
                         </h2>
                         <p>
                             {{ category.description }}
@@ -46,12 +44,13 @@ export default defineComponent({
     data() {
         return {
             categories: [],
+            imageUrl: '',
         }
     },
 
     mounted() {
         this.GetCategories();
-        console.log('Component mounted.');
+        // console.log('Component mounted.');
     },
     methods: {
         async GetCategories() {
@@ -62,7 +61,7 @@ export default defineComponent({
                 }
                 const data = await response.data.data;
                 this.categories = data;
-                // this.imageUrl = 'storege/images/categories/'.this.categories.slug.'/'.this.categories.imageName.'.'.this.categories.imageExten;
+
 
                 console.log('categories:', this.categories);
             } catch (error) {

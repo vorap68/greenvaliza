@@ -1,10 +1,4 @@
-import Login from '../pages/Login.vue';
-import Register from '../pages/Register.vue';
-import AllUsers from '../pages/AllUsers.vue';
-import Main from '../pages/Main.vue';
-import CheckUser from '../pages/CheckUser.vue';
-import ResetPassword from '../pages/ResetPasswordEmail.vue';
-//import NewPassword from '../pages/NewPassword.vue';
+
 
 const routes = [
     {

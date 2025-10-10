@@ -60,7 +60,7 @@ class ImportMenuAdvices
                 $imageExten = pathinfo($filename, PATHINFO_EXTENSION);
              
                 // Save the image content to a local file
-                // Здесь меняем путь в зависимости от категории
+                // Здесь меняем путь для категории sovety-i-poleznosti
                  $relativePath = "images/categoryMenu/sovety-i-poleznosti/{$slug}/{$imageName}.{$imageExten}";// для путеводителей
                 Storage::disk('public')->put($relativePath, $imageContent);
       
@@ -72,7 +72,7 @@ class ImportMenuAdvices
                 'imageExten' => $imageExten
             ];
 
-             // Здесь меняем Класс в зависимости от категории
+             // Здесь  Класс Advice
              Advice::create($item_current); // для путеводителей
           }
 
