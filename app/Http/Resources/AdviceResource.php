@@ -14,13 +14,19 @@ class AdviceResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
+       return [
             'id' => $this->id,
             'title' => $this->title,
-            'description' => $this->description,
             'slug' => $this->slug,
-            'imageName' => $this->imageName,
-            'imageExten' => $this->imageExten,
+            "date" => $this->created_at->format('Y-m-d'),
+            "type" => $this->type,
+            "imageName"=>$this->imageName,
+            "imageExten"=>$this->imageExten,
+            "description" => $this->description,
+            "content" => $this->content,
+             "is_published" => $this->is_published,
+              'image' => $this->imageName.'_small.'.$this->imageExten,
+           
         ];
     }
 }

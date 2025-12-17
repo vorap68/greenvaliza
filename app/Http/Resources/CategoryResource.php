@@ -21,6 +21,8 @@ class CategoryResource extends JsonResource
             'slug' => $this->slug,
             'imageName' => $this->imageName,
             'imageExten' => $this->imageExten,
+            'image' => $this->image.$this->imageExten,
+            'date' => $this->date->format('Y-m-d'),
         ];
     }
 }

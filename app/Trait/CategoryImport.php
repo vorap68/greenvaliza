@@ -1,0 +1,49 @@
+<?php
+namespace App\Trait;
+
+use Illuminate\Support\Facades\Storage;
+
+trait CategoryImport
+{
+    protected $client;
+    public $imageExten;
+    public $imageName;
+    //public $category_name;
+
+    protected function initClient()
+    {
+        $this->client = new \GuzzleHttp\Client([
+            'base_uri' => 'https://greenvaliza.co.ua/wp-json/wp/v2/',
+            'timeout'  => 10.0,
+        ]);
+    }
+
+    protected function getPosts($category_id, $perPage = 100, $page = 1)
+    {
+        $response = $this->client->get('posts', [
+            'verify' => false, // отключает SSL проверку
+            'query'  => [
+                'per_page'   => $perPage,
+                'page'       => $page,
+                'categories' => $category_id,
+                '_fields'    => 'title, id,slug,link,excerpt,jetpack_featured_media_url,acf,categories,status',
+            ],
+        ]);
+
+        $data = json_decode($response->getBody()->getContents(), true);
+
+        return $data;
+    }
+
+    protected function saveImages($imageUlr, $slug, $categoty_name)
+    {
+        $imageContent     = file_get_contents($imageUlr);
+        $filename         = basename($imageUlr);
+        $cleanUrl         = explode('?', $filename)[0];
+        $this->imageName  = pathinfo($filename, PATHINFO_FILENAME);
+        $this->imageExten = pathinfo($cleanUrl, PATHINFO_EXTENSION);
+       $relativePath     = "images/categoryMenu/{$categoty_name}/{$slug}/{$this->imageName}.{$this->imageExten}";
+       Storage::disk('public')->put($relativePath, $imageContent);
+    }
+
+}

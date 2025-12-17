@@ -1,14 +1,24 @@
 import { createApp } from 'vue'
-import App from './App.vue'
-import router from './src/route/router.js'; 
 
+import App from './App.vue'
+import routerfront from './front/route/router-front.js'; 
 const app = createApp(App);
-app.use(router);
+app.use(routerfront);
 app.mount('#app');
+
+import Admin from './Admin.vue'
+import routeradmin from './admin/route/router-admin.js'; 
+const admin = createApp(Admin);
+admin.use(routeradmin);
+admin.mount('#admin');
+
+
 
  import '../sass/app.scss';
 
  import axios  from 'axios';
+ import Dropzone from "dropzone";
+
 
 import * as bootstrap from 'bootstrap';
 window.bootstrap = bootstrap;

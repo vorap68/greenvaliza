@@ -1,20 +1,24 @@
 <?php
 
-use App\Models\MyBooks;
+use App\Models\MyBook;
 use App\Models\Category;
+use App\Models\Posts\MybookPost;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Categories\AdviceMenu;
 use Illuminate\Support\Facades\Route;
+use App\Http\Resources\AdviceResource;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\AdviceController;
 use App\Http\Controllers\PostImageController;
+use App\Http\Controllers\Web\MyBookController;
 use App\Http\Controllers\Web\TravelController;
-use App\Http\Controllers\Web\MyBooksController;
 use App\Http\Controllers\Web\CategoryController;
 use App\Http\Controllers\Web\GuidebookController;
+use App\Http\Controllers\Admin\TravelPostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,43 +31,41 @@ use App\Http\Controllers\Web\GuidebookController;
 |
 */
 
-//Route::get('/', [CategoryController::class, 'index'])->name('categories.index');
-Route::get('/',function(){
-    return view('app');
+Route::get('/testid', function () {
+     $advices = AdviceMenu::all();
+     $ttt = AdviceResource::collection($advices);
+      dd($ttt);
 });
 
 
+// Auth::routes();
 
-Auth::routes();
-
-Route::get('/admin', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('admin.dashboard');
+// старые роуты для админки на контроллерах laravel
+// Route::get('admin', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('admin');
+// Route::get('admin/travelpost/sorter/{field}',[TravelPostController::class,'sorter'])->name('admin.travelpost.sorter');
+// Route::resource('admin/travelpost',TravelPostController::class);
 
 Route::get('test', function () {
-    //  if(Schema::dropIfExists('post_images')) dump('table post_images dropped');
-    //  else dump('table post_images not exists');
-    // die();
-   dd( asset('fonts/Montserrat-Regular.woff2'));
-    dd(storage_path().'/app/public/images/categories');
-        $category_id = Category::inRandomOrder()->first()->id;
-        dd($category_id); 
-})->name('test');
- Route::resource('category', CategoryController::class);
-Route::resource('post', PostController::class);
-Route::resource('postImage', PostImageController::class);
+    dump('app_path:',app_path());
+    dump('base_path:',base_path());
+    dump('public_path:',public_path());
+    dump('storage_path:',storage_path());
+    dump('APP_URL:',env('APP_URL'));
 
-//Путеводители
-// Route::get('/nashi-puteshestviya', [TravelController::class, 'index'])->name('nashi-puteshestviya');
-// Route::get('/sovety-i-poleznosti', [AdviceController::class, 'index'])->name('sovety-i-poleznosti');
-// Route::get('/ya-i-moi-knigi', [MyBooksController::class, 'index'])->name('ya-i-moi-knigi');
-// Route::get('/putevoditeli', [GuidebookController::class, 'index'])->name('putevoditeli');
-// Route::get('/putevoditeli/{slug}', [GuidebookController::class, 'single'])->name('putevoditel.item');
+  })->name('test');
+//  Route::resource('category', CategoryController::class);
+// Route::resource('post', PostController::class);
+// Route::resource('postImage', PostImageController::class);
+
+
 
 // Роут для загрузки фото в разных размерах
 
-Route::get('/images/{dir}/{method}/{size}/{filename}', PostImageController::class, )
-    ->where('method','resize|crop|fit')
-    ->where('size','\d+x\d+')
-     ->where('filename','.+\.(png|jpg|jpeg|bmp|gif)')
-    ->name('image.stored');
+// Route::get('/images/{dir}/{method}/{size}/{filename}', PostImageController::class, )
+//     ->where('method','resize|crop|fit')
+//     ->where('size','\d+x\d+')
+//      ->where('filename','.+\.(png|jpg|jpeg|bmp|gif)')
+//     ->name('image.stored');
 
-Route::get('{any?}', fn() => view('app'))->where('any', '^(?!api).*$');
+Route::get('{any?}', fn() => view('app'))->where('any', '^(?!admin).*$');
+Route::get('admin/{any?}', fn() => view('admin'))->where('any', '.*');

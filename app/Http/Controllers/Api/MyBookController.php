@@ -2,16 +2,24 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\MyBooks;
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\MyBookResource;
+use App\Models\Categories\MyBookMenu;
+use App\Models\Posts\MybookPost;
 
 class MyBookController extends Controller
 {
     public function index()
     {
-        $myBooks = MyBooks::all();
-     return MyBookResource::collection($myBooks);
+        $mybooks = MyBookMenu::all();
+     return MyBookResource::collection($mybooks);
+    }
+
+      public function show($slug){
+      //return response()->json($slug);
+        $mybook = MybookPost::where('slug', $slug)->firstOrFail();
+       return new MyBookResource($mybook);
     }
 }

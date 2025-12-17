@@ -12,7 +12,7 @@ class ImageResizeCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'image:resize {--dir=}';
+    protected $signature = 'image:resize {dir}';
 
     /**
      * The console command description.
@@ -26,8 +26,8 @@ class ImageResizeCommand extends Command
      */
     public function handle(ImageService $imageService)
     {
-        $dir = $this->option('dir');
-
+        $dir = $this->argument('dir');
+      
         if (!$dir) {
             $this->error('Please provide a valid path using the --path option.');
             return 1;
@@ -40,10 +40,6 @@ class ImageResizeCommand extends Command
         if (!$success) {
             $this->error("Failed to resize images in directory: {$dir}");
         
-        // Here you would add the logic to resize images in the specified directory.
-        // This is a placeholder for demonstration purposes.
-        // For example, you might use the Intervention Image library to handle image resizing.
-
         $this->info("Image resizing completed in directory: {$dir}");
         return 0;
     }

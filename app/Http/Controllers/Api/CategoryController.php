@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Category;
+
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryResource;
+use App\Models\Categories\Category;
+use App\Models\Categories\CategoryMenu;
 
 class CategoryController extends Controller
 {
@@ -15,9 +17,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-       $categories = Category::all();
+       $categories = CategoryMenu::all();
        //return response()->json(777);
-        return CategoryResource::collection($categories);
+       return CategoryResource::collection($categories);
     }
 
     /**
@@ -28,23 +30,7 @@ class CategoryController extends Controller
         return view('admin.category.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-      
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-        ]);
-        // dd($request->all());
-       $request['slug'] = Str::slug($request->title);
-        Category::create($request->all());
-        $path = storage_path().'/app/public/images/categories/'. $request['slug'];
-         mkdir($path, 0777, true);
-       return redirect()->route('admin.dashboard')->with('success', 'Category created successfully.');
-    }
+   
 
     /**
      * Display the specified resource.

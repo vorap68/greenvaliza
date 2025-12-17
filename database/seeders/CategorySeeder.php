@@ -1,7 +1,7 @@
 <?php
 namespace Database\Seeders;
 
-use App\Models\Category;
+use App\Models\Category\Categories\Category;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -38,11 +38,11 @@ class CategorySeeder extends Seeder
                 'imageExten'       => 'jpg',
             ],
         ]);
-        $slugs = Category::pluck('slug')->toArray();
-        foreach ($slugs as $slug) {
-            $path = storage_path() . '/app/public/images/categories/' . $slug;
-            if (! file_exists($path)) {;
-                mkdir($path, 0777, true);}
-        }
+        // $slugs = Category::pluck('slug')->toArray();
+        // foreach ($slugs as $slug) {
+        //     $path = storage_path() . '/app/public/images/categories/' . $slug;
+        //     if (! file_exists($path)) {;
+        //         mkdir($path, 0777, true);}
+        // }
     }
 }

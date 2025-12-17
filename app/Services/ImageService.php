@@ -12,18 +12,18 @@ class ImageService
 {
     protected ImageManager $manager;
     protected string $disk = 'public';
-    public $path; 
+    public $path;
 
     public function __construct()
     {
         $this->manager = new ImageManager(new Driver());
-
     }
 
-    public function dirToName(string $folder1,  $folder2 = null ): void
+    public function dirToName(string $folder1, $folder2 = null): void
     {
-        $dir = Storage::disk('public')->path('/images/' . $folder1.$folder2);
-      
+        $dir = Storage::disk('public')->path('/images/' . $folder1 . $folder2);
+        dump('Папка для обхода всех файлов в директории и поддиректориях', $dir);
+
         // Рекурсивный итератор для обхода всех файлов в директории и поддиректориях
         $rii = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS)
@@ -36,52 +36,46 @@ class ImageService
             }
             $fileName[] = $file->getPathname();
         }
-       
         // Перебираем все файлы и создаём нужные размеры
         foreach ($fileName as $file) {
-             $lastdir = basename(dirname($file));
-            $this->saveResizedImages($file, $lastdir, $folder1,$folder2 );
+            $lastdir = basename(dirname($file));
+            $this->saveResizedImages($file, $folder1, $folder2);
         }
-
     }
 
-    public function saveResizedImages($source, $lastdir,$folder1,$folder2 ): array
+    public function saveResizedImages($source, $folder1, $folder2): array
     {
-        // Размеры: ключ => [width, height, use_as_width_for_srcset]
-      $sizes = [
-            'thumb'     => [150, 150, 'cover'],   // квадрат, как fit
-            'onesmall'  => [200, 200, 'cover'],
-            'small'     => [400, 400, 'resize'],
-            'medium'    => [600, 400, 'resize'],
-            '768x768'   => [768, 768, 'cover'],   // квадрат с кропом
-            'large'     => [1200, 800, 'resize'],
-            'og'        => [1200, 630, 'resize'],
-        ];
+       // dd('source', $source, 'folder1', $folder1, 'folder2', $folder2);
 
+        // Размеры: ключ => [width, height, use_as_width_for_srcset]
+        $sizes = [
+            'thumb'   => [150, 150, 'cover'], // квадрат, как fit
+            'small'   => [400, 400, 'resize'],
+            'medium'  => [600, 400, 'resize'],
+            '768x768' => [768, 768, 'cover'], // квадрат с кропом
+            'large'   => [1200, 800, 'resize'],
+        ];
 
         // Получаем контент изображения / путь
         $imageData = $this->loadImageData($source);
         // Сделаем базовое имя и расширение
         $basename   = pathinfo($imageData['filename'], PATHINFO_FILENAME);
         $imageExten = pathinfo($imageData['filename'], PATHINFO_EXTENSION);
-        dump($lastdir, $basename, $imageExten);
-
+        dump($basename, $imageExten);
         $results = [];
-
         // Кодируем исход в строку, чтобы многократно делать make() без побочек
         $originalBlob = $imageData['contents'];
-
-        foreach ($sizes as $key =>[$w, $h, $mode]) {
+        foreach ($sizes as $key => [$w, $h, $mode]) {   
             $filename = "{$basename}_{$key}";
-           $path = "images/{$folder1}/{$folder2}/$lastdir/{$filename}.{$imageExten}";
-          
-    try {
+            $path     = "images/{$folder1}/{$filename}.{$imageExten}";
+
+            try {
                 // каждый раз делаем новый объект из исходных байтов
                 $img = $this->manager->read($originalBlob);
 
                 // учитывать ориентацию EXIF (если есть)
                 if (method_exists($img, 'orientate')) {
-                      $img->orient();
+                    $img->orient();
                 }
                 if ($mode === 'cover') {
                     // аналог fit()
@@ -93,7 +87,7 @@ class ImageService
                     });
                 }
 
-
+                // Кодируем в нужный формат
                 switch ($imageExten) {
                     case 'jpg':
                     case 'jpeg':
@@ -105,8 +99,7 @@ class ImageService
                     default:
                         $encoded = $img->encode(new JpegEncoder(quality: 90));
                 }
-
-             
+                dump("Сохранение изображения размера {$key} по пути: {$path}");
                 Storage::disk('public')->put($path, $encoded);
                 $results[$key] = Storage::url($path);
 
@@ -126,13 +119,12 @@ class ImageService
         dump($srcsetParts);
         $results['srcset'] = implode(', ', $srcsetParts);
 
-              return $results;
+        return $results;
     }
 
     protected function loadImageData($source): array
     {
         $contents = null;
-
         // Загружаем из локального файла
         $contents = file_get_contents($source);
         $filename = basename($source);

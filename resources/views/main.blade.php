@@ -1,5 +1,5 @@
 @extends('layouts.category')
-@section('title', 'Главная')
+
 @section('content')
  
                 <div class="row">

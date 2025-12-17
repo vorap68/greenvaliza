@@ -21,6 +21,12 @@ class MyBookResource extends JsonResource
             'slug' => $this->slug,
             'imageName' => $this->imageName,
             'imageExten' => $this->imageExten,
+             "date" => $this->created_at->format('Y-m-d'),
+             "type" => "posts",
+              "content" => $this->content,
+          "is_published" => $this->is_published,
+           'image' => $this->imageName.'_small.'.$this->imageExten,
+           
         ];
     }
 }

@@ -1,0 +1,49 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+
+use Illuminate\Http\Request;
+use App\Models\Posts\AdvicePost;
+use App\Models\Categories\Advice;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\AdviceResource;
+use App\Models\Images\AdvicePostImage;
+
+/**
+ * Работа с советами и полезностями в админке
+ */
+class AdviceController extends Controller
+{
+    public function index(){
+        
+          $advices = AdvicePost::orderBy('id', 'asc')->get();
+       //dd($guide);
+      return AdviceResource::collection($advices);
+    }
+      public function show($slug){
+      //return response()->json($slug);
+        $advice = AdvicePost::where('slug', $slug)->firstOrFail();
+        //dd($advice);
+        //return  response()->json($advice); 
+       return new AdviceResource($advice);
+    }
+  
+    public function update( Request $request,  $id ){
+           
+      $content = $request->input('content');
+    
+      $advice = AdvicePost::findOrFail($id);
+
+      //dd($advice);
+      $advice->content = $content;
+      $advice->save();
+      return response()->json(['message' => 'advice post updated successfully']);
+      
+    }
+
+    public function getImages($post_id) {
+      $postImages = AdvicePostImage::where('advice_post_id', $post_id)->get();
+      return response()->json(['data' => $postImages]); 
+    }
+}
