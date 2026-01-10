@@ -24,7 +24,7 @@
 import axios from 'axios';
 import { defineComponent } from 'vue';
 export default defineComponent({
-    name: 'travelImages',
+    name: 'travelPostImages',
     props: ['post_id'],
 
     data() {
@@ -41,7 +41,7 @@ export default defineComponent({
         async loadImages() {
             try {
                 console.log('Загрузка изображений для путешествия:', this.post_id);
-                const response = await axios.get('/api/admin/travel-images' + '/' + this.post_id);
+                const response = await axios.get('/api/admin/travels-post-images' + '/' + this.post_id);
                 if (!response.data) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }

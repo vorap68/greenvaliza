@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Posts\TravelTable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -24,8 +25,9 @@ class TravelResource extends JsonResource
             "imageExten"=>$this->imageExten,
             "description" => $this->description,
             "content" => $this->content,
-             "is_published" => $this->is_published,
+             "is_visual" => $this->is_visual,
               'image' => $this->imageName.'_small.'.$this->imageExten,
+              'travel_table_id' => $this->travel_table_id ? TravelTable::select('title')->where('id', $this->travel_table_id)->value('title') : 'Singe post',   
            
         ];
     }

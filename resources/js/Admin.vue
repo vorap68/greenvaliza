@@ -18,7 +18,7 @@ export default defineComponent({
     name: 'Admin',
     components: {
         SiderMenu,
-        TravelIndex: () => import('./admin/travel/index.vue'),
+        TravelIndex: () => import('./admin/travelPost/index.vue'),
     },
 })
 </script>

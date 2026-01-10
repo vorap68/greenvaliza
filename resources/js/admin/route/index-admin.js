@@ -7,7 +7,8 @@ const routes = [
     
     {
         path: '/admin/postadd', component: () => import('../Adding/postadd.vue'), 
-        name: 'AddingPost',
+        name: 'AddingPost', 
+        props:true,
     },
 
     {

@@ -5,13 +5,16 @@ const mybookAdminPostRoutes = [
 
     {   path: '/admin/mybookposts', component: () => import('../../mybook/index.vue'),
         name: 'mybookPosts',
+          props:true,
     },
-    {   path: '/admin/mybookposts/show', component: () => import('../../mybook/show.vue'),
-        name: 'MyBookhow',
+    {   path: '/admin/mybookposts/show/:slug', component: () => import('../../mybook/show.vue'),
+        name: 'MyBookShow',
+          props:true,
        
     },
-    {   path: '/admin/mybookposts/edit', component: () => import('../../mybook/edit.vue'),
-        name: 'mybookEdit',
+    {   path: '/admin/mybookposts/edit/:slug', component: () => import('../../mybook/edit.vue'),
+        name: 'mybookPostEdit',
+          props:true,
        
     },
     {   path: '/admin/mybookImages/:post_id', component: () => import('../../mybook/mybookImages.vue'),

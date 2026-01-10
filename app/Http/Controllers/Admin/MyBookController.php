@@ -38,6 +38,13 @@ class MyBookController extends Controller
       $postImages = MybookPostImage::where('mybook_post_id', $post_id)->get();
       return response()->json(['data' => $postImages]);
     }
+
+       public function visual($id){
+      $mybook = MybookPost::findOrFail($id);
+      $mybook->is_visual = !$mybook->is_visual;
+      $mybook->save();
+      return response()->json(['message' => 'MyBook post visual status changed successfully', 'is_visual' => $mybook->is_visual]);
+    } 
    
    
 }

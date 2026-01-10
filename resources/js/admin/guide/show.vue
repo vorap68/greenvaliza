@@ -13,6 +13,7 @@ import beautify from 'js-beautify';
 
 export default defineComponent({
     name: 'GuideShow',
+    props: ['slug'],
 
     data() {
         return {
@@ -28,7 +29,7 @@ export default defineComponent({
     methods: {
         async GetGuidePost() {
             try {
-                const response = await axios.get('/api/admin/guide/' + this.$route.query.slug);
+                const response = await axios.get('/api/admin/guide/' + this.slug);
                 if (!response.data) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 } this.guidepost = response.data.data;

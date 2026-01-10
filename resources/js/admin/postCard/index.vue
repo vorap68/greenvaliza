@@ -12,12 +12,13 @@
                 <th>
                     Описание
                 </th>
+                <th> Статус </th>
                 <th>
                     Дата публикации
                 </th>
                 <th>Картинка</th>
                 <th>slug</th>
-                <th> Тип </th>
+
                 <th>Действия</th>
             </tr>
         </thead>
@@ -27,11 +28,16 @@
                 <td>{{ postCard.id }}</td>
                 <td>{{ postCard.title }}</td>
                 <td>{{ postCard.description }}</td>
+                <td><button @click="changeVisual(postCard)" class="btn btn-sm"
+                        :class="postCard.is_visual ? 'btn-success' : 'btn-outline-secondary'">
+                        {{ postCard.is_visual ? '👁️ Опубликован' : '🚫 Редакция' }}
+                    </button>
+                </td>
                 <td>{{ postCard.date }}</td>
                 <td><img :src="`/storage/images/categoryMenu/${category_name}/${postCard.slug}/${postCard.image}`">
                 </td>
+
                 <td>{{ postCard.slug }}</td>
-                <td>{{ postCard.type }}</td>
                 <td>
 
                     <router-link
@@ -82,13 +88,21 @@ export default defineComponent({
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 this.postCards = response.data;
-                console.table(this.postCards);
                 console.log(this.postCards);
             } catch (error) {
                 console.error('Error fetching :', error);
             }
         },
 
+        changeVisual(postCard) {
+            axios.patch(`/api/admin/postcard/${this.category_name}/${postCard.id}/toggle-visual`)
+                .then(response => {
+                    postCard.is_visual = response.data.is_visual;
+                })
+                .catch(error => {
+                    console.error('Error toggling visual status:', error);
+                });
+        },
     }
 });
 </script>

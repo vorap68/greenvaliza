@@ -66,8 +66,9 @@ export default {
                 if (!response.data) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
+                console.log('Fetched travels data:', response.data);
                 this.travels = response.data.data;
-                console.table(this.travels);
+                console.table('travels:', this.travels);
             } catch (error) {
                 console.error('Error fetching travels:', error);
             }

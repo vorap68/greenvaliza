@@ -9,13 +9,15 @@
             <article id="post-63989"
                 class="grid post-63989 post type-post status-publish format-standard has-post-thumbnail hentry guide-putevoditeli">
                 <figure class="effect-smart">
-                    <a href="#">
+                    <a v-if="guide.image" href="#" rel="bookmark" class="image-link">
                         <ResponsiveImage class="post-thumb lazyloaded" folder="categoryMenu/guide/" :slug="guide.slug"
                             :imageName="guide.imageName" :imageExten="guide.imageExten" />
-
-                        <!-- <noscript><img class="post-thumb"
-                                src="https://greenvaliza.co.ua/wp-content/uploads/2025/05/riga40-768x768.jpg"
-                                alt="Рига. Путеводитель" /></noscript> -->
+                    </a>
+                    <!-- PLACEHOLDER -->
+                    <a v-else href="#" rel="bookmark" class="image-placeholder">
+                        <span class="placeholder-text">
+                            {{ guide.title }}
+                        </span>
                     </a>
                     <figcaption>
                         <router-link :to="{ name: 'guide-post', params: { slug: guide.slug } }">
@@ -71,3 +73,27 @@ export default {
     }
 } 
 </script>
+<style>
+.image-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    aspect-ratio: 16 / 9;
+
+    background: linear-gradient(135deg, #ececec, #dcdcdc);
+    color: #555;
+
+    text-decoration: none;
+    font-weight: 600;
+    text-align: center;
+
+    padding: 16px;
+    border-radius: 6px;
+}
+
+.placeholder-text {
+    line-height: 1.4;
+}
+</style>

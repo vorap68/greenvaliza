@@ -9,25 +9,19 @@ use InvalidArgumentException;
 class ImportTravelPostMainCommand extends Command
 {
 
-    protected $signature = 'import:travelpostmenu {is_acf }';
+    protected $signature = 'import:travelpostmenu ';
 
-    protected $description = 'Скачиваем посты для  категории  travel из меню (категория 2)';
+    protected $description = 'Скачиваем посты  категории travel из меню Мои Путеш. (категория 2)';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        $is_acf  = $this->argument('is_acf');
-        $allowed = ['menu', 'post'];
-        if (! in_array($is_acf, $allowed, true)) {
-            throw new InvalidArgumentException(
-                "Недопустимое значение '{$is_acf}'. Разрешено: " . implode(', ', $allowed)
-            );
-        }
+       
         $importer = new PostTravelImport();
-        $posts    = $importer->getPosts(2, 1, $is_acf);
-       // dd($posts);
+        $posts    = $importer->getPosts(10, 6 ,'post', 2);
+       //dd($posts);
         $result = [];
         foreach ($posts as $post) {
             //dd($post);
@@ -42,31 +36,28 @@ class ImportTravelPostMainCommand extends Command
 
             //  Импорт изображений и сохранение на диске
             $images       = new ImportImage();
-            $result       = $images->imagesGetStore($content, $slug, 'travels');
+            $result       = $images->imagesGetStore($content, $slug, 'travels/post');
             $images_array = $result['images_array']; 
-            dump($images_array);
+           // dump($images_array);
             $content      = $result['html'];
            // dd($content);
-            $is_published = $post['status'] === 'publish' ? 1 : 0;
-            $parent_id    = null;
+          
             $post_current = [
                 'content'      => $content,
                 'title'        => $post['title']['rendered'],
                 'slug'         => $slug,
                 'description'  => $description,
-                'parent_id'    => $parent_id,
-                'is_published' => $is_published,
-                'type'         => $is_acf,
+                'is_visual' => 1,
 
             ];
 
-            // dump($post_current);
+            //  dd($post_current);
 
             $result[] = $post_current;
             //сохраняем текущий пост в БД
             $importer->savePosts($post_current);
 
-            // //  Сохраняем пути изображений в БД
+            // //  Сохраняем пути изображений в БД 
             $importer->saveImages($images_array);
         }
         // dd($result);

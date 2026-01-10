@@ -19,6 +19,7 @@ class GuideMenu extends Model
         'imageExten',
         'description',
         'slug',
+         'is_visual',
     ];  
 
     // public function posts()

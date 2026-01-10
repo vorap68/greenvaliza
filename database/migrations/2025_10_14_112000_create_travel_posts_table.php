@@ -17,14 +17,10 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->text('content');
             $table->string('slug')->unique();
-             $table->string('type')->default('post');
-            $table->boolean('is_published')->default(false);
-            $table->boolean('is_visual')->default(false);
-            $table->unsignedBigInteger('travels_menu_term_id')->nullable();
-            $table->unsignedBigInteger('parent_id')->nullable();
-
-            $table->foreign('parent_id')->references('id')->on('travel_posts')->onDelete('cascade');  
-            $table->foreign('travels_menu_term_id')->references('term_id')->on('travels_menu')->onDelete('cascade');
+            $table->unsignedBigInteger('travel_table_id')->nullable();
+            $table->foreign('travel_table_id')->references('id')->on('travel_table');  
+            // $table->string('type')->default('final'); 
+            $table->boolean('is_visual')->default(1);
             $table->timestamps();
         });
     }

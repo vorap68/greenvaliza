@@ -13,12 +13,14 @@ use App\Models\Categories\CategoryMenu;
 class CategoryController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource. 
      */
     public function index()
     {
        $categories = CategoryMenu::all();
-       //return response()->json(777);
+      
+       //return response()->json('categories',$categories);
+    
        return CategoryResource::collection($categories);
     }
 
@@ -32,35 +34,5 @@ class CategoryController extends Controller
 
    
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
+  
 }

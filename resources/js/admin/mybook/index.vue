@@ -11,9 +11,7 @@
                     Заголовок
                     <span v-if="sortColumn === 'title'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
                 </th>
-                <th @click="sortTable('type')">
-                    Тип поста
-                    <span v-if="sortColumn === 'type'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+                <th>Статус поста
                 </th>
                 <th @click="sortTable('date')">
                     Дата публикации
@@ -29,15 +27,19 @@
             <tr v-for="mybookpost in sortedData" :key="mybookpost.id">
                 <td>{{ mybookpost.id }}</td>
                 <td>{{ mybookpost.title }}</td>
-                <td>{{ mybookpost.type }}</td>
+                <td><button @click="changeVisual(mybookpost)" class="btn btn-sm"
+                        :class="mybookpost.is_visual ? 'btn-success' : 'btn-outline-secondary'">
+                        {{ mybookpost.is_visual ? '👁️ Опубликован' : '🚫 Редакция' }}
+                    </button>
+                </td>
                 <td>{{ mybookpost.date }}</td>
                 <td>{{ mybookpost.description }}</td>
                 <td>{{ mybookpost.slug }}</td>
                 <td>
-                    <router-link :to="{ name: 'MyBookhow', query: { slug: mybookpost.slug } }"
+                    <router-link :to="{ name: 'MyBookShow', params: { slug: mybookpost.slug } }"
                         class="btn btn-info btn-sm">Просмотр</router-link>
 
-                    <router-link :to="{ name: 'mybookEdit', query: { slug: mybookpost.slug } }"
+                    <router-link :to="{ name: 'mybookPostEdit', params: { slug: mybookpost.slug } }"
                         class="btn btn-warning btn-sm">Редактирование</router-link>
 
                     <router-link :to="{ name: 'mybookImages', params: { post_id: mybookpost.id } }"
@@ -118,6 +120,17 @@ export default defineComponent({
                 this.sortDirection = 'asc';
             }
         },
+
+        changeVisual(mybookpost) {
+
+            axios.patch(`/api/admin/mybook/${mybookpost.id}/toggle-visual`)
+                .then(response => {
+                    mybookpost.is_visual = response.data.is_visual;
+                })
+                .catch(error => {
+                    console.error('Error toggling visual status:', error);
+                });
+        }
     }
 });
 </script>

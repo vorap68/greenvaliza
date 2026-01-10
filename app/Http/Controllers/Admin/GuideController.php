@@ -40,4 +40,11 @@ class GuideController extends Controller
       $postImages = GuidePostImage::where('guide_post_id', $post_id)->get();
       return response()->json(['data' => $postImages]);
     }
+
+     public function visual($id){
+      $guide = GuidePost::findOrFail($id);
+      $guide->is_visual = !$guide->is_visual;
+      $guide->save();
+      return response()->json(['message' => 'Guide post visual status changed successfully', 'is_visual' => $guide->is_visual]);
+    } 
 }

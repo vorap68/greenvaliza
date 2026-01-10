@@ -1,7 +1,7 @@
 <template>
     <div class="card" style="width:auto;">
         <div class="card-body">
-            <h5 class="card-title">{{ advicepost.title }}</h5>
+            <h5 class="card-title">{{ mybookpost.title }}</h5>
             <!-- Переключатель вкладок -->
             <ul class="nav nav-tabs mb-3">
                 <li class="nav-item">
@@ -18,7 +18,7 @@
             </ul>
             <!-- Вкладка редактирования -->
             <div v-if="activeTab === 'edit'">
-                <Codemirror v-model="advicepost.content" :extensions="[html()]" :theme="oneDark" :style="{
+                <Codemirror v-model="mybookpost.content" :extensions="[html()]" :theme="oneDark" :style="{
                     height: '500px',
                     border: '1px solid #ccc',
                     borderRadius: '6px'
@@ -32,7 +32,7 @@
 
             <!-- Вкладка предпросмотра -->
             <div v-else class="preview-container p-3 border rounded bg-light">
-                <div v-html="advicepost.content"></div>
+                <div v-html="mybookpost.content"></div>
             </div>
 
 
@@ -57,12 +57,13 @@ import { html as beautifyHtml } from 'js-beautify'; // 👈 импорт фор�
 
 
 export default defineComponent({
-    name: 'AdviceEdit',
+    name: 'MybookEdit',
     components: { Codemirror },
+    props: ['slug'],
 
     data() {
         return {
-            advicepost: {},
+            mybookpost: {},
             activeTab: 'edit', // edit | preview
             html,
             oneDark,
@@ -70,13 +71,13 @@ export default defineComponent({
     },
 
     async mounted() {
-        this.GetAdvicePost();
+        this.GetMybookPost();
     },
 
     methods: {
-        async GetAdvicePost() {
+        async GetMybookPost() {
             try {
-                const response = await axios.get('/api/admin/mybook/' + this.$route.query.slug);
+                const response = await axios.get('/api/admin/mybook/' + this.slug);
                 if (!response.data) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -93,7 +94,7 @@ export default defineComponent({
                 });
 
                 // сохраняем в data()
-                this.advicepost = post;
+                this.mybookpost = post;
 
             } catch (error) {
                 console.error('Error fetching guide post:', error);
@@ -102,8 +103,8 @@ export default defineComponent({
 
         async saveChanges() {
             try {
-                const result = await axios.put('/api/admin/advices/' + this.advicepost.id, {
-                    content: this.advicepost.content,
+                const result = await axios.put('/api/admin/mybook/' + this.mybookpost.id, {
+                    content: this.mybookpost.content,
                 });
                 console.log('Сохранено:', result.data);
                 alert('✅ Изменения успешно сохранены!');

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class TravelPostImage extends Model
 {
     use HasFactory;
+    protected $table = 'travel_post_images';
 
     protected $fillable = [
         'url',

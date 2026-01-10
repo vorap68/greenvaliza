@@ -7,12 +7,13 @@ use App\Components\PostGuideImport;
 use App\Components\PostMyBookImport;
 use Illuminate\Console\Command;
 
+//Для импорта конечных постов всех категорий (кроме Travel)
 class ImportAllPostCommand extends Command
 {
     public $category_name;
     protected $signature = 'import:post {category_id}';
 
-    protected $description = 'Скачиваем посты для всех категорий КРОМЕ travel';
+    protected $description = 'Скачиваем посты для всех категорий КРОМЕ!!!!! travel';
 
     /**
      * Execute the console command.

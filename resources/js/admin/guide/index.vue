@@ -1,5 +1,5 @@
 <template>
-    <h1>Путешествия</h1>
+    <h1>Путеводители</h1>
     <table class="table table-bordered table-hover">
         <thead>
             <tr>
@@ -11,10 +11,7 @@
                     Заголовок
                     <span v-if="sortColumn === 'title'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
                 </th>
-                <th @click="sortTable('type')">
-                    Тип поста
-                    <span v-if="sortColumn === 'type'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
-                </th>
+                <th> Статус поста</th>
                 <th @click="sortTable('date')">
                     Дата публикации
                     <span v-if="sortColumn === 'date'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
@@ -29,15 +26,20 @@
             <tr v-for="guidepost in sortedData" :key="guidepost.id">
                 <td>{{ guidepost.id }}</td>
                 <td>{{ guidepost.title }}</td>
-                <td>{{ guidepost.type }}</td>
+                <td><button class="btn btn-sm" :class="guidepost.is_visual ? 'btn-success' : 'btn-outline-secondary'"
+                        @click="changeVisual(guidepost)">
+                        {{ guidepost.is_visual ? '👁️ Опубликован' : '🚫 Редакция' }}
+                    </button>
+                </td>
                 <td>{{ guidepost.date }}</td>
                 <td>{{ guidepost.description }}</td>
                 <td>{{ guidepost.slug }}</td>
                 <td>
-                    <router-link :to="{ name: 'guideShow', query: { slug: guidepost.slug } }"
+
+                    <router-link :to="{ name: 'guideShow', params: { slug: guidepost.slug } }"
                         class="btn btn-info btn-sm">Просмотр</router-link>
 
-                    <router-link :to="{ name: 'guideEdit', query: { slug: guidepost.slug } }"
+                    <router-link :to="{ name: 'guidePostEdit', params: { slug: guidepost.slug } }"
                         class="btn btn-warning btn-sm">Редактирование</router-link>
 
                     <router-link :to="{ name: 'guideImages', params: { post_id: guidepost.id } }"
@@ -118,6 +120,17 @@ export default defineComponent({
                 this.sortColumn = column;
                 this.sortDirection = 'asc';
             }
+        },
+
+        changeVisual(guidepost) {
+            axios.patch(`/api/admin/guide/${guidepost.id}/toggle-visual`)
+                .then(response => {
+                    guidepost.is_visual = response.data.is_visual;
+
+                })
+                .catch(error => {
+                    console.error('Error toggling visual status:', error);
+                });
         },
     }
 });

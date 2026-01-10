@@ -22,7 +22,7 @@ class CategoryResource extends JsonResource
             'imageName' => $this->imageName,
             'imageExten' => $this->imageExten,
             'image' => $this->image.$this->imageExten,
-            'date' => $this->date->format('Y-m-d'),
+            'date' => $this->created_at?->format('Y-m-d'),
         ];
     }
 }

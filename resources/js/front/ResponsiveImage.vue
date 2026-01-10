@@ -1,6 +1,7 @@
 <template>
 
-    <img class="post-thumb lazyloaded" :src="basesrc" :srcset="srcSet" :sizes="sizes" :alt="alt" />
+    <img class="post-thumb lazyloaded" :src="basesrc" :srcset="srcSet" :sizes="sizes" :alt="alt"
+        data-ll-status="loaded" />
 </template>
 
 <script>

@@ -1,7 +1,9 @@
 <template>
     <div class="container mt-4">
-
-        <h3>Добавить новый пост</h3>
+        <div class="border-bottom mb-4 pb-2  custom-border">
+            <h3>Добавить новый пост</h3>
+            <h4>1-шаг создание заставки-поста</h4>
+        </div>
 
         <!-- Имя поста -->
         <div class="mb-3">
@@ -31,11 +33,11 @@
         </div>
 
         <!-- Родительское меню-пост -->
-        <div class="mb-3">
-            <label class="form-label">Меню-пост-родитель (опционально)</label>
+        <div v-if="form.category === 'travel'" class="mb-3">
+            <label class="form-label">Меню-пост-родитель. При выборе родителя заставка-пост не будет создан</label>
 
             <select v-model="form.parent_title" class="form-select">
-                <option value="">Без родителя</option>
+                <option value=null>Без родителя</option>
 
                 <option v-for="item in menuPosts" :value="item.title">
                     {{ item.title }}
@@ -81,7 +83,7 @@ export default defineComponent({
     },
 
     async mounted() {
-        await this.loadMenuPosts();
+        await this.loadTables();
     },
 
     methods: {
@@ -89,9 +91,9 @@ export default defineComponent({
             this.form.image = e.target.files[0];
         },
 
-        async loadMenuPosts() {
+        async loadTables() {
             // пример — бери меню из /api/admin/advice (или любой свой маршрут)
-            const response = await axios.get('/api/admin/travels-menu');
+            const response = await axios.get('/api/admin/travels-table');
             this.menuPosts = response.data.data;
         },
 
@@ -105,16 +107,20 @@ export default defineComponent({
             formData.append("parent_title", this.form.parent_title);
 
             try {
+                //создаем пост-превью-заставка
                 const response = await axios.post(
                     '/api/admin/create-post',
                     formData,
                     { headers: { "Content-Type": "multipart/form-data" } }
                 );
-
-                console.log(response.data);
-                alert("Пост создан!");
-                // redirect
-                this.$router.push({ name: this.form.category + 'Edit', query: { slug: response.data.slug } });
+                console.log('response.data', response.data);
+                console.log('data_slug', response.data.slug);
+                console.log('parent_title', formData);
+                // if (this.form.parent_title === '') {
+                //     alert("пост-превью-заставка создан!");
+                // }
+                // redirect  на страницу редактирования созданного поста
+                this.$router.push({ name: this.form.category + 'PostEdit', params: { slug: response.data.slug } });
 
             } catch (e) {
                 console.error(e);
@@ -125,3 +131,8 @@ export default defineComponent({
 
 });
 </script>
+<style>
+.custom-border {
+    border-color: #28a745 !important;
+}
+</style>

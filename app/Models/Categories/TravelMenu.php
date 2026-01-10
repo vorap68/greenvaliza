@@ -20,6 +20,8 @@ class TravelMenu extends Model
         'description',
         'slug',
         'type',
+        'term_id',
+         'is_visual',
       
     ];  
 

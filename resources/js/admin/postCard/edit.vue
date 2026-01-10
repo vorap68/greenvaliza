@@ -59,14 +59,13 @@ export default defineComponent({
     },
 
     methods: {
-        // Загружаем данные карточки
+        // Загружаем данные карточки 
         async loadPostCard() {
             try {
                 const response = await axios.get(
                     `/api/admin/postcard/${this.category_name}/${this.slug}`
                 );
-                console.log("Загруженная карточка:", response.data.data);
-                console.log("Загруженная карточка:", response.data);
+                console.log("Загруженная карточка редактирования:", response.data);
                 this.postCard = response.data;
 
             } catch (error) {

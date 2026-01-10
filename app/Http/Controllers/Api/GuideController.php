@@ -14,14 +14,14 @@ class GuideController extends Controller
 
 {
     public function index(){
-         //return response()->json('77777');
-       $guides = GuideMenu::all();
+       
+       $guides = GuideMenu::where('is_visual', 1)->get();
       return GuideResource::collection($guides);
     }
 
       public function show($slug){
       //return response()->json($slug);
-        $guide = GuidePost::where('slug', $slug)->firstOrFail();
+        $guide = GuidePost::where('slug', $slug)->where('is_visual', 1)->firstOrFail();
        return new GuideResource($guide);
     }
   

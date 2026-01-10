@@ -29,10 +29,24 @@ class PostCardController extends Controller
         };
         return response()->json($postcards);
     }
+    
+    public function visual($category_name, $id)
+    {
+        $postcard = match ($category_name) {
+            'travel' => TravelMenu::where('id', $id)->firstOrFail(),
+            'guide'  => GuideMenu::where('id', $id)->firstOrFail(),
+            'advice' => AdviceMenu::where('id', $id)->firstOrFail(),
+            'mybook' => MyBookMenu::where('id', $id)->firstOrFail(),
+        };
+        //return response()->json(['current_post  ' => $postcard]);
+        $postcard->is_visual = !$postcard->is_visual;
+        $postcard->save();
 
+        return response()->json(['is_visual' => $postcard->is_visual]);
+    }
     public function show($category_name, $slug)
     {
-        // response()->json(['category_name'=>$category_name, 'slug'=>$slug ]);
+         response()->json(['category_name'=>$category_name, 'slug'=>$slug ]);
         $postcard = match ($category_name) {
             'travel' => new TravelResource(TravelMenu::where('slug', $slug)->firstOrFail()),
             'guide'  => new GuideResource(GuideMenu::where('slug', $slug)->firstOrFail()),

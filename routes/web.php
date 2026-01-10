@@ -3,12 +3,16 @@
 use App\Models\MyBook;
 use App\Models\Category;
 use App\Models\Posts\MybookPost;
+use App\Models\Posts\TravelPost;
+use App\Models\Posts\TravelTable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Categories\AdviceMenu;
+use App\Models\Categories\TravelMenu;
 use Illuminate\Support\Facades\Route;
 use App\Http\Resources\AdviceResource;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Categories\CategoryMenu;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostController;
@@ -31,14 +35,37 @@ use App\Http\Controllers\Admin\TravelPostController;
 |
 */
 
+
+
 Route::get('/testid', function () {
      $advices = AdviceMenu::all();
      $ttt = AdviceResource::collection($advices);
       dd($ttt);
 });
+// Route::get('/testtable/{slug}', function($slug){
+//    $travel = TravelTable::where('slug', $slug)->firstOrFail();
+//    dd($travel);
 
+// });
 
 // Auth::routes();
+
+// измененные БД
+Route::get('changeBD',function(){
+$posts = TravelMenu::get(['id', 'slug', 'term_id']);
+//dd($posts);
+foreach($posts as $post){
+    $tablePost = TravelTable::where('slug',$post->slug)->first();
+    if($tablePost){
+        $tablePost->term_id = $post->term_id;
+        $tablePost->save();
+       // die();
+    }
+}
+
+});
+
+
 
 // старые роуты для админки на контроллерах laravel
 // Route::get('admin', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('admin');
@@ -53,19 +80,6 @@ Route::get('test', function () {
     dump('APP_URL:',env('APP_URL'));
 
   })->name('test');
-//  Route::resource('category', CategoryController::class);
-// Route::resource('post', PostController::class);
-// Route::resource('postImage', PostImageController::class);
-
-
-
-// Роут для загрузки фото в разных размерах
-
-// Route::get('/images/{dir}/{method}/{size}/{filename}', PostImageController::class, )
-//     ->where('method','resize|crop|fit')
-//     ->where('size','\d+x\d+')
-//      ->where('filename','.+\.(png|jpg|jpeg|bmp|gif)')
-//     ->name('image.stored');
 
 Route::get('{any?}', fn() => view('app'))->where('any', '^(?!admin).*$');
 Route::get('admin/{any?}', fn() => view('admin'))->where('any', '.*');

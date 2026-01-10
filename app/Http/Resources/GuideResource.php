@@ -24,7 +24,7 @@ class GuideResource extends JsonResource
              "date" => $this->created_at->format('Y-m-d'),
              "type" => "posts",
               "content" => $this->content,
-          "is_published" => $this->is_published,
+          "is_visual" => $this->is_visual,
            'image' => $this->imageName.'_small.'.$this->imageExten,
            
         ];

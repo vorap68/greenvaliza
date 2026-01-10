@@ -61,7 +61,7 @@ class ImageService
         // Сделаем базовое имя и расширение
         $basename   = pathinfo($imageData['filename'], PATHINFO_FILENAME);
         $imageExten = pathinfo($imageData['filename'], PATHINFO_EXTENSION);
-        dump($basename, $imageExten);
+       // dump($basename, $imageExten);
         $results = [];
         // Кодируем исход в строку, чтобы многократно делать make() без побочек
         $originalBlob = $imageData['contents'];
@@ -99,7 +99,7 @@ class ImageService
                     default:
                         $encoded = $img->encode(new JpegEncoder(quality: 90));
                 }
-                dump("Сохранение изображения размера {$key} по пути: {$path}");
+               // dump("Сохранение изображения размера {$key} по пути: {$path}");
                 Storage::disk('public')->put($path, $encoded);
                 $results[$key] = Storage::url($path);
 
@@ -116,7 +116,7 @@ class ImageService
                 $srcsetParts[] = $results[$key] . ' ' . $w . 'w';
             }
         }
-        dump($srcsetParts);
+       // dump($srcsetParts);
         $results['srcset'] = implode(', ', $srcsetParts);
 
         return $results;

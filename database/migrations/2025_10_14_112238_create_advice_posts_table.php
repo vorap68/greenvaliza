@@ -17,7 +17,6 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->text('content');
             $table->string('slug')->unique();
-            $table->boolean('is_published')->default(false);
             $table->boolean('is_visual')->default(false);
          
             $table->timestamps();

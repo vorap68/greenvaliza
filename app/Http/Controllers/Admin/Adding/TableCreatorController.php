@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Adding;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class MenuCreatorController extends Controller
+class TableCreatorController extends Controller
 {
-     public function createMenu(Request $request)
+     public function tableCreate(Request $request)
     {
         // Validate the incoming request data
         $validatedData = $request->validate([

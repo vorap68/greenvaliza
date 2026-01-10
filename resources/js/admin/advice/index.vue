@@ -11,10 +11,7 @@
                     Заголовок
                     <span v-if="sortColumn === 'title'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
                 </th>
-                <th @click="sortTable('type')">
-                    Тип поста
-                    <span v-if="sortColumn === 'type'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
-                </th>
+                <th>Статус поста</th>
                 <th @click="sortTable('date')">
                     Дата публикации
                     <span v-if="sortColumn === 'date'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
@@ -29,15 +26,20 @@
             <tr v-for="advicepost in sortedData" :key="advicepost.id">
                 <td>{{ advicepost.id }}</td>
                 <td>{{ advicepost.title }}</td>
-                <td>{{ advicepost.type }}</td>
+                <td><button class="btn btn-sm" :class="advicepost.is_visual ? 'btn-success' : 'btn-outline-secondary'"
+                        @click="changeVisual(advicepost)">
+                        {{ advicepost.is_visual ? '👁️ Опубликован' : '🚫 Редакция' }}
+                    </button>
+                </td>
+
                 <td>{{ advicepost.date }}</td>
                 <td>{{ advicepost.description }}</td>
                 <td>{{ advicepost.slug }}</td>
                 <td>
-                    <router-link :to="{ name: 'adviceShow', query: { slug: advicepost.slug } }"
+                    <router-link :to="{ name: 'adviceShow', params: { slug: advicepost.slug } }"
                         class="btn btn-info btn-sm">Просмотр</router-link>
 
-                    <router-link :to="{ name: 'adviceEdit', query: { slug: advicepost.slug } }"
+                    <router-link :to="{ name: 'advicePostEdit', params: { slug: advicepost.slug } }"
                         class="btn btn-warning btn-sm">Редактирование</router-link>
 
                     <router-link :to="{ name: 'adviceImages', params: { post_id: advicepost.id } }"
@@ -45,10 +47,7 @@
 
                     </router-link>
 
-                    <!-- <router-link :to="{ name: 'adviceImages', query: { post_id: advicepost.id } }"
-                        class="btn btn-secondary btn-sm">Картинки
 
-                    </router-link> -->
 
 
 
@@ -72,6 +71,7 @@ export default defineComponent({
             adviceposts: [],
             sortColumn: null,
             sortDirection: 'asc',
+
         }
     },
 
@@ -123,6 +123,17 @@ export default defineComponent({
                 this.sortColumn = column;
                 this.sortDirection = 'asc';
             }
+        },
+        changeVisual(advicepost) {
+            advicepost.is_visual = !advicepost.is_visual;
+            axios
+                .patch(`/api/admin/advices/${advicepost.id}/toggle-visual`)
+                .then((response) => {
+                    console.log('Visual status updated:', response.data);
+                })
+                .catch((error) => {
+                    console.error('Error updating visual status:', error);
+                });
         },
     }
 });

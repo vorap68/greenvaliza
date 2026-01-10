@@ -46,4 +46,11 @@ class AdviceController extends Controller
       $postImages = AdvicePostImage::where('advice_post_id', $post_id)->get();
       return response()->json(['data' => $postImages]); 
     }
+
+    public function visual($id){
+      $advice = AdvicePost::findOrFail($id);
+      $advice->is_visual = !$advice->is_visual;
+      $advice->save();
+      return response()->json(['message' => 'Advice post visual status changed successfully', 'is_visual' => $advice->is_visual]);
+    } 
 }

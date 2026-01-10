@@ -51,6 +51,10 @@
                                         <i class="nav-icon bi bi-circle"></i>
                                         <p>Я и мои книги</p>
                                     </router-link>
+                                    <router-link :to="{ name: 'travelTables' }" class="nav-link">
+                                        <i class="nav-icon bi bi-circle"></i>
+                                        <p>Посты-меню </p>
+                                    </router-link>
                                 </li>
 
                             </ul>

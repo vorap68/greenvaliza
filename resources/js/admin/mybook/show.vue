@@ -12,31 +12,32 @@ import axios from 'axios';
 import beautify from 'js-beautify';
 
 export default defineComponent({
-    name: 'AdviceShow',
+    name: 'MybookShow',
+    props: ['slug'],
 
     data() {
         return {
-            advicepost: {},
+            mybookpost: {},
             formattedHtml: '',
         }
     },
 
     mounted() {
-        this.GetAdvicePost();
+        this.GetMybookPost();
     },
 
     methods: {
-        async GetAdvicePost() {
+        async GetMybookPost() {
             try {
-                const response = await axios.get('/api/admin/mybook/' + this.$route.query.slug);
+                const response = await axios.get('/api/admin/mybook/' + this.slug);
                 if (!response.data) {
                     throw new Error(`HTTP error! status: ${response.status}`);
-                } this.advicepost = response.data.data;
-                this.formattedHtml = beautify.html(this.advicepost.content, {
+                } this.mybookpost = response.data.data;
+                this.formattedHtml = beautify.html(this.mybookpost.content, {
                     indent_size: 4,
                     wrap_line_length: 80,
                 });
-                console.log(this.advicepost.content);
+                console.log(this.mybookpost.content);
             } catch (error) {
                 console.error('Error fetching travel post:', error);
             }

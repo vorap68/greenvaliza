@@ -33,7 +33,7 @@ export default {
         };
     },
     async mounted() {
-        console.log(this.slug + " component mounted.");
+        console.log(this.slug + " :post component mounted.");
         await this.fetchData();
     },
 
@@ -41,7 +41,7 @@ export default {
         async fetchData() {
             try {
                 // Example API call, replace with actual endpoint
-                const response = await axios.get(`/api/travels/${this.slug}`);
+                const response = await axios.get(`/api/travels/post/${this.slug}`);
                 let content = response.data.data.content;
                 content = content.replace(/\$\{travel\.slug\}/g, this.slug);
                 this.travel = {

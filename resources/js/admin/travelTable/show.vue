@@ -12,7 +12,8 @@ import axios from 'axios';
 import beautify from 'js-beautify';
 
 export default defineComponent({
-    name: 'TravelShow',
+    name: 'TravelTableShow',
+    props: ['slug'],
 
     data() {
         return {
@@ -28,7 +29,7 @@ export default defineComponent({
     methods: {
         async GetTravelPost() {
             try {
-                const response = await axios.get('/api/admin/travels/' + this.$route.query.slug);
+                const response = await axios.get('/api/admin/travels-table/' + this.slug);
                 if (!response.data) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 } this.travelpost = response.data.data;
@@ -38,7 +39,7 @@ export default defineComponent({
                 });
                 console.log(this.travelpost.content);
             } catch (error) {
-                console.error('Error fetching travel post:', error);
+                console.error('Error fetching travel table:', error);
             }
         }
     }

@@ -3,7 +3,7 @@
         :current-title="travel.title || ''" />
 
     <div class="post-container-block" :style="{
-        backgroundImage: `url('/storage/images/travels/${travel.slug}/firstfon.jpg')`,
+        backgroundImage: `url('/storage/images/travels/table/${travel.slug}/firstfon.jpg')`,
         backgroundPosition: 'center',
     }">
 
@@ -35,9 +35,7 @@ export default {
         };
     },
     async mounted() {
-        console.log(this.slug + " component mounted.");
-        //  this.slug = this.$route.query.slug;
-
+        console.log(this.slug + ":table component mounted.");
         await this.fetchData();
     },
 
@@ -45,7 +43,9 @@ export default {
         async fetchData() {
             try {
                 // Example API call, replace with actual endpoint
-                const response = await axios.get(`/api/travels/${this.slug}`);
+                const response = await axios.get(`/api/travels/table/${this.slug}`);
+                console.log('response.data:', response.data);
+
                 let content = response.data.data.content;
                 content = content.replace(/\$\{travel\.slug\}/g, this.slug);
                 this.travel = {
@@ -58,7 +58,7 @@ export default {
 
                 console.log('Fetched travel data:', this.travel.content);
             } catch (error) {
-                console.error('Error fetching travel data:', error);
+                console.error('Error fetching travel-table data:', error);
             }
         },
     },

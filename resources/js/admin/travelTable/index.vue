@@ -1,5 +1,5 @@
 <template>
-    <h1>Путешествия</h1>
+    <h1>Путешествия Посты-Меню</h1>
     <table class="table table-bordered table-hover">
         <thead>
             <tr>
@@ -11,10 +11,7 @@
                     Заголовок
                     <span v-if="sortColumn === 'title'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
                 </th>
-                <th @click="sortTable('type')">
-                    Тип поста
-                    <span v-if="sortColumn === 'type'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
-                </th>
+                <th> Статус поста</th>
                 <th @click="sortTable('date')">
                     Дата публикации
                     <span v-if="sortColumn === 'date'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
@@ -26,24 +23,25 @@
         </thead>
         <tbody>
 
-            <tr v-for="travelpost in sortedData" :key="travelpost.id">
-                <td>{{ travelpost.id }}</td>
-                <td>{{ travelpost.title }}</td>
-                <td>{{ travelpost.type }}</td>
-                <td>{{ travelpost.date }}</td>
-                <td>{{ travelpost.description }}</td>
-                <td>{{ travelpost.slug }}</td>
+            <tr v-for="traveltable in sortedData" :key="traveltable.id">
+                <td>{{ traveltable.id }}</td>
+                <td>{{ traveltable.title }}</td>
+                <td><button class="btn btn-sm" :class="traveltable.is_visual ? 'btn-success' : 'btn-outline-secondary'"
+                        @click="changeVisual(traveltable)">
+                        {{ traveltable.is_visual ? '👁️ Опубликован' : '🚫 Редакция' }}
+                    </button>
+                </td>
+                <td>{{ traveltable.date }}</td>
+                <td>{{ traveltable.description }}</td>
+                <td>{{ traveltable.slug }}</td>
                 <td>
-                    <router-link :to="{ name: 'travelShow', query: { slug: travelpost.slug } }"
+                    <router-link :to="{ name: 'travelTableShow', params: { slug: traveltable.slug } }"
                         class="btn btn-info btn-sm">Просмотр</router-link>
 
-                    <router-link :to="{ name: 'travelEdit', query: { slug: travelpost.slug } }"
+                    <router-link :to="{ name: 'travelTableEdit', params: { slug: traveltable.slug } }"
                         class="btn btn-warning btn-sm">Редактирование</router-link>
 
-                    <router-link :to="{ name: 'travelImages', params: { post_id: travelpost.id } }"
-                        class="btn btn-secondary btn-sm">Картинки
 
-                    </router-link>
 
 
 
@@ -60,11 +58,11 @@ import axios from 'axios';
 
 
 export default defineComponent({
-    name: 'TravelIndex',
+    name: 'travelTables',
 
     data() {
         return {
-            travelposts: [],
+            traveltables: [],
             sortColumn: null,
             sortDirection: 'asc',
         }
@@ -73,9 +71,9 @@ export default defineComponent({
     computed: {
         sortedData() {
             if (!this.sortColumn) {
-                return this.travelposts;
+                return this.traveltables;
             }
-            return [...this.travelposts].sort((a, b) => {
+            return [...this.traveltables].sort((a, b) => {
                 const aValue = a[this.sortColumn];
                 const bValue = b[this.sortColumn];
 
@@ -89,25 +87,27 @@ export default defineComponent({
                     return 0;
                 }
             });
-        }
+        },
+
+
     },
 
     mounted() {
-        console.log('TravelIndex component mounted.');
-        this.GetTravelPosts();
+        console.log('TravelTableIndex component mounted.');
+        this.GetTravelTables();
     },
 
     methods: {
-        async GetTravelPosts() {
+        async GetTravelTables() {
             try {
-                const response = await axios.get('/api/admin/travels');
+                const response = await axios.get('/api/admin/travels-table');
                 if (!response.data) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                this.travelposts = response.data.data;
+                this.traveltables = response.data.data;
                 console.table('Получено:', response.data.data);
             } catch (error) {
-                console.error('Error fetching travel posts:', error);
+                console.error('Error fetching travel tables:', error);
             }
         },
 
@@ -118,6 +118,17 @@ export default defineComponent({
                 this.sortColumn = column;
                 this.sortDirection = 'asc';
             }
+        },
+
+        changeVisual(traveltable) {
+            axios.patch(`/api/admin/travels-table/${traveltable.id}/toggle-visual`)
+                .then(response => {
+                    console.log('Visual status toggled:', response.data);
+                    traveltable.is_visual = response.data.is_visual;
+                })
+                .catch(error => {
+                    console.error('Error toggling visual status:', error);
+                });
         },
     }
 });

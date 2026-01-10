@@ -1,13 +1,10 @@
 <?php
-
 namespace App\Models\Posts;
-
-
 
 use App\Models\Categories\TravelMenu;
 use App\Models\Images\TravelPostImage;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class TravelPost extends Model
 {
@@ -18,30 +15,25 @@ class TravelPost extends Model
     protected $fillable = [
         'title',
         'content',
-        'is_published',
         'is_visual',
-        'parent_id',
         'description',
         'slug',
-          'travels_menu_id',
-          'type'
-        
-    ];  
+        'travel_table_id',
 
-    public function index(){
+    ];
+
+    public function index()
+    {
         return TravelPost::all();
     }
 
- 
-   
-
-    public function travelMenu()
+    public function travelTable()
     {
-        return $this->belongsTo(TravelMenu::class, 'travels_menu_id', 'term_id');
+        return $this->belongsTo(TravelTable::class);
     }
 
     public function travelPostImages()
     {
         return $this->hasMany(TravelPostImage::class);
-    }   
+    }
 }

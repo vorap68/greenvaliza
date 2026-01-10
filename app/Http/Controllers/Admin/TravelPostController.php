@@ -10,23 +10,26 @@ use App\Http\Resources\TravelResource;
 use App\Models\Categories\TravelMenu; 
 use App\Models\Images\TravelPostImage;
 use App\Http\Resources\TravelPostResource;
+use App\Models\Posts\TravelTable;
 
-class TravelController extends Controller
+class TravelPostController extends Controller
 { 
      public function index(){
                $travels = TravelPost::all();
         return TravelResource::collection($travels);
     }
 
-    public function getMenu(){
-        $menuItems = TravelMenu::where('type','menus')->get();
-        return response()->json(['data' => $menuItems]);
-    }
+    // public function getMenu(){
+    //     $menuItems = TravelMenu::where('type','menus')->get();
+    //     return response()->json(['data' => $menuItems]);
+    // }
 
-  public function show($slug){ 
+  public function postShow($slug){ 
+
      $travel = TravelPost::where('slug', $slug)->firstOrFail();
        return new TravelResource($travel);
     }
+ 
   
     public function update( Request $request,  $id ){
            
@@ -41,7 +44,8 @@ class TravelController extends Controller
 
     public function getImages($post_id) {
       $postImages = TravelPostImage::where('travel_post_id', $post_id)->get();
-      return response()->json(['data' => $postImages]);
+      //dd($postImages);
+      return response()->json(['data' => $postImages]); 
     }
    
     public function postCount(){
@@ -53,4 +57,14 @@ class TravelController extends Controller
         $count = TravelPostImage::count();
         return response()->json(['count' => $count]);
     } 
+
+       public function visual($id){
+      $travel = TravelPost::findOrFail($id);
+      $travel->is_visual = !$travel->is_visual; 
+      $travel->save();
+      return response()->json(['message' => 'Travel post visual status changed successfully', 'is_visual' => $travel->is_visual]);
+    } 
+   
+
+        
 }

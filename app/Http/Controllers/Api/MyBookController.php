@@ -13,7 +13,7 @@ class MyBookController extends Controller
 {
     public function index()
     {
-        $mybooks = MyBookMenu::all();
+        $mybooks = MyBookMenu::where('is_visual', 1)->get();
      return MyBookResource::collection($mybooks);
     }
 

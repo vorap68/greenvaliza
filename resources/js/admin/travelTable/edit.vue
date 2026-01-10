@@ -1,7 +1,7 @@
 <template>
     <div class="card" style="width:auto;">
         <div class="card-body">
-            <h5 class="card-title">{{ travelpost.title }}</h5>
+            <h5 class="card-title">{{ traveltable.title }}</h5>
             <!-- Переключатель вкладок -->
             <ul class="nav nav-tabs mb-3">
                 <li class="nav-item">
@@ -18,7 +18,7 @@
             </ul>
             <!-- Вкладка редактирования -->
             <div v-if="activeTab === 'edit'">
-                <Codemirror v-model="travelpost.content" :extensions="[html()]" :theme="oneDark" :style="{
+                <Codemirror v-model="traveltable.content" :extensions="[html()]" :theme="oneDark" :style="{
                     height: '500px',
                     border: '1px solid #ccc',
                     borderRadius: '6px'
@@ -32,7 +32,7 @@
 
             <!-- Вкладка предпросмотра -->
             <div v-else class="preview-container p-3 border rounded bg-light">
-                <div v-html="travelpost.content"></div>
+                <div v-html="traveltable.content"></div>
             </div>
 
 
@@ -57,12 +57,13 @@ import { html as beautifyHtml } from 'js-beautify'; // 👈 импорт фор�
 
 
 export default defineComponent({
-    name: 'TravelEdit',
+    name: 'TravelTableEdit',
     components: { Codemirror },
+    props: ['slug'],
 
     data() {
         return {
-            travelpost: {},
+            traveltable: {},
             activeTab: 'edit', // edit | preview
             html,
             oneDark,
@@ -70,21 +71,21 @@ export default defineComponent({
     },
 
     async mounted() {
-        this.GetTravelPost();
+        this.GetTravelTable();
     },
 
     methods: {
-        async GetTravelPost() {
+        async GetTravelTable() {
             try {
-                const response = await axios.get('/api/admin/travels/' + this.$route.query.slug);
+                const response = await axios.get('/api/admin/travels-table/' + this.slug);
                 if (!response.data) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                const post = response.data.data;
-                console.log('Полученный пост:', post);
+                const traveltable = response.data.data;
+                console.log('Полученный пост-v=меню:', traveltable);
 
                 // автоформатирование HTML-контента
-                post.content = beautifyHtml(post.content || '', {
+                traveltable.content = beautifyHtml(traveltable.content || '', {
                     indent_size: 2,
                     wrap_line_length: 120,
                     preserve_newlines: true,
@@ -93,17 +94,17 @@ export default defineComponent({
                 });
 
                 // сохраняем в data()
-                this.travelpost = post;
+                this.traveltable = traveltable;
 
             } catch (error) {
-                console.error('Error fetching travel post:', error);
+                console.error('Error fetching travel table:', error);
             }
         },
 
         async saveChanges() {
             try {
-                const result = await axios.put('/api/admin/travels/' + this.travelpost.id, {
-                    content: this.travelpost.content,
+                const result = await axios.put('/api/admin/travels-table/' + this.traveltable.id, {
+                    content: this.traveltable.content,
                 });
                 console.log('Сохранено:', result.data);
                 alert('✅ Изменения успешно сохранены!');
