@@ -11,7 +11,7 @@ use Intervention\Image\ImageManager;
 class ImageService
 {
     protected ImageManager $manager;
-    protected string $disk = 'public';
+    protected string $disk = 'public'; 
     public $path;
 
     public function __construct()
@@ -39,21 +39,21 @@ class ImageService
         // Перебираем все файлы и создаём нужные размеры
         foreach ($fileName as $file) {
             $lastdir = basename(dirname($file));
-            $this->saveResizedImages($file, $folder1, $folder2);
+            //dd('Обработка файла: ', $file, 'Последняя папка: ', $lastdir);
+            $this->saveResizedImages($file, $folder1, $lastdir);
         }
     }
 
-    public function saveResizedImages($source, $folder1, $folder2): array
+    public function saveResizedImages($source, $folder1, $lastdir): array
     {
        // dd('source', $source, 'folder1', $folder1, 'folder2', $folder2);
 
         // Размеры: ключ => [width, height, use_as_width_for_srcset]
         $sizes = [
-            'thumb'   => [150, 150, 'cover'], // квадрат, как fit
-            'small'   => [400, 400, 'resize'],
-            'medium'  => [600, 400, 'resize'],
-            '768x768' => [768, 768, 'cover'], // квадрат с кропом
-            'large'   => [1200, 800, 'resize'],
+            '150'   => [150, 150, 'cover'], // квадрат, как fit
+            '600'   => [600, 400, 'resize'],
+           '768' => [768, 768, 'cover'], // квадрат с кропом
+            '1200'   => [1200, 800, 'resize'],
         ];
 
         // Получаем контент изображения / путь
@@ -67,7 +67,8 @@ class ImageService
         $originalBlob = $imageData['contents'];
         foreach ($sizes as $key => [$w, $h, $mode]) {   
             $filename = "{$basename}_{$key}";
-            $path     = "images/{$folder1}/{$filename}.{$imageExten}";
+            $path     = "images{$folder1}{$lastdir}/{$filename}.{$imageExten}";
+            //dd('path', $path);
 
             try {
                 // каждый раз делаем новый объект из исходных байтов

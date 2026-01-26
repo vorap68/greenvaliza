@@ -1,11 +1,9 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
-
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Posts\AdvicePost;
-use App\Models\Categories\Advice;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AdviceResource;
 use App\Models\Images\AdvicePostImage;
@@ -15,42 +13,41 @@ use App\Models\Images\AdvicePostImage;
  */
 class AdviceController extends Controller
 {
-    public function index(){
-        
-          $advices = AdvicePost::orderBy('id', 'asc')->get();
-       //dd($guide);
-      return AdviceResource::collection($advices);
-    }
-      public function show($slug){
-      //return response()->json($slug);
-        $advice = AdvicePost::where('slug', $slug)->firstOrFail();
-        //dd($advice);
-        //return  response()->json($advice); 
-       return new AdviceResource($advice);
-    }
-  
-    public function update( Request $request,  $id ){
-           
-      $content = $request->input('content');
-    
-      $advice = AdvicePost::findOrFail($id);
+    public function index()
+    {
 
-      //dd($advice);
-      $advice->content = $content;
-      $advice->save();
-      return response()->json(['message' => 'advice post updated successfully']);
-      
+        $advices = AdvicePost::orderBy('id', 'asc')->get();
+        //dd($guide);
+        return AdviceResource::collection($advices);
+    }
+    public function show($id)
+    {
+        $advice = AdvicePost::findOrFail($id);
+        return new AdviceResource($advice);
     }
 
-    public function getImages($post_id) {
-      $postImages = AdvicePostImage::where('advice_post_id', $post_id)->get();
-      return response()->json(['data' => $postImages]); 
+    public function update(Request $request, $id)
+    {
+        $content = $request->input('content');
+        $advice = AdvicePost::findOrFail($id);
+        $advice->content = $content;
+        $advice->save();
+        return response()->json(['message' => 'advice post updated successfully']);
     }
 
-    public function visual($id){
-      $advice = AdvicePost::findOrFail($id);
-      $advice->is_visual = !$advice->is_visual;
-      $advice->save();
-      return response()->json(['message' => 'Advice post visual status changed successfully', 'is_visual' => $advice->is_visual]);
-    } 
+
+
+    public function getImages($post_id)
+    {
+        $postImages = AdvicePostImage::where('advice_post_id', $post_id)->get();
+        return response()->json(['data' => $postImages]);
+    }
+
+    public function visual($id)
+    {
+        $advice            = AdvicePost::findOrFail($id);
+        $advice->is_visual = ! $advice->is_visual;
+        $advice->save();
+        return response()->json(['message' => 'Advice post visual status changed successfully', 'is_visual' => $advice->is_visual]);
+    }
 }

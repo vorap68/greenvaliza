@@ -2,21 +2,24 @@
 
 namespace App\Models\Posts;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Categories\GuideMenu;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class GuidePost extends Model
 {
     use HasFactory;
        protected $fillable = [
-        'title',
+         'title',
         'content',
-        'is_published',
         'is_visual',
-       'description',
+        'description',
         'slug',
-        'created_at',
-         
-    ];  
+         'menu_id',
+         ]; 
 
+         public function guideMenu()
+         {
+             return $this->belongsTo(GuideMenu::class, 'menu_id');
+         }
 }

@@ -11,16 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('MyBook_posts', function (Blueprint $table) {
+        Schema::create('mybook_posts', function (Blueprint $table) {
              $table->id();
             $table->string('title');
             $table->text('description')->nullable();
             $table->text('content');
             $table->string('slug')->unique();
-            $table->boolean('is_published')->default(false);
             $table->boolean('is_visual')->default(false);
-           
-            $table->timestamps();
+                       $table->foreignId('menu_id')->constrained('mybooks_menu')->onDelete('cascade');
+            $table->timestamps(); 
         });
     }
 

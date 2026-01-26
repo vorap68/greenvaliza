@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mybook_menu', function (Blueprint $table) {
+        Schema::create('mybooks_menu', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->string('imageName')->nullable();
-            $table->string('imageExten')->nullable();
-            $table->string('description')->nullable();
+                      $table->string('description')->nullable();
             $table->string('slug')->unique()->nullable();
               $table->boolean('is_visual')->default(0);
             $table->timestamps();

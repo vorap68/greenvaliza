@@ -10,11 +10,11 @@
                 class="grid post-63989 post type-post status-publish format-standard has-post-thumbnail hentry guide-putevoditeli">
                 <figure class="effect-smart">
                     <a v-if="guide.image" href="#" rel="bookmark" class="image-link">
-                        <ResponsiveImage class="post-thumb lazyloaded" folder="categoryMenu/guide/" :slug="guide.slug"
-                            :imageName="guide.imageName" :imageExten="guide.imageExten" />
+                        <ResponsiveImage class="post-thumb lazyloaded" folder="categoryMenu/guide/" :id="guide.id"
+                            :imageName="guide.imageName" />
                     </a>
                     <!-- PLACEHOLDER -->
-                    <a v-else href="#" rel="bookmark" class="image-placeholder">
+                    <a v-else href=" #" rel="bookmark" class="image-placeholder">
                         <span class="placeholder-text">
                             {{ guide.title }}
                         </span>

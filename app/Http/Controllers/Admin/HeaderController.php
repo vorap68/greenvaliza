@@ -17,12 +17,14 @@ class HeaderController extends Controller
     public function countall(){
      // return response()->json(['test' => 'ok']);
         $posts = TravelPost::count();
+        $postsAll = TravelPost::all();
+        $countPosts = count($postsAll); 
         $guides = GuidePost::count();
         $advices = AdvicePost::count();
         $mybooks = MybookPost::count();
 
         return response()->json([
-          'posts' => $posts,
+          'posts' => $countPosts,
            'guides' => $guides,
             'advices' => $advices,
              'mybooks' => $mybooks,

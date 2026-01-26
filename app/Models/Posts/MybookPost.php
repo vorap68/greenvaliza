@@ -11,13 +11,18 @@ class MybookPost extends Model
      protected $table = 'mybook_posts';
 
       protected $fillable = [
-        'title',
+         'title',
         'content',
-        'is_published',
         'is_visual',
-       'description',
+        'description',
         'slug',
-        'created_at',
+         'menu_id',
          
     ];  
+
+    public function mybookMenu(){
+       
+            return $this->belongsTo(MyBookMenu::class, 'menu_id');
+        
+    }
 }

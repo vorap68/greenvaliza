@@ -15,6 +15,10 @@ const routes = [
         path: '/admin/menuadd', component: () => import('../Adding/menuadd.vue'), 
         name: 'AddingMenu',
     },
+    {
+        path: '/admin/imageadd', component: () => import('../Adding/imageadd.vue'), 
+        name: 'AddingImage',
+    },
 ]
 
 export default routes;

@@ -23,24 +23,23 @@ class GuideMenuImportCommand extends Command
    public function handle()
     {
         $this->initClient();
-        $posts = $this->getPosts(86, 100, 1); // категория sovety-i-poleznosti id=6
+        $posts = $this->getPosts( 2, 10 ,86); // категория sovety-i-poleznosti id=6
           foreach ($posts as $item) {
             //dd($item);
           $description = strip_tags($item['excerpt']['rendered']);
             $description = preg_replace('/\s+/', ' ', $description);
             $slug = $item['slug'];
              $imageUlr = $item['jetpack_featured_media_url'];
-             $this->saveImages($imageUlr, $slug,'guide');
-             
+           $filename      = basename($imageUlr);
+            $cleanFileName = explode('?', $filename)[0];
             $item_current  = [
-               'title'       => $item['title']['rendered'],
+                'title'       => $item['title']['rendered'],
                 'slug'        => $slug,
                 'description' => $description,
-                'imageName' => $this->imageName,
-                'imageExten' => $this->imageExten
+                'imageName'   => $cleanFileName,
             ];
-
-             GuideMenu::create($item_current); // для путеводителей
+            $post_id = GuideMenu::firstOrCreate($item_current)->id; // для путеводителей
+            $this->saveImages($imageUlr, $cleanFileName, $post_id, 'guide');
           }
     }
 }

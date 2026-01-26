@@ -9,7 +9,7 @@ use App\Http\Resources\MyBookResource;
 use App\Models\Categories\MyBookMenu;
 use App\Models\Posts\MybookPost;
 
-class MyBookController extends Controller
+class MyBookController extends Controller 
 {
     public function index()
     {
@@ -19,7 +19,7 @@ class MyBookController extends Controller
 
       public function show($slug){
       //return response()->json($slug);
-        $mybook = MybookPost::where('slug', $slug)->firstOrFail();
+        $mybook = MybookPost::where('slug', $slug)->where('is_visual', 1)->firstOrFail();
        return new MyBookResource($mybook);
     }
 }

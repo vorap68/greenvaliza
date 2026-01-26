@@ -36,10 +36,10 @@
                 <td>{{ advicepost.description }}</td>
                 <td>{{ advicepost.slug }}</td>
                 <td>
-                    <router-link :to="{ name: 'adviceShow', params: { slug: advicepost.slug } }"
-                        class="btn btn-info btn-sm">Просмотр</router-link>
 
-                    <router-link :to="{ name: 'advicePostEdit', params: { slug: advicepost.slug } }"
+                    <a :href="`/advice/${advicepost.slug}`" target="_blank" class="btn btn-info btn-sm">Просмотр</a>
+
+                    <router-link :to="{ name: 'advicePostEdit', params: { post_id: advicepost.id } }"
                         class="btn btn-warning btn-sm">Редактирование</router-link>
 
                     <router-link :to="{ name: 'adviceImages', params: { post_id: advicepost.id } }"

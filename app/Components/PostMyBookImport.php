@@ -40,17 +40,18 @@ class PostMyBookImport
 
    
 
-    public function savePosts($post_current)
-    {
-        try {
-            $post = MybookPost::firstOrCreate(
-                ['slug' => $post_current['slug']],
-                $post_current);
-            $this->post_id = $post->id;
-        } catch (\Exception $e) {
-            throw new \RuntimeException('Ошибка: не удалось сохранить пост: ' . $e->getMessage());
-        }
-    }
+     public function createPostCurrent($title, $slug, $description, $category_menu_id){
+    $newPost = MybookPost::firstOrCreate(
+        ['slug' => $slug],
+         ['slug' => $slug,
+        'title' => $title,  
+        'content' => '',
+        'description' => $description,
+        'menu_id' => $category_menu_id,]);
+            $this->post_id = $newPost->id;
+            //dd('newPost', $newPost);
+   return $newPost;
+   }
 
     public function saveImages($images_array)
     {

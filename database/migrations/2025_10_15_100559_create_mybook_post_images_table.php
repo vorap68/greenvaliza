@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('mybook_post_images', function (Blueprint $table) {
              $table->id();
-            $table->string('url');
+            $table->string('url')->nullable();
             $table->string('alt_text')->nullable();
            $table->string('filename');
+              $table->unique(['filename', 'mybook_post_id']);
              $table->unsignedBigInteger('mybook_post_id');
-            $table->foreign('mybook_post_id')->references('id')->on('MyBook_posts')->onDelete('cascade');
+            $table->foreign('mybook_post_id')->references('id')->on('mybook_posts')->onDelete('cascade');
             $table->timestamps();
         });
     }

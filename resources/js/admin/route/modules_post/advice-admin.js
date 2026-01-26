@@ -6,13 +6,13 @@ const adviceAdminPostRoutes = [
         props:true,
     },
 
-    {   path: '/admin/adviceposts/show/:slug', component: () => import('../../advice/show.vue'),
-        name: 'adviceShow',
-         props:true,
+    // {   path: '/admin/adviceposts/show/:slug', component: () => import('../../advice/show.vue'),
+    //     name: 'adviceShow',
+    //      props:true,
        
-    },
+    // },
 
-    {   path: '/admin/adviceposts/edit/:slug', component: () => import('../../advice/edit.vue'),
+    {   path: '/admin/adviceposts/edit/:post_id', component: () => import('../../advice/edit.vue'),
         name: 'advicePostEdit',
          props:true,
        

@@ -5,7 +5,7 @@ use App\Models\Images\TravelPostImage;
 use App\Models\Posts\TravelPost;
 use GuzzleHttp\Client; 
 
-class PostTravelImport
+class PostTravelImport 
 {
     public $client;
     protected $post_id;
@@ -33,7 +33,7 @@ class PostTravelImport
                     'page'       => $page,
                     'categories' => $category_id, // ID категории
                     '_fields'    => 'id,title,slug,excerpt,content,acf,status',
-                   // '_fields'    => 'title, slug, acf',
+                    //'_fields'    => 'title, slug, acf',
  
                 ],
             ]); 

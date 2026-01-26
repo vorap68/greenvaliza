@@ -6,8 +6,8 @@
                 <figure class="effect-smart">
                     <router-link :to="{ name: 'Category', params: { slug: category.slug } }">
 
-                        <ResponsiveImage class="post-thumb lazyloaded" :slug="category.slug"
-                            :imageName="category.imageName" :imageExten="category.imageExten" folder="categoryMain" />
+                        <ResponsiveImage class="post-thumb lazyloaded" :id="category.id" :imageName="category.imageName"
+                            folder="categoryMain" />
                         <noscript>
                             <img class="post-thumb" :src="imageUrl" alt="Изображение" />
                         </noscript>

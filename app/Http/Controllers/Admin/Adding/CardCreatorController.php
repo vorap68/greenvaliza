@@ -18,32 +18,35 @@ class CardCreatorController extends Controller
         $this->imageService = $imageService;
     }
 
-    public function createImage($imageContent, $category, $slug)
+    public function createImage($imageContent, $slug , $category = 'travel')
     {
 
         $path = 'categoryMenu/' . $category . '/' . $slug;
 
         // Сохраняем оригинальное изображение на диск (1 файл)
-        Storage::putFileAs('images/' . $path, $imageContent, $imageContent->getClientOriginalName());
+        Storage::putFileAs('images/' . $path, $imageContent, $imageContent->getClientOriginalName()); 
         $folderPath = Storage::disk('public')->path("images/categoryMenu/{$category}/{$slug}");
 
         $source = $folderPath . '/' . $imageContent->getClientOriginalName();
         $this->imageService->saveResizedImages($source, $path, null);
     }
 
-    public function createCard($title, $slug, $description, $category, $image = null)
+    public function createCard($title, $slug, $description,  $image = null ,$category='travel', $type='posts')
     {
         $imageName  = $image?->getClientOriginalName() ?? '';
         $imageExten = $image?->getClientOriginalExtension() ?? '';
-
+       
+        
         $post = [
             'title'       => $title,
             'slug'        => $slug,
             'description' => $description,
-            'type'        => 'posts',
+            'type'        => $type,
             'imageName'   => pathinfo($imageName, PATHINFO_FILENAME) ?? '',
             'imageExten'  => $imageExten,
         ];
+        // return response()->json(['post' => $post]);
+       
         switch ($category) {
             case 'travel':
                 TravelMenu::create($post);
@@ -58,5 +61,6 @@ class CardCreatorController extends Controller
                 MyBookMenu::create($post);
                 break;
         }
+       
     }
 }

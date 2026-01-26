@@ -36,8 +36,7 @@
                 <td>{{ guidepost.slug }}</td>
                 <td>
 
-                    <router-link :to="{ name: 'guideShow', params: { slug: guidepost.slug } }"
-                        class="btn btn-info btn-sm">Просмотр</router-link>
+                    <a :href="`/guide/${guidepost.slug}`" target="_blank" class="btn btn-info btn-sm">Просмотр</a>
 
                     <router-link :to="{ name: 'guidePostEdit', params: { slug: guidepost.slug } }"
                         class="btn btn-warning btn-sm">Редактирование</router-link>

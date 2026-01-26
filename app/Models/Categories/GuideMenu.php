@@ -3,6 +3,7 @@
 namespace App\Models\Categories;
 
 
+use App\Models\Posts\GuidePost;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -22,8 +23,8 @@ class GuideMenu extends Model
          'is_visual',
     ];  
 
-    // public function posts()
-    // {
-    //     return $this->hasMany(Post::class, 'category_id', 'id');
-    // }
+    public function guidePost()
+    {
+        return $this->hasOne(GuidePost::class);
+    }
 }

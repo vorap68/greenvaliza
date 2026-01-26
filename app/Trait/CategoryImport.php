@@ -18,7 +18,7 @@ trait CategoryImport
         ]);
     }
 
-    protected function getPosts($category_id, $perPage = 100, $page = 1)
+    protected function getPosts($page=1, $perPage = 100, $category_id )
     {
         $response = $this->client->get('posts', [
             'verify' => false, // отключает SSL проверку
@@ -35,15 +35,11 @@ trait CategoryImport
         return $data;
     }
 
-    protected function saveImages($imageUlr, $slug, $categoty_name)
+    protected function saveImages($imageUlr, $cleanFileName,$post_id, $category_name)
     {
         $imageContent     = file_get_contents($imageUlr);
-        $filename         = basename($imageUlr);
-        $cleanUrl         = explode('?', $filename)[0];
-        $this->imageName  = pathinfo($filename, PATHINFO_FILENAME);
-        $this->imageExten = pathinfo($cleanUrl, PATHINFO_EXTENSION);
-       $relativePath     = "images/categoryMenu/{$categoty_name}/{$slug}/{$this->imageName}.{$this->imageExten}";
-       Storage::disk('public')->put($relativePath, $imageContent);
+      $relativePath     = "images/categoryMenu/{$category_name}/{$post_id}/{$cleanFileName}";
+        Storage::disk('public')->put($relativePath, $imageContent);
     }
 
 }

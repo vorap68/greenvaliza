@@ -27,6 +27,7 @@ class ImageResizeCommand extends Command
     public function handle(ImageService $imageService)
     {
         $dir = $this->argument('dir');
+      // dd($dir);
       
         if (!$dir) {
             $this->error('Please provide a valid path using the --path option.');

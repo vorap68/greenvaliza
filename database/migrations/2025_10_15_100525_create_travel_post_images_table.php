@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('url');
             $table->string('alt_text')->nullable();
-            $table->string('filename')->unique();
+            $table->string('filename');
+            $table->unique(['filename', 'travel_post_id']);
             $table->unsignedBigInteger('travel_post_id');
             $table->foreign('travel_post_id')->references('id')->on('travel_posts');
             $table->timestamps();

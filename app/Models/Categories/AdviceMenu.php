@@ -9,15 +9,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class AdviceMenu extends Model
 {
     use HasFactory;
-     protected $table = 'advices_menu';
+     protected $table = 'advice_menu';
      protected $fillable = [
         'title',
         'imageName',
-        'imageExten',
         'description',
         'slug',
         'is_visual',
     ];  
+
+    public function advicePost()
+    {
+        return $this->hasOne(\App\Models\Posts\AdvicePost::class); 
+    }
 
    
 }

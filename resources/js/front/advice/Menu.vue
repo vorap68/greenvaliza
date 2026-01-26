@@ -6,8 +6,8 @@
                 class="grid post-63989 post type-post status-publish format-standard has-post-thumbnail hentry advice-putevoditeli">
                 <figure class="effect-smart">
                     <a href="#">
-                        <ResponsiveImage class="post-thumb lazyloaded" folder="categoryMenu/advice" :slug="advice.slug"
-                            :imageName="advice.imageName" :imageExten="advice.imageExten" />
+                        <ResponsiveImage class="post-thumb lazyloaded" folder="categoryMenu/advice" :id="advice.id"
+                            :imageName="advice.imageName" />
 
                         <!-- <noscript><img class="post-thumb"
                                 src="https://greenvaliza.co.ua/wp-content/uploads/2025/05/riga40-768x768.jpg"
@@ -46,7 +46,7 @@ export default {
             advices: [],
             imageUrl: '',
             imageName: '',
-            imageExten: '',
+
             slug: ''
         }
     },

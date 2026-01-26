@@ -11,12 +11,16 @@ class AdvicePost extends Model
      protected $table = 'advice_posts';
 
     protected $fillable = [
-        'title',
+       'title',
         'content',
-        'is_published',
         'is_visual',
-        'travel_id',
         'description',
         'slug',
+        'menu_id',
     ];  
+
+    public function adviceMenu()
+    {
+        return $this->belongsTo(\App\Models\Categories\AdviceMenu::class,'menu_id'); 
+    }
 }

@@ -24,9 +24,9 @@ class ImportTravelPostFinalCommand extends Command
           $travel_table_id = TravelTable::where('term_id', $category_id)->value('id');
       
           $importer = new PostTravelImport();
-             $posts = $importer->getPosts(20, 1, '', $category_id); 
-        
-        foreach ($posts as $post) {
+             $posts = $importer->getPosts(3, 1, '', $category_id);  
+       //dd($posts);
+        foreach ($posts as $post) { 
            //dd($post);
             $content = $post['content']['rendered'];  
            
@@ -38,7 +38,7 @@ class ImportTravelPostFinalCommand extends Command
             $images       = new ImportImage();
             $result       = $images->imagesGetStore($content, $slug, 'travels/post'); 
             $images_array = $result['images_array']; 
-            //dump($images_array);
+            //dd($images_array);
             $content      = $result['html'];
             
             //dump($content);

@@ -11,8 +11,8 @@
                 class="grid post-63989 post type-post status-publish format-standard has-post-thumbnail hentry mybook-putevoditeli">
                 <figure class="effect-smart">
                     <a href="#">
-                        <ResponsiveImage class="post-thumb lazyloaded" folder="categoryMenu/mybook" :slug="mybook.slug"
-                            :imageName="mybook.imageName" :imageExten="mybook.imageExten" />
+                        <ResponsiveImage class="post-thumb lazyloaded" folder="categoryMenu/mybook" :id="mybook.id"
+                            :imageName="mybook.imageName" />
 
                     </a>
                     <figcaption>
@@ -47,7 +47,6 @@ export default {
             MyBooks: [],
             imageUrl: '',
             imageName: '',
-            imageExten: '',
             slug: ''
         }
     },

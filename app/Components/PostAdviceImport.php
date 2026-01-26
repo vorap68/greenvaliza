@@ -12,10 +12,10 @@ class PostAdviceImport
     public $client;
     protected $post_id;
 
-    public function __construct()
+    public function __construct() 
     {
         $this->client = new Client([
-            'base_uri' => 'https://greenvaliza.co.ua/wp-json/wp/v2/',
+            'base_uri' => 'https://greenvaliza.co.ua/wp-json/wp/v2/', 
             'timeout'  => 10.0,
         ]);
     }
@@ -23,7 +23,7 @@ class PostAdviceImport
     /**
      * Получить посты
      */
-    public function getPosts($perPage = 1, $page = 1)
+    public function getPosts($perPage = 1, $page = 1) 
     {
 
         $response = $this->client->get('posts', [
@@ -31,7 +31,7 @@ class PostAdviceImport
             'query'  => [
                 'per_page'   => $perPage,
                 'page'       => $page,
-                'categories' => 6,                               // ID  категории 2-Наши путешествия 
+                'categories' => 6,                               // ID  категории 
                // '_fields'    => 'id,title,slug,excerpt,acf', // Ограничение полей для оптимизации
                 '_fields'    => 'id,title,slug,excerpt,content,acf,status',
             ],
@@ -42,39 +42,35 @@ class PostAdviceImport
         return $data;
     }
 
-   
+   public function createPostCurrent($title, $slug, $description, $category_menu_id){
+    $newPost = AdvicePost::firstOrCreate(
+        ['slug' => $slug],
+         ['slug' => $slug,
+        'title' => $title,  
+        'content' => '',
+        'description' => $description,
+        'menu_id' => $category_menu_id,]);
+            $this->post_id = $newPost->id;
+            //dd('newPost', $newPost);
+   return $newPost;
+   }
 
-    public function savePosts($post_current)
-    {
-      
-      try{
-        $post = AdvicePost::firstOrCreate(
-            ['slug' => $post_current['slug']],
-        $post_current);
-       $this->post_id = $post->id;
-            return $post;
-      } catch (\Exception $e) {
-        throw new \RuntimeException('Ошибка: не удалось сохранить пост: ' . $e->getMessage());
-    }
-    }
+
 
     public function saveImages($images_array)
     {
-        $records = [];
+     $records = [];
         foreach ($images_array as $item) {
             $records[] = [
-                'advice_post_id'    => $this->post_id, 
+                'advice_post_id'    => $this->post_id,  
                 'filename'   => $item,
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
-           
-        }
+                   }
        // dd($records);
-         AdvicePostImage::insert($records);
-       
-      
-    }
+        AdvicePostImage::insert($records); 
+       }
 
 }
 

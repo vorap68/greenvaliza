@@ -1,6 +1,6 @@
 <template>
 
-    <img class="post-thumb lazyloaded" :src="basesrc" :srcset="srcSet" :sizes="sizes" :alt="alt"
+    <img class="post-thumb lazyloaded" :src="image.medium" :srcset="srcSet" :sizes="sizes" :alt="alt"
         data-ll-status="loaded" />
 </template>
 
@@ -8,41 +8,40 @@
 export default {
     name: 'ResponsiveImage',
     props: {
-        slug: {
-            type: String,
-            required: true
-        },
-        imageName: {
-            type: String,
-            required: true
-        },
-        imageExten: {
-            type: String,
-            required: true
-        },
-        alt: {
-            type: String,
-            default: ''
-        },
-        folder: {
-            type: String,
-            required: true
-        },
-
+        imageName: { type: String, required: true },
+        folder: { type: String, required: true },
+        // slug: { type: String, required: true },
+        alt: { type: String, default: '' },
+        id: { type: [String, Number], default: null },
     },
 
     computed: {
-        basesrc() {
-            return `/storage/images/${this.folder}/${this.slug}/${this.imageName}_768x768.${this.imageExten}`;
-        },
-        srcSet() {
-            return `/storage/images/${this.folder}/${this.slug}/${this.imageName}_thumb.${this.imageExten} 150w,
-                    /storage/images/${this.folder}/${this.slug}/${this.imageName}_onesmall.${this.imageExten} 600w,
-                    
-                    /storage/images/${this.folder}/${this.slug}/${this.imageName}_768x768.${this.imageExten} 768w,
-                     `;
+
+        basePath() {
+            return `/storage/images/${this.folder}/${this.id}`;
+        }
+        ,
+
+        image() {
+            const [name, ext] = this.imageName.split(/\.(?=[^.]+$)/)
+
+            return {
+                base: `${this.basePath}/${this.imageName}`,
+                thumb: `${this.basePath}/${name}_150.${ext}`,
+                small: `${this.basePath}/${name}_600.${ext}`,
+                medium: `${this.basePath}/${name}_768.${ext}`,
+                large: `${this.basePath}/${name}_1200.${ext}`,
+            }
         },
 
+        srcSet() {
+            return `
+                ${this.image.thumb} 150w, 
+                ${this.image.small} 600w,
+                ${this.image.medium} 768w,
+                 ${this.image.large} 768w
+            `
+        },
         sizes() {
 
             return
@@ -51,6 +50,8 @@ export default {
                (max-width: 991.98px) 33.333vw, 
               33.333vw`;
         }
-    }
+    },
+
+
 }
 </script>

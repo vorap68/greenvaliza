@@ -5,19 +5,18 @@
             <!-- Переключатель вкладок -->
             <ul class="nav nav-tabs mb-3">
                 <li class="nav-item">
-                    <button class="nav-link" :class="{ active: activeTab === 'edit' }" @click="activeTab = 'edit'">
+                    <button class="nav-link">
                         ✏️ Редактировать
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button class="nav-link" :class="{ active: activeTab === 'preview' }"
-                        @click="activeTab = 'preview'">
-                        👁️ Предпросмотр
-                    </button>
+
+                    <a :href="`/travel/${travelpost.slug}?type=posts `" target="_blank" class="btn btn-info btn-sm"> 👁️
+                        Предпросмотр</a>
                 </li>
             </ul>
             <!-- Вкладка редактирования -->
-            <div v-if="activeTab === 'edit'">
+            <div>
                 <Codemirror v-model="travelpost.content" :extensions="[html()]" :theme="oneDark" :style="{
                     height: '500px',
                     border: '1px solid #ccc',
@@ -30,10 +29,7 @@
                 </div>
             </div>
 
-            <!-- Вкладка предпросмотра -->
-            <div v-else class="preview-container p-3 border rounded bg-light">
-                <div v-html="travelpost.content"></div>
-            </div>
+
 
 
 
@@ -64,7 +60,7 @@ export default defineComponent({
     data() {
         return {
             travelpost: {},
-            activeTab: 'edit', // edit | preview
+
             html,
             oneDark,
         }
@@ -122,11 +118,5 @@ export default defineComponent({
 .cm-editor {
     font-size: 14px;
     font-family: 'Fira Code', monospace;
-}
-
-.preview-container {
-    background-color: #fafafa;
-    min-height: 500px;
-    overflow: auto;
 }
 </style>

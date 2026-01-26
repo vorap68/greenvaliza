@@ -36,8 +36,8 @@
                 <td>{{ mybookpost.description }}</td>
                 <td>{{ mybookpost.slug }}</td>
                 <td>
-                    <router-link :to="{ name: 'MyBookShow', params: { slug: mybookpost.slug } }"
-                        class="btn btn-info btn-sm">Просмотр</router-link>
+
+                    <a :href="`/mybook/${mybookpost.slug}`" target="_blank" class="btn btn-info btn-sm">Просмотр</a>
 
                     <router-link :to="{ name: 'mybookPostEdit', params: { slug: mybookpost.slug } }"
                         class="btn btn-warning btn-sm">Редактирование</router-link>

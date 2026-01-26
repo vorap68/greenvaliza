@@ -41,13 +41,22 @@ Route::get('/advice/{slug}', [App\Http\Controllers\Api\AdviceController::class, 
 Route::get('/mybook', [App\Http\Controllers\Api\MyBookController::class, 'index']);
 Route::get('/mybook/{slug}', [App\Http\Controllers\Api\MyBookController::class, 'show'])->name('api.mybook.show');
 
-// Admin routes!!!!!!!!!!!
+// Admin routes!!!!!!!!!!! 
 Route::prefix('admin')->group(function () {
+    // Main page
     Route::get('/header/count', [App\Http\Controllers\Admin\HeaderController::class, 'countall']);
-   // Route::get('/images/count', [App\Http\Controllers\Admin\TravelPostController::class, 'imagesCount']);
    
+   //Adding pages
     Route::post('/create-post', [App\Http\Controllers\Admin\Adding\PostCreatorController::class, 'createPost'])->name('api.create.post');
-    Route::post('/create-menu', [App\Http\Controllers\Admin\Adding\TableCreatorController::class, 'createMenu'])->name('api.create.menu');
+    Route::post('/create-table', [App\Http\Controllers\Admin\Adding\TableCreatorController::class, 'createTable'])->name('api.create.table');
+    Route::post('/create-image', [App\Http\Controllers\Admin\Adding\ImageCreatorController::class, 'createImage'])->name('api.create.table');
+
+    //смена имени поста
+    Route::put('/change-title/{category_name}/{id}', [App\Http\Controllers\Admin\ChangeTitleController::class, 'update'])->name('api.titleupdate');
+    // Route::put('/change-title/{category_name}/{id}', function($category_name, $id, Request $request) {
+       
+    //     return response()->json(['message' => 'Title update route works', 'category' => $category_name, 'id' => $id, 'new_title' => $request->input('title')]);
+    // })->name('api.titleupdate');
 
     Route::get('/postcard-menu/{category_name}', [App\Http\Controllers\Admin\PostCardController::class, 'index']);
     Route::get('/postcard/{category_name}/{slug}', [App\Http\Controllers\Admin\PostCardController::class, 'show'])->name('api.postcard.show');
@@ -71,10 +80,10 @@ Route::prefix('admin')->group(function () {
     Route::put('/travels-table/{id}', [App\Http\Controllers\Admin\TravelTableController::class, 'update'])->name('api.travels.update');
     Route::patch('/travels-table/{id}/toggle-visual', [App\Http\Controllers\Admin\TravelTableController::class, 'visual'])->name('api.travels.visual');
    
-
+ 
 
     Route::get('/advices', [App\Http\Controllers\Admin\AdviceController::class, 'index']);
-    Route::get('/advices/{slug}', [App\Http\Controllers\Admin\AdviceController::class, 'show'])->name('api.advices.show');
+    Route::get('/advices/{id}', [App\Http\Controllers\Admin\AdviceController::class, 'show'])->name('api.advices.show');
     Route::put('/advices/{id}', [App\Http\Controllers\Admin\AdviceController::class, 'update'])->name('api.advices.update');
     Route::patch('/advices/{id}/toggle-visual', [App\Http\Controllers\Admin\AdviceController::class, 'visual'])->name('api.advices.visual');
     Route::get('/advices-images/{post_id}', [App\Http\Controllers\Admin\AdviceController::class, 'getImages'])->name('api.advices.getImages');
@@ -87,7 +96,7 @@ Route::prefix('admin')->group(function () {
 
 });
 
-//  Route::get('/guide/{slug}',function($slug){
+//  Route::get('/guide/{slug}',function($slug){ 
 //      return response()->json([
 //          'slug_from_route' => $slug,
 //       ]);

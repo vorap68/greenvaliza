@@ -13,7 +13,7 @@ class PostGuideImport
     public function __construct()
     {
         $this->client = new Client([
-            'base_uri' => 'https://greenvaliza.co.ua/wp-json/wp/v2/',
+            'base_uri' => 'https://greenvaliza.co.ua/wp-json/wp/v2/', 
             'timeout'  => 10.0,
         ]);
     }
@@ -52,31 +52,36 @@ class PostGuideImport
         return $data;
     }
 
-    public function savePosts($post_current)
-    {
-        try {
-            $post = GuidePost::firstOrCreate(
-                ['slug' => $post_current['slug']],
-                $post_current);
-            $this->post_id = $post->id;
-        } catch (\Exception $e) {
-            throw new \RuntimeException('Ошибка: не удалось сохранить пост: ' . $e->getMessage());
-        }
-    }
 
+    
+   public function createPostCurrent($title, $slug, $description, $category_menu_id){
+    $newPost = GuidePost::firstOrCreate(
+        ['slug' => $slug],
+         ['slug' => $slug,
+        'title' => $title,  
+        'content' => '',
+        'description' => $description,
+        'menu_id' => $category_menu_id,]);
+            $this->post_id = $newPost->id;
+            //dd('newPost', $newPost);
+   return $newPost;
+   }
+
+ 
     public function saveImages($images_array)
     {
-        $records = [];
+     $records = [];
         foreach ($images_array as $item) {
             $records[] = [
-                'guide_post_id'    => $this->post_id,
+                'guide_post_id'    => $this->post_id,  
                 'filename'   => $item,
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
-            }
-            GuidePostImage::insert($records);
+                   }
+       // dd($records);
+        GuidePostImage::insert($records); 
+       }
 
-    }
 
 }

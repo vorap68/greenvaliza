@@ -3,6 +3,7 @@
 namespace App\Models\Categories;
 
 use App\Models\Post;
+use App\Models\Posts\MybookPost;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -15,15 +16,14 @@ class MyBookMenu extends Model
     protected $fillable = [
         'title',
         'imageName',
-        'imageExten',
         'description',
         'slug',
         'is_visual',
     ];  
 
-    // public function posts()
-    // {
-    //     return $this->hasMany(Post::class, 'category_id', 'id');
-    // }
+    public function mybookPost()
+    {
+        return $this->hasMany(MybookPost::class, );
+     }
 
 }

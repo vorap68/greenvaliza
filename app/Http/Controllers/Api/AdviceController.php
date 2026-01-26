@@ -10,6 +10,7 @@ class AdviceController extends Controller
 {
     public function index()
     {
+     
         $advices = AdviceMenu::where('is_visual', 1)->get();
         // dd($advices);
         return AdviceResource::collection($advices);
@@ -19,6 +20,7 @@ class AdviceController extends Controller
     {
         //return response()->json($slug);
         $advice = AdvicePost::where('slug', $slug)->where('is_visual', 1)->firstOrFail();
+        //return response()->json(['content' =>$advice->content]);
         return new AdviceResource($advice);
     }
 

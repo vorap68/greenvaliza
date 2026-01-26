@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('guide_post_images', function (Blueprint $table) {
             $table->id();
-            $table->string('url');
+            $table->string('url')->nullable();
             $table->string('alt_text')->nullable();
            $table->string('filename');
+           $table->unique(['filename', 'guide_post_id']);
              $table->unsignedBigInteger('guide_post_id');
             $table->foreign('guide_post_id')->references('id')->on('guide_posts')->onDelete('cascade');
             $table->timestamps();;

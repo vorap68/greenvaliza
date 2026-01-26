@@ -8,7 +8,8 @@
 
             <div class="col" v-for="img in imagesArray" :key="img.id">
                 <div class="card h-100 shadow-sm">
-                    <img decodong="async" :src="`/storage/${img.filename}`" class="card-img-top" alt="image">
+                    <img decodong="async" :src="`/storage/images/advice/${this.post_id}/${img.filename}`"
+                        class="card-img-top" alt="image">
                     <div class="card-body">
                         <p class="card-text small">{{ img.filename }}</p>
 

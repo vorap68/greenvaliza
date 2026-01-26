@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('advices_menu', function (Blueprint $table) {
+        Schema::create('advice_menu', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->string('imageName')->nullable();
-            $table->string('imageExten')->nullable();
             $table->string('description')->nullable();
-            $table->string('slug')->unique()->nullable();
+            $table->string('slug')->unique();
             $table->boolean('is_visual')->default(0);
-            $table->timestamps();
+            $table->timestamps(); 
         });
     }
 
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('advices_menu');
+        Schema::dropIfExists('advice_menu');
     }
 };

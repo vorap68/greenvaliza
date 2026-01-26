@@ -16,9 +16,10 @@ return new class extends Migration
             $table->string('url');
             $table->string('alt_text')->nullable();
            $table->string('filename');
+           $table->unique(['filename', 'advice_post_id']);
              $table->unsignedBigInteger('advice_post_id');
             $table->foreign('advice_post_id')->references('id')->on('advice_posts')->onDelete('cascade');
-            $table->timestamps();
+            $table->timestamps(); 
         });
     }
 

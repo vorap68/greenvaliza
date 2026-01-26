@@ -17,9 +17,9 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->text('content');
             $table->string('slug')->unique();
-            $table->boolean('is_visual')->default(false);
-         
-            $table->timestamps();
+            $table->boolean('is_visual')->default('1');
+            $table->foreignId('menu_id')->constrained('advice_menu')->onDelete('cascade');
+            $table->timestamps(); 
         });
     
     }

@@ -115,7 +115,7 @@
                                     </router-link>
                                 </li>
                                 <li class="nav-item">
-                                    <router-link :to="{ name: 'travelPosts' }" class="nav-link">
+                                    <router-link :to="{ name: 'AddingImage' }" class="nav-link">
                                         <i class="nav-icon bi bi-circle"></i>
                                         <p>Фото</p>
                                     </router-link>
