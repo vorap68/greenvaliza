@@ -38,7 +38,7 @@
             <tr v-for="travelpost in travelposts" :key="travelpost.id">
                 <td>{{ travelpost.id }}</td>
                 <td>{{ travelpost.title }}</td>
-                <td>{{ travelpost.travel_table_id }}</td>
+                <td>{{ travelpost.sense }}</td>
                 <td><button class="btn btn-sm" :class="travelpost.is_visual ? 'btn-success' : 'btn-outline-secondary'"
                         @click="changeVisual(travelpost)">
                         {{ travelpost.is_visual ? '👁️ Опубликован' : '🚫 Редакция' }}

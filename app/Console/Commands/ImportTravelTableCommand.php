@@ -2,67 +2,66 @@
 namespace App\Console\Commands;
 
 use App\Components\ImportImage;
-use App\Components\PostTravelImport;
 use Illuminate\Console\Command;
-use InvalidArgumentException;
+use App\Components\TablePostImport;
+use Illuminate\Support\Facades\DB;
+use App\Models\Categories\TravelMenu;
 
 class ImportTravelTableCommand extends Command
 {
 
     protected $signature = 'import:traveltable';
 
-    protected $description = 'Скачиваем постоы-таблицы категории travel из меню Мои Путеш. (категория 2)';
+    protected $description = 'Скачиваем посты-таблицы категории travel из меню Мои Путеш. (категория 2)';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-              $importer = new PostTravelImport();
-        $is_acf   = 'table'; // для скачив таблиц 
-        $posts    = $importer->getPosts(1, 1, $is_acf , 2);
-       // dd($posts);
+        $importer = new TablePostImport();
+        $is_acf   = 'table'; // для скачив таблиц
+        $posts    = $importer->getPosts(10, 7, $is_acf, 2);
+        // dd($posts);
         $result = [];
         foreach ($posts as $post) {
             //dd($post);
-            $html = $post['content']['rendered'];
-            $slug = $post['slug'];
+            $title         = $post['title']['rendered'];
+            $html          = $post['content']['rendered'];
+            $slug          = $post['slug'];
+            $table_menu_id = TravelMenu::where('slug', $slug)->value('id');
             // Удаление лишних пробелов и переносов строк
             $cleanedText = preg_replace('/\s+/', ' ', $html);
-           // $content     = $cleanedText;
-            $content     = $html;
-            $description = strip_tags($post['excerpt']['rendered']);
-            $description = preg_replace('/\s+/', ' ', $description);
+            // $content     = $cleanedText;
 
-            //  Импорт изображений и сохранение на диске
-            $images       = new ImportImage();
-            $result       = $images->imagesGetStore($content, $slug, 'travels/table');
-            $images_array = $result['images_array']; 
-            //dump($images_array);
-            $content      = $result['html'];
-           
-            // меняем url к конечным постам 
-            $content      = str_replace('a href="', 'a href="/travels/final/', $content);
-                       
-            $post_current = [
-                'content'      => $content,
-                'title'        => $post['title']['rendered'],
-                'slug'         => $slug,
-                'description'  => $description,
-                'is_visual' => 1,
+            try {
+                DB::beginTransaction();
+                //создать новый пост
+                $newPost = $importer->createPostCurrent($title, $slug, $table_menu_id);
+                dump('Processing post: ' . $newPost);
+                //  если пост уже был — ничего не делаем
+                if (! $newPost->wasRecentlyCreated) {
+                    DB::rollBack();
+                    continue;
+                }
+                $images       = new ImportImage();
+                $result       = $images->imagesGetStore($html, $newPost->id, 'travel/table');
+                $content      = $result['html'];
+                $images_array = $result['images_array'];
+                dump('Imported images: ', $images_array);
+                $result = $newPost->update([
+                    'content' => $content,
+                ]);
 
-            ];
+                //  Сохраняем пути изображений в БД
+                // $importer->saveImages($images_array);
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollBack();
+                throw $e;
+            }
 
-            // dump($post_current);
-
-            $result[] = $post_current;
-            //сохраняем текущий пост в БД
-            $importer->savePosts($post_current);
-
-            // //  Сохраняем пути изображений в БД
-            $importer->saveImages($images_array);
         }
-        // dd($result);
     }
 
 }

@@ -18,7 +18,7 @@ trait CategoryImport
         ]);
     }
 
-    protected function getPosts($page=1, $perPage = 100, $category_id )
+    protected function getPosts($perPage=10, $page = 1, $category_id )
     {
         $response = $this->client->get('posts', [
             'verify' => false, // отключает SSL проверку

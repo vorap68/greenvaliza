@@ -26,7 +26,7 @@ class AdviceResource extends JsonResource
             "content" => $this->content,
              "is_published" => $this->is_published,
              "is_visual" => $this->is_visual ,
-              'image' => $this->imageName.'_small.'.$this->imageExten,
+              'image' => $this->imageName,
            
         ];
     }

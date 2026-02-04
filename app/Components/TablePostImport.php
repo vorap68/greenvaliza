@@ -6,7 +6,9 @@ use App\Models\Posts\TravelPost;
 use App\Models\Posts\TravelTable;
 use GuzzleHttp\Client;
 
-class PostTravelImport  
+class TablePostImport
+
+
 {
     public $client;
     protected $post_id;
@@ -19,7 +21,7 @@ class PostTravelImport
         ]);
     }
 
-    public function getPosts($perPage = 2, $page = 2, $is_acf = 'post',$category_id)
+    public function getPosts($perPage = 2, $page = 2, $is_acf = 'post')
     {
         //dd($category_id, $is_acf);
         try {
@@ -32,7 +34,7 @@ class PostTravelImport
                 'query'          => [
                     'per_page'   => $perPage,
                     'page'       => $page,
-                    'categories' => $category_id , // ID категории
+                    'categories' => 2 , // ID категории
                     '_fields'    => 'id,title,slug,excerpt,content,acf,status',
                     //'_fields'    => 'title, slug, acf',
 
@@ -65,17 +67,15 @@ class PostTravelImport
         }
     }
 
-    public function createPostCurrent($title, $slug, $description ='', $menu_id= null, $table_id = null)
+    public function createPostCurrent($title, $slug, $category_menu_id)
     {
-       // dd('createPostCurrent', $title, $slug, $travelMenu_id);
-        $newPost = TravelPost::firstOrCreate(
+        //dd('createPostCurrent', $title, $slug, $category_menu_id);
+        $newPost = TravelTable::firstOrCreate(
             ['slug' => $slug],
             ['slug'   => $slug,
                 'title'   => $title,
-                'description' => $description,  
                 'content' => '',
-                'menu_id' => $menu_id,
-                'table_id' => $table_id,
+                'menu_id' => $category_menu_id
                 ]);
 
         $this->post_id = $newPost->id;
@@ -83,7 +83,19 @@ class PostTravelImport
         return $newPost;
     }
 
-  
+    public function savePosts($post_current)
+    {
+        try {
+            $post = TravelPost::firstOrCreate(
+                ['slug' => $post_current['slug']],
+                $post_current);
+            $this->post_id = $post->id;
+            return $post;
+        } catch (\Exception $e) {
+            throw new \RuntimeException('Ошибка: не удалось сохранить пост: ' . $e->getMessage());
+        }
+    }
+
     public function saveImages($images_array)
     {
         $records = [];

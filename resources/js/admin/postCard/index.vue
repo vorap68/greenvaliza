@@ -34,7 +34,7 @@
                     </button>
                 </td>
                 <td>{{ postCard.date }}</td>
-                <td><img :src="`/storage/images/categoryMenu/${category_name}/${postCard.slug}/${postCard.image}`">
+                <td><img :src="`/storage/images/categoryMenu/${category_name}/${postCard.id}/${postCard.image}`">
                 </td>
 
                 <td>{{ postCard.slug }}</td>

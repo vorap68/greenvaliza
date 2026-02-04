@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('imageName')->nullable();
-                      $table->string('description')->nullable();
+            $table->string('description')->nullable();
             $table->string('slug')->unique()->nullable();
-              $table->boolean('is_visual')->default(0);
+            $table->boolean('is_visual')->default(0);
             $table->timestamps();
         });
     }

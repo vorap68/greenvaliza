@@ -6,45 +6,33 @@ use Illuminate\Support\Facades\Log;
 
 class ChangeTitleTravelService
 {
-    public function changeTitleTravel($id, $newTitle): void
+    public function changeTitleTravelTable($tablePost, $newTitle, )
     {
-        $post = \App\Models\Posts\TravelPost::findOrFail($id);
-        $oldSlug = $post->slug;
-        $newSlug = \Illuminate\Support\Str::slug($newTitle); 
+
+        $oldSlug = $tablePost->slug;
+        $newSlug = \Illuminate\Support\Str::slug($newTitle);
         if ($oldSlug === $newSlug) {
             return;
         }
 
-    
-         try {
-          
-
-            DB::transaction(function () use ( $post, $newTitle, $newSlug, $oldSlug) {
-
-                // Обновление контента поста с новыми путями изображений
-                // $content        = $post->content;
-                // $updatedContent = str_replace("/storage/images/$category/$oldSlug",
-                //     "/storage/images/$category/$newSlug", $content);
+        try {
+            DB::transaction(function () use ($tablePost, $newTitle, $newSlug, $oldSlug) {
 
                 //Обновление БД
-                //$post->content = $updatedContent;
-                $post->title   = $newTitle;
-                $post->slug    = $newSlug;
-                $post->save();
+                $tablePost->title = $newTitle;
+                $tablePost->slug  = $newSlug;
+                $tablePost->save();
+                $tablePost->travelMenu->title = $newTitle;
+                $tablePost->travelMenu->slug  = $newSlug;
+                $tablePost->travelMenu->save();
 
             });
+            return $tablePost->travelMenu;
         } catch (\Exception $e) {
-            
-             // rollback названия папки при ошибки работы в БД
-            // if (is_dir($to)) {
-            //     rename($to, $from);
-            // }
-
             Log::error('Change title error',
                 [
-                  //  'category' => $category,
-                    'title'    => $newTitle,
-                    'error'    => $e->getMessage(),
+                    'title' => $newTitle,
+                    'error' => $e->getMessage(),
                 ]);
             throw $e; // ⬅️ ВАЖНО
         }

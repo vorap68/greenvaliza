@@ -1,67 +1,68 @@
 <template>
-    <BreadCrumb :parent-slug="'nashi-puteshestviya'" :parent-title="'Наши путешествия'"
-        :current-title="travel.title || ''" />
+  <BreadCrumb parent-slug="nashi-puteshestviya" parent-title="Наши путешествия" :current-title="travel.title" />
+  <div class="post-container-block" :style="containerStyle">
 
-    <div class="post-container-block" :style="{
-        backgroundImage: `url('/storage/images/travels/table/${travel.slug}/firstfon.jpg')`,
-        backgroundPosition: 'center',
-    }">
+    <div class="content-block" v-if="travel.content">
 
-        <div class=" content-block">
-            <div class="entry-content" v-html="travel.content">
+      <TravelHeader :header="travel.content.header" />
+      <p class="ab">&nbsp;</p>
+      <TravelGallery v-if="travel.content.gallery.length" :images="travel.content.gallery" />
+      <p class="ab">&nbsp;</p>
+      <TravelItemList :items="travel.content.items" :header="travel.content.header" />
 
-
-            </div>
-        </div>
     </div>
+  </div>
 </template>
+
 <script>
 import axios from 'axios';
-import { defineComponent } from 'vue';
 import BreadCrumb from '../../BreadCrumb.vue';
+import TravelHeader from './blocks/TravelHeader.vue';
+import TravelGallery from './blocks/TravelGallery.vue';
+import TravelItemList from './blocks/TravelItemList.vue';
+
 export default {
-    name: 'travel-postmenu',
+  name: 'travel-postmenu',
 
-    props: ['slug'],
+  props: ['slug'],
 
-    components: {
-        BreadCrumb,
-    },
+  components: {
+    BreadCrumb,
+    TravelHeader,
+    TravelGallery,
+    TravelItemList
+  },
 
-    data() {
-        return {
-            // slug: '',
-            travel: {},
-        };
-    },
-    async mounted() {
-        console.log(this.slug + ":table component mounted.");
-        await this.fetchData();
-    },
+  data() {
+    return {
+      travel: {
+        content: null
+      }
+    };
+  },
 
-    methods: {
-        async fetchData() {
-            try {
-                // Example API call, replace with actual endpoint
-                const response = await axios.get(`/api/travels/table/${this.slug}`);
-                console.log('response.data:', response.data);
+  async mounted() {
+    await this.fetchData();
+  },
 
-                let content = response.data.data.content;
-                content = content.replace(/\$\{travel\.slug\}/g, this.slug);
-                this.travel = {
-                    ...response.data.data,
-                    content
-                };
-                if (this.travel.title) {
-                    document.title = this.travel.title;
-                }
+  computed: {
+    containerStyle() {
+      if (!this.travel.id) return {};
+      return {
+        backgroundImage: `url('/storage/images/travel/table/${this.travel.id}/firstfon.jpg')`,
+        backgroundPosition: 'center',
+      };
+    }
+  },
 
-                console.log('Fetched travel data:', this.travel.content);
-            } catch (error) {
-                console.error('Error fetching travel-table data:', error);
-            }
-        },
-    },
+
+  methods: {
+    async fetchData() {
+      const response = await axios.get(`/api/travels/table/${this.slug}`);
+      this.travel = response.data;
+      console.log('Fetched travel dataAll:', this.travel.content);
+      document.title = this.travel.title;
+    }
+  }
 };
 </script>
-<style scoped></style>

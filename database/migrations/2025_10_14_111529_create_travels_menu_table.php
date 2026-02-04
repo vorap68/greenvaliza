@@ -14,13 +14,12 @@ return new class extends Migration
         Schema::create('travels_menu', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-             $table->string('type')->default('menus');
-              $table->unsignedBigInteger('term_id')->unique()->nullable();
+            $table->string('type')->default('menus');
+            $table->unsignedBigInteger('term_id')->unique()->nullable();
             $table->string('imageName')->nullable();
-            $table->string('imageExten')->nullable();
             $table->string('description')->nullable();
             $table->string('slug')->unique()->nullable();
-              $table->boolean('is_visual')->default(0);
+            $table->boolean('is_visual')->default(0);
             $table->timestamps();
         });
     }

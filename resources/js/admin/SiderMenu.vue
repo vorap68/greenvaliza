@@ -53,7 +53,7 @@
                                     </router-link>
                                     <router-link :to="{ name: 'travelTables' }" class="nav-link">
                                         <i class="nav-icon bi bi-circle"></i>
-                                        <p>Посты-меню </p>
+                                        <p>Посты-таблицы </p>
                                     </router-link>
                                 </li>
 

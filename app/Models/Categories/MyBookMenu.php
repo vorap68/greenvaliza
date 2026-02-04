@@ -23,7 +23,7 @@ class MyBookMenu extends Model
 
     public function mybookPost()
     {
-        return $this->hasMany(MybookPost::class, );
+        return $this->hasOne(MybookPost::class, ); 
      }
 
 }

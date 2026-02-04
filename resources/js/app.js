@@ -38,6 +38,7 @@ import '../css/style.css';
 import '../css/theme.css';
 import '../css/responsive.css';
 import '../css/post.css';
+import '../css/post-component.css';
 
 
 

@@ -23,11 +23,11 @@ class GuideMenuImportCommand extends Command
    public function handle()
     {
         $this->initClient();
-        $posts = $this->getPosts( 2, 10 ,86); // категория sovety-i-poleznosti id=6
+        $posts = $this->getPosts( 10, 1 ,86); // категория sovety-i-poleznosti id=6(perPage,Page, category_id)
           foreach ($posts as $item) {
             //dd($item);
           $description = strip_tags($item['excerpt']['rendered']);
-            $description = preg_replace('/\s+/', ' ', $description);
+            $description = preg_replace('/\s+/', ' ', $description); 
             $slug = $item['slug'];
              $imageUlr = $item['jetpack_featured_media_url'];
            $filename      = basename($imageUlr);

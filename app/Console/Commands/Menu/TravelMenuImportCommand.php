@@ -21,28 +21,30 @@ class TravelMenuImportCommand extends Command
     public function handle()
     {
          $this->initClient();
-        $posts = $this->getPosts(2, 100, 1); // категория travel id=2
-       // dd($posts);
-                foreach ($posts as $item) {
-          $description = strip_tags($item['excerpt']['rendered']);
-            $description = preg_replace('/\s+/', ' ', $description);
-            $slug = $item['slug'];
-             $imageUlr = $item['jetpack_featured_media_url'];
-             $this->saveImages($imageUlr, $slug,'travel');
-             $type = empty($item['acf']) ? 'posts' : 'menus';
-           
-            $item_current  = [
-               'title'       => $item['title']['rendered'],
+        $posts = $this->getPosts(10, 6, 2); // категория travel id=2(perPage,Page, category_id)
+        //dd($posts);
+                foreach ($posts as $post) {
+          $description = strip_tags($post['excerpt']['rendered']);
+            $description = preg_replace('/\s+/', ' ', $description); 
+            $slug = $post['slug'];
+             $imageUlr = $post['jetpack_featured_media_url'];
+               $filename      = basename($imageUlr);
+            $cleanFileName = explode('?', $filename)[0];
+             $type = empty($post['acf']) ? 'posts' : 'menus';
+            $post_current  = [
+                'title'       => $post['title']['rendered'],
                 'slug'        => $slug,
                 'description' => $description,
-                'imageName' => $this->imageName,
-                'imageExten' => $this->imageExten,
-                  'type' => $type,
+                'imageName'   => $cleanFileName,
+                'type' => $type,
             ];
-          
-            $array_posts[] = $item_current;
-              TravelMenu::create($item_current); // для путеводителей
+          // dd($post_current);
+            $post_id = TravelMenu::firstOrCreate($post_current)->id; // для путеводителей
+            $this->saveImages($imageUlr, $cleanFileName, $post_id, 'travel');
+           
+        }
+           
           }
          
-    }
+    
 }

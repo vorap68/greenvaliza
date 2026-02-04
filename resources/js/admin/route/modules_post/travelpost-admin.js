@@ -10,11 +10,11 @@ const travelAdminPostRoutes = [
 
 
 
-    {   path: '/admin/travelposts/show/:slug', component: () => import('../../travelPost/show.vue'),
-        name: 'travelPostShow',
-        props:true,
+    // {   path: '/admin/travelposts/show/:slug', component: () => import('../../travelPost/show.vue'),
+    //     name: 'travelPostShow',
+    //     props:true,
        
-    },
+    // },
 
     {   path: '/admin/travelposts/edit/:slug', component: () => import('../../travelPost/edit.vue'),
         name: 'travelPostEdit',

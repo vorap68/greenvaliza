@@ -32,7 +32,7 @@ class ImportAllPostCommand extends Command
                 $importer      = new PostAdviceImport();
                 $this->category_name = 'advice';
                 $catMenuСlass = AdviceMenu::class;
-                $posts         = $importer->getPosts(10, 2); 
+                $posts         = $importer->getPosts(10, 2); //(perPage,Page, category_id)
                // dd($posts);
                                         break;
             case '86':
@@ -53,9 +53,9 @@ class ImportAllPostCommand extends Command
              foreach ($posts as $post) {
            // dump($post);
             $title = $post['title']['rendered'];
-             $html = $post['content']['rendered'];
+             $content = $post['content']['rendered'];
                 $slug = $post['slug'];
-                $category_menu_id = $catMenuСlass::where('slug', $slug)->value('id');
+                $category_menu_id = $catMenuСlass::where('slug', $slug)->value('id'); 
          
             // Удаление лишних пробелов и переносов строк
             $description = strip_tags($post['excerpt']['rendered']);
@@ -63,7 +63,7 @@ class ImportAllPostCommand extends Command
 
             try{
                 DB::beginTransaction();
-            //создать новый пост
+            //создать новый пост чтоб уже оперировать с $post_id
             $newPost = $importer->createPostCurrent($title, $slug, $description, $category_menu_id);
             dump('Processing post: ' . $newPost );
    //  если пост уже был — ничего не делаем
@@ -72,7 +72,7 @@ class ImportAllPostCommand extends Command
             continue;
         }
             $images = new ImportImage();
-            $result = $images->imagesGetStore($html, $newPost->id, $this->category_name);
+            $result = $images->imagesGetStore($content, $newPost->id, $this->category_name);
             $content = $result['html'];
             $images_array = $result['images_array'];
                 dump('Imported images: ' , $images_array);

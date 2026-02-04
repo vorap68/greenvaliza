@@ -60,40 +60,4 @@ export default {
 
 };
 </script>
-<style>
-p.ab {
-    text-align: justify;
-    font-family: serif;
-    font-size: medium;
-    font-weight: 400;
-    margin-right: 4%;
-    margin-left: 4%;
-    line-height: 1.2;
-    font-size: 20px;
-    color: #333333;
-}
-
-p.ab2 {
-    text-align: right;
-    font-weight: bold;
-    font-style: italic;
-    margin-right: 3%;
-    margin-left: 3%;
-}
-
-p.name {
-    font-size: x-large;
-    font-family: cursive;
-    font-weight: 700;
-    text-align: center;
-    color: #BC8F8F
-}
-
-p.name2 {
-    font-size: large;
-    font-family: cursive;
-    font-weight: 600;
-    text-align: center;
-    color: #DAA520
-}
-</style>
+<style></style>

@@ -20,7 +20,7 @@ class MybookMenuImportCommand extends Command
     public function handle()
     {
         $this->initClient();
-        $posts = $this->getPosts(1, 10, 3); // категория myBook id=3
+        $posts = $this->getPosts(10, 1, 3); // категория myBook id=3 (perPage,Page, category_id)
           foreach ($posts as $item) {
            // dd($item);
           $description = strip_tags($item['excerpt']['rendered']);

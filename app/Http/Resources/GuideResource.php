@@ -25,7 +25,7 @@ class GuideResource extends JsonResource
              "type" => "posts",
               "content" => $this->content,
           "is_visual" => $this->is_visual,
-           'image' => $this->imageName.'_small.'.$this->imageExten,
+           'image' => $this->imageName,
            
         ];
     }

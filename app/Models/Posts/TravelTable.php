@@ -2,8 +2,9 @@
 
 namespace App\Models\Posts;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Categories\TravelMenu;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class TravelTable extends Model
 {
@@ -12,16 +13,19 @@ class TravelTable extends Model
     protected $table = 'travel_table';
     protected $fillable = [
         'title',
-        'description',
         'content',
         'slug',
-        'term_id',
+        'menu_id',
         'is_visual',
     ];
 
     public function travelPosts()
     {
         return $this->hasMany(TravelPost::class);
+    }
+
+    public function travelMenu(){
+        return $this->belongsTo(TravelMenu::class,'menu_id','id');
     }
 
 }

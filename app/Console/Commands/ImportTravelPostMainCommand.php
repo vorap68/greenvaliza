@@ -2,9 +2,10 @@
 namespace App\Console\Commands;
 
 use App\Components\ImportImage;
-use App\Components\PostTravelImport;
 use Illuminate\Console\Command;
-use InvalidArgumentException;
+use Illuminate\Support\Facades\DB;
+use App\Components\PostTravelImport;
+use App\Models\Categories\TravelMenu;
 
 class ImportTravelPostMainCommand extends Command
 {
@@ -18,49 +19,57 @@ class ImportTravelPostMainCommand extends Command
      */
     public function handle()
     {
-       
+
         $importer = new PostTravelImport();
-        $posts    = $importer->getPosts(10, 6 ,'post', 2);
-       //dd($posts);
+        $posts    = $importer->getPosts(10, 6, 'post', 2); 
+        //dd($posts);
         $result = [];
         foreach ($posts as $post) {
             //dd($post);
-            $html = $post['content']['rendered'];
-            $slug = $post['slug'];
+            $title   = $post['title']['rendered'];
+            $content = $post['content']['rendered'];
+            $slug    = $post['slug'];
+            $menu_id = TravelMenu::where('slug',$slug)->get()->value('id');
             // Удаление лишних пробелов и переносов строк
-            $cleanedText = preg_replace('/\s+/', ' ', $html);
-           // $content     = $cleanedText;
-            $content     = $html;
+            $cleanedText = preg_replace('/\s+/', ' ', $content);
+
             $description = strip_tags($post['excerpt']['rendered']);
             $description = preg_replace('/\s+/', ' ', $description);
 
             //  Импорт изображений и сохранение на диске
-            $images       = new ImportImage();
-            $result       = $images->imagesGetStore($content, $slug, 'travels/post');
-            $images_array = $result['images_array']; 
-           // dump($images_array);
-            $content      = $result['html'];
-           // dd($content);
-          
-            $post_current = [
-                'content'      => $content,
-                'title'        => $post['title']['rendered'],
-                'slug'         => $slug,
-                'description'  => $description,
-                'is_visual' => 1,
+           
+            try {
+                DB::beginTransaction();
+                //создать новый пост чтоб уже оперировать с $post_id
+                $newPost = $importer->createPostCurrent(title:$title, slug:$slug, description:$description, menu_id:$menu_id);
+                dump('Processing post: ' . $newPost);
+                //  если пост уже был — ничего не делаем
+                if (! $newPost->wasRecentlyCreated) {
+                    DB::rollBack();
+                    continue;
+                }
+               
 
-            ];
-
-            //  dd($post_current);
-
-            $result[] = $post_current;
-            //сохраняем текущий пост в БД
-            $importer->savePosts($post_current);
-
-            // //  Сохраняем пути изображений в БД 
-            $importer->saveImages($images_array);
+                //  dd($post_current);
+            $images = new ImportImage();
+            $result = $images->imagesGetStore($content, $newPost->id, 'travel/post');
+            $images_array = $result['images_array'];
+            // dump($images_array);
+            $content = $result['html'];
+               $result = $newPost->update([
+                    'content' =>$content,
+                ]);
+              
+                // //  Сохраняем пути изображений в БД
+                $importer->saveImages($images_array);
+            
+             DB::commit();
+            } catch (\Exception $e) {
+                DB::rollBack();
+                throw $e;
+            }
+            // dd($result);
         }
-        // dd($result);
-    }
 
+    }
 }

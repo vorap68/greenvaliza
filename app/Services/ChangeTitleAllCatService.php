@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Log;
 
 class ChangeTitleAllCatService
 {
-    public function changeTitleCatAll($category_name, $post,$menuClass, $newTitle)
+    public function changeTitleCatAll( $post,$menuClass, $newTitle)
     {
       
         $oldSlug = $post->slug;
@@ -17,11 +17,8 @@ class ChangeTitleAllCatService
         // return  $post->$menuClass;
     
          try {
-            
-       
-            DB::transaction(function () use ( $post, $newTitle, $newSlug,$menuClass) {
+            DB::transaction(function () use ( $post, $newTitle, $newSlug,$menuClass) { 
 
-              
                 //Обновление БД
                 //$post->content = $updatedContent;
                 $post->title   = $newTitle;

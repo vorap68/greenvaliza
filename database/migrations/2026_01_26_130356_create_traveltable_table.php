@@ -11,17 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('travel_posts', function (Blueprint $table) {
+        Schema::create('travel_table', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('description')->nullable();
-            $table->longtext('content');
+            $table->text('content');
             $table->string('slug')->unique();
-            $table->unsignedBigInteger('table_id')->nullable();
-            $table->foreign('table_id')->references('id')->on('travel_table');  
-            $table->unsignedBigInteger('menu_id')->nullable();
-            $table->foreign('menu_id')->references('id')->on('travel_menu');  
+            $table->unsignedBigInteger('menu_id');
             $table->boolean('is_visual')->default(1);
+
+            $table->foreign('menu_id')->references('id')->on('travel_menu');
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('travel_posts');
+        Schema::dropIfExists('travel_table');
     }
 };

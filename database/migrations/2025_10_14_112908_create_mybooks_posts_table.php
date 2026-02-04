@@ -15,7 +15,7 @@ return new class extends Migration
              $table->id();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->text('content');
+            $table->longtext('content');
             $table->string('slug')->unique();
             $table->boolean('is_visual')->default(false);
                        $table->foreignId('menu_id')->constrained('mybooks_menu')->onDelete('cascade');

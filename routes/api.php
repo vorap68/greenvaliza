@@ -1,8 +1,9 @@
 <?php
 
-use App\Models\Categories\CategoryMenu;
 use Illuminate\Http\Request;
+use App\Models\Posts\TravelTable;
 use Illuminate\Support\Facades\Route;
+use App\Models\Categories\CategoryMenu;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,8 +33,8 @@ Route::get('/guide', [App\Http\Controllers\Api\GuideController::class, 'index'])
 Route::get('/guide/{slug}', [App\Http\Controllers\Api\GuideController::class, 'show'])->name('api.guides.show');
 
 Route::get('/travels', [App\Http\Controllers\Api\TravelController::class, 'index'])->name('api.travels.index');
-Route::get('/travels/post/{slug}', [App\Http\Controllers\Admin\TravelPostController::class, 'postShow'])->name('api.travels.postshow');
-Route::get('/travels/table/{slug}', [App\Http\Controllers\Admin\TravelTableController::class, 'tableShow'])->name('api.travels.tableshow');
+Route::get('/travels/post/{slug}', [App\Http\Controllers\Api\TravelController::class, 'postShow'])->name('api.travels.postshow');
+Route::get('/travels/table/{slug}', [App\Http\Controllers\Api\TravelController::class, 'tableShow'])->name('api.travels.tableshow');
 
 Route::get('/advice', [App\Http\Controllers\Api\AdviceController::class, 'index']);
 Route::get('/advice/{slug}', [App\Http\Controllers\Api\AdviceController::class, 'show'])->name('api.advice.show');
@@ -52,7 +53,9 @@ Route::prefix('admin')->group(function () {
     Route::post('/create-image', [App\Http\Controllers\Admin\Adding\ImageCreatorController::class, 'createImage'])->name('api.create.table');
 
     //смена имени поста
-    Route::put('/change-title/{category_name}/{id}', [App\Http\Controllers\Admin\ChangeTitleController::class, 'update'])->name('api.titleupdate');
+    Route::put('/change-title/{category_name}/{id}', [App\Http\Controllers\Admin\ChangeTitleController::class, 'updateAllCat'])->name('api.titleall.update');
+   Route::put('/change-title-travel/table/{id}', [App\Http\Controllers\Admin\ChangeTitleController::class, 'updateTravelTable'])->name('<api class="titletravel"></api>table');
+   Route::put('/change-title-travel/post/{id}', [App\Http\Controllers\Admin\ChangeTitleController::class, 'updateTarvelPost'])->name('api.titletravel.post');
     // Route::put('/change-title/{category_name}/{id}', function($category_name, $id, Request $request) {
        
     //     return response()->json(['message' => 'Title update route works', 'category' => $category_name, 'id' => $id, 'new_title' => $request->input('title')]);

@@ -4,13 +4,14 @@ namespace App\Models\Categories;
 
 use App\Models\Post;
 use App\Models\Posts\TravelPost;
+use App\Models\Posts\TravelTable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class TravelMenu extends Model
 {
     use HasFactory;
-     protected $table = 'travels_menu';
+     protected $table = 'travel_menu';
 
       
     protected $fillable = [
@@ -25,9 +26,14 @@ class TravelMenu extends Model
       
     ];  
 
-    public function posts()
+    public function travelPost()
     {
-        return $this->hasMany(TravelPost::class);
+        return $this->hasOne(TravelPost::class);
+    }
+
+    public function travelTable()
+    {
+        return $this->hasOne(TravelTable::class,'menu_id','id');
     }
 
 }

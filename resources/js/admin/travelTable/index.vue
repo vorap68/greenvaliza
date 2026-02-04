@@ -1,5 +1,5 @@
 <template>
-    <h1>Путешествия Посты-Меню</h1>
+    <h1>Путешествия Посты-Таблицы</h1>
     <table class="table table-bordered table-hover">
         <thead>
             <tr>
@@ -35,8 +35,8 @@
                 <td>{{ traveltable.description }}</td>
                 <td>{{ traveltable.slug }}</td>
                 <td>
-                    <router-link :to="{ name: 'travelTableShow', params: { slug: traveltable.slug } }"
-                        class="btn btn-info btn-sm">Просмотр</router-link>
+                    <a :href="`/travel/${traveltable.slug}?type=menus`" target="_blank"
+                        class="btn btn-info btn-sm">Просмотр</a>
 
                     <router-link :to="{ name: 'travelTableEdit', params: { slug: traveltable.slug } }"
                         class="btn btn-warning btn-sm">Редактирование</router-link>

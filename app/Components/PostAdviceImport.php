@@ -42,7 +42,7 @@ class PostAdviceImport
         return $data;
     }
 
-   public function createPostCurrent($title, $slug, $description, $category_menu_id){
+   public function createPostCurrent($title, $slug, $description, $category_menu_id){ 
     $newPost = AdvicePost::firstOrCreate(
         ['slug' => $slug],
          ['slug' => $slug,

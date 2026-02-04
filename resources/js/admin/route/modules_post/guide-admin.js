@@ -6,11 +6,11 @@ const guideAdminPostRoutes = [
          props:true,
     },
 
-    {   path: '/admin/guideposts/show/:slug', component: () => import('../../guide/show.vue'),
-        name: 'guideShow',
-         props:true,
+    // {   path: '/admin/guideposts/show/:slug', component: () => import('../../guide/show.vue'),
+    //     name: 'guideShow',
+    //      props:true,
        
-    },
+    // },
 
     {   path: '/admin/guideposts/edit/:slug', component: () => import('../../guide/edit.vue'),
         name: 'guidePostEdit',

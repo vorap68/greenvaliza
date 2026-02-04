@@ -1,34 +1,41 @@
 <template>
     <div class="card" style="width:auto;">
         <div class="card-body">
-            <h5 class="card-title">{{ mybookpost.title }}</h5>
-            <!-- Переключатель вкладок -->
-            <ul class="nav nav-tabs mb-3">
-                <li class="nav-item">
-                    <button class="nav-link">
-                        ✏️ Редактировать
-                    </button>
-                </li>
-                <li class="nav-item">
 
-                    <a :href="`/mybook/${mybookpost.slug}?type=posts `" target="_blank" class="btn btn-info btn-sm">
-                        👁️
-                        Предпросмотр</a>
 
-                </li>
-            </ul>
-            <!-- Вкладка редактирования -->
-            <div>
-                <Codemirror v-model="mybookpost.content" :extensions="[html()]" :theme="oneDark" :style="{
-                    height: '500px',
-                    border: '1px solid #ccc',
-                    borderRadius: '6px'
-                }" />
-                <div class="mt-3 text-end">
-                    <button class="btn btn-primary" @click="saveChanges">
-                        💾 Сохранить
+            <div class="d-flex flex-column gap-3">
+                <div>
+                    <li class="nav-item">
+                        <a :href="`/advice/${mybookpost.slug}?type=posts `" target="_blank" class="btn btn-info btn-sm">
+                            👁️
+                            Предпросмотр</a>
+                    </li>
+                </div>
+                <div class="card-title text-center">
+                    <h3>{{ mybookpost.title }}</h3>
+                </div>
+                <div class="d-flex flex-column gap-2">
+                    <input type="text" v-model="mybookpost.title" class="form-control">
+
+                    <button class="btn btn-primary align-self-start" @click="changeTitle">
+                        💾 Изменить название поста
                     </button>
                 </div>
+
+
+                <div>
+                    <Codemirror v-model="mybookpost.content" :extensions="[html()]" :theme="oneDark" :style="{
+                        height: '500px',
+                        border: '1px solid #ccc',
+                        borderRadius: '6px'
+                    }" />
+                    <div class="mt-3 text-end">
+                        <button class="btn btn-primary" @click="saveChanges">
+                            💾 Сохранить
+                        </button>
+                    </div>
+                </div>
+
             </div>
 
         </div>
@@ -57,7 +64,6 @@ export default defineComponent({
     data() {
         return {
             mybookpost: {},
-            activeTab: 'edit', // edit | preview
             html,
             oneDark,
         }
@@ -65,6 +71,7 @@ export default defineComponent({
 
     async mounted() {
         this.GetMybookPost();
+        console.log('Редактирование поста с slug:', this.mybookpost.slug);
     },
 
     methods: {
@@ -93,6 +100,28 @@ export default defineComponent({
                 console.error('Error fetching guide post:', error);
             }
         },
+
+        async changeTitle() {
+            const newTitle = this.mybookpost.title.trim();
+            //console.log('Новое название:', newTitle);
+            try {
+                const result = await axios.put(`/api/admin/change-title/mybook/${this.mybookpost.id}`, {
+                    title: newTitle,
+                });
+                console.log('Изменено:', result.data.slug);
+                console.log('Изменено:', result.data
+
+                );
+                alert('✅ Название поста успешно изменено!');
+
+                this.$router.replace({ name: 'mybookPostEdit', params: { post_id: this.mybookpost.id } });
+
+            } catch (error) {
+                console.error('Ошибка при изменении:', error);
+                alert('❌ Ошибка при изменении имени поста');
+            }
+        },
+
 
         async saveChanges() {
             try {

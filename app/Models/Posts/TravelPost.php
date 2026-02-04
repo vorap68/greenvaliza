@@ -18,7 +18,8 @@ class TravelPost extends Model
         'is_visual',
         'description',
         'slug',
-        'travel_table_id',
+        'table_id',
+        'menu_id',
 
     ];
 

@@ -18,7 +18,7 @@ class AdviceMenuImportCommand extends Command
     public function handle()
     {
         $this->initClient();
-        $posts = $this->getPosts(2, 10, 6); // категория sovety-i-poleznosti id=6
+        $posts = $this->getPosts(10, 1, 6); // категория sovety-i-poleznosti id=6 (perPage,Page, category_id)
        // dd($posts);
         foreach ($posts as $item) {
             // dd($item);

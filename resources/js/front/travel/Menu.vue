@@ -10,8 +10,8 @@
                 class="grid post-63989 post type-post status-publish format-standard has-post-thumbnail hentry travel-putevoditeli">
                 <figure class="effect-smart">
                     <a href="/2">
-                        <ResponsiveImage class="post-thumb lazyloaded" folder="categoryMenu/travel" :slug="travel.slug"
-                            :imageName="travel.imageName" :imageExten="travel.imageExten" />
+                        <ResponsiveImage class="post-thumb lazyloaded" folder="categoryMenu/travel" :id="travel.id"
+                            :imageName="travel.imageName" />
 
                         <!-- <noscript><img class="post-thumb"
                                 src="https://greenvaliza.co.ua/wp-content/uploads/2025/05/riga40-768x768.jpg"

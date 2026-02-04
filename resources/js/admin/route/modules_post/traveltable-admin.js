@@ -7,11 +7,11 @@ const travelAdminTableRoutes = [
         props:true,
        
     },
-      {   path: '/admin/traveltable/show/:slug', component: () => import('../../travelTable/show.vue'),
-        name: 'travelTableShow',
-        props:true,
+    //   {   path: '/admin/traveltable/show/:slug', component: () => import('../../travelTable/show.vue'),
+    //     name: 'travelTableShow',
+    //     props:true,
        
-    },
+    // },
 
     {   path: '/admin/traveltable/edit/:slug', component: () => import('../../travelTable/edit.vue'),
         name: 'travelTableEdit',

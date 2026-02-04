@@ -26,10 +26,10 @@ export default {
         //выбор компонента в зависимости от типа либо меню-table либо пост-final
         CurrentComponent() {
             switch (this.type) {
-                case 'menus':
+                case 'tble':
                     console.log('Loading travel-table-post component for slug:', this.slug);
                     return defineAsyncComponent(() => import('./tablePosts/travel-table.vue'));
-                case 'posts':
+                case 'post':
                     console.log('Loading travel-post component for slug:', this.slug);
                     return defineAsyncComponent(() => import('./endPosts/travel-post.vue'));
 
