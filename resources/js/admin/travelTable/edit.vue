@@ -6,8 +6,7 @@
             <div class="d-flex flex-column gap-3">
                 <div>
                     <li class="nav-item">
-                        <a :href="`/travel/${traveltable.slug}?type=menus `" target="_blank"
-                            class="btn btn-info btn-sm">
+                        <a :href="`/travel/table/${traveltable.slug}`" target="_blank" class="btn btn-info btn-sm">
                             👁️
                             Предпросмотр</a>
                     </li>
@@ -22,19 +21,30 @@
                         💾 Изменить название таблицы
                     </button>
                 </div>
+                <div class="mb-3">
+                    <p class="text-muted mb-1">*Путь для фото</p>
 
+                    <div class="d-flex align-items-center gap-2">
+                        <input type="text" class="form-control"
+                            :value="`/storage/images/travel/table/${traveltable.id}/`" readonly>
+
+                        <button class="btn btn-outline-secondary" @click="copyPath">
+                            Копировать
+                        </button>
+                    </div>
+                </div>
 
                 <div>
-                    <Codemirror v-model="traveltable.content" :extensions="[html()]" :theme="oneDark" :style="{
+                    <Codemirror v-model="traveltable.content" :extensions="extensions" :theme="oneDark" :style="{
                         height: '500px',
                         border: '1px solid #ccc',
                         borderRadius: '6px'
                     }" />
-                    <div class="mt-3 text-end">
-                        <button class="btn btn-primary" @click="saveChanges">
-                            💾 Сохранить
-                        </button>
-                    </div>
+                </div>
+                <div class="mt-3 text-end">
+                    <button class="btn btn-primary" @click="saveChanges">
+                        💾 Сохранить
+                    </button>
                 </div>
 
             </div>
@@ -59,15 +69,20 @@ import { html as beautifyHtml } from 'js-beautify'; // 👈 импорт фор�
 
 export default defineComponent({
     name: 'TravelTableEdit',
-    components: { Codemirror },
-    props: ['slug'],
+    components: {
+        Codemirror,
+    },
+    props: ['id'],
 
     data() {
         return {
-            traveltable: {},
-
-            html,
+            traveltable: {
+                title: '',
+                content: '',
+            },
+            extensions: [html()],
             oneDark,
+            loading: true,
         }
     },
 
@@ -78,15 +93,20 @@ export default defineComponent({
     methods: {
         async GetTravelTable() {
             try {
-                const response = await axios.get('/api/admin/travels-table/' + this.slug);
+                // this.loading = true;
+                const response = await axios.get('/api/admin/travel-table/' + this.id);
                 if (!response.data) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 const traveltable = response.data.data;
+                console.log('Полученное ВСе:', response.data.data);
                 console.log('Полученный пост:', traveltable.slug);
+                console.log('Полученный контент:', traveltable.content);
 
                 // автоформатирование HTML-контента
-                traveltable.content = beautifyHtml(traveltable.content || '', {
+                let rawContent = traveltable.content ?? '';
+                console.log('Сырой контент до форматирования:', rawContent);
+                traveltable.content = beautifyHtml(rawContent, {
                     indent_size: 2,
                     wrap_line_length: 120,
                     preserve_newlines: true,
@@ -99,6 +119,8 @@ export default defineComponent({
 
             } catch (error) {
                 console.error('Error fetching travel table:', error);
+                // } finally {
+                //     this.loading = false;
             }
         },
 
@@ -123,11 +145,14 @@ export default defineComponent({
             }
         },
 
-
+        copyPath() {
+            const path = `/storage/images/travel/table/${this.traveltable.id}/`;
+            navigator.clipboard.writeText(path);
+        },
 
         async saveChanges() {
             try {
-                const result = await axios.put('/api/admin/travels-table/' + this.traveltable.id, {
+                const result = await axios.put('/api/admin/travel-table/' + this.traveltable.id, {
                     content: this.traveltable.content,
                 });
                 console.log('Сохранено:', result.data);

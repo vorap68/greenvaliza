@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('advice_post_images', function (Blueprint $table) {
+        Schema::create('advice_post_images', function (Blueprint $table) { 
             $table->id();
             $table->string('url');
             $table->string('alt_text')->nullable();
            $table->string('filename');
            $table->unique(['filename', 'advice_post_id']);
              $table->unsignedBigInteger('advice_post_id');
-            $table->foreign('advice_post_id')->references('id')->on('advice_posts')->onDelete('cascade');
+            $table->foreign('advice_post_id')->references('id')->on('advice_posts');
             $table->timestamps(); 
         });
     }

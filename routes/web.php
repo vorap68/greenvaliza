@@ -1,28 +1,11 @@
 <?php
 
-use App\Models\MyBook;
-use App\Models\Category;
-use App\Models\Posts\MybookPost;
-use App\Models\Posts\TravelPost;
+
 use App\Models\Posts\TravelTable;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Categories\AdviceMenu;
 use App\Models\Categories\TravelMenu;
 use Illuminate\Support\Facades\Route;
 use App\Http\Resources\AdviceResource;
-use Illuminate\Support\Facades\Schema;
-use App\Models\Categories\CategoryMenu;
-use Illuminate\Support\Facades\Storage;
-use App\Http\Controllers\PageController;
-use App\Http\Controllers\PostController;
-use App\Http\Controllers\AdviceController;
-use App\Http\Controllers\PostImageController;
-use App\Http\Controllers\Web\MyBookController;
-use App\Http\Controllers\Web\TravelController;
-use App\Http\Controllers\Web\CategoryController;
-use App\Http\Controllers\Web\GuidebookController;
-use App\Http\Controllers\Admin\TravelPostController;
 
 /*
 |--------------------------------------------------------------------------

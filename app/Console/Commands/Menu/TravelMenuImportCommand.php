@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands\Menu;
 
-use App\Models\Categories\Travel;
 use App\Models\Categories\TravelMenu;
 use Illuminate\Console\Command;
 
@@ -30,7 +29,7 @@ class TravelMenuImportCommand extends Command
              $imageUlr = $post['jetpack_featured_media_url'];
                $filename      = basename($imageUlr);
             $cleanFileName = explode('?', $filename)[0];
-             $type = empty($post['acf']) ? 'posts' : 'menus';
+             $type = empty($post['acf']) ? 'post' : 'tble';
             $post_current  = [
                 'title'       => $post['title']['rendered'],
                 'slug'        => $slug,

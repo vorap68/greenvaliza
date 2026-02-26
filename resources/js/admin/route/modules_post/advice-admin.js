@@ -7,16 +7,18 @@ const adviceAdminPostRoutes = [
     },
 
    
-    {   path: '/admin/adviceposts/edit/:post_id', component: () => import('../../advice/edit.vue'),
+    {   path: '/admin/adviceposts/edit/:id', component: () => import('../../advice/edit.vue'),
         name: 'advicePostEdit',
-         props:true,
+         props: route=> ({
+          id: route.params.id, 
+       })
        
     },
     
-    {   path: '/admin/adviceImages/:post_id', component: () => import('../../advice/adviceImages.vue'),
+    {   path: '/admin/adviceImages/:id', component: () => import('../../advice/adviceImages.vue'),
         name: 'adviceImages',
        props: route=> ({
-          post_id: route.params.post_id, 
+          id: route.params.id, 
        })
     },
 

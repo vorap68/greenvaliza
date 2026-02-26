@@ -17,7 +17,6 @@ class TravelMenu extends Model
     protected $fillable = [
         'title',
        'imageName',
-        'imageExten',
         'description',
         'slug',
         'type',
@@ -28,7 +27,7 @@ class TravelMenu extends Model
 
     public function travelPost()
     {
-        return $this->hasOne(TravelPost::class);
+        return $this->hasOne(TravelPost::class, 'menu_id', 'id');
     }
 
     public function travelTable()

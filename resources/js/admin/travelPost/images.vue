@@ -8,7 +8,8 @@
 
             <div class="col" v-for="img in imagesArray" :key="img.id">
                 <div class="card h-100 shadow-sm">
-                    <img decodong="async" :src="`/storage/${img.filename}`" class="card-img-top" alt="image">
+                    <img decodong="async" :src="`/storage/images/travel/post/${this.id}/${img.filename}`"
+                        class="card-img-top" alt="image">
                     <div class="card-body">
                         <p class="card-text small">{{ img.filename }}</p>
 
@@ -25,7 +26,7 @@ import axios from 'axios';
 import { defineComponent } from 'vue';
 export default defineComponent({
     name: 'travelPostImages',
-    props: ['post_id'],
+    props: ['id'],
 
     data() {
         return {
@@ -40,8 +41,8 @@ export default defineComponent({
     methods: {
         async loadImages() {
             try {
-                console.log('Загрузка изображений для путешествия:', this.post_id);
-                const response = await axios.get('/api/admin/travels-post-images' + '/' + this.post_id);
+                console.log('Загрузка изображений для путешествия:', this.id);
+                const response = await axios.get('/api/admin/travel-post-images' + '/' + this.id);
                 if (!response.data) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }

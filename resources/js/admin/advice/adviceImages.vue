@@ -8,7 +8,7 @@
 
             <div class="col" v-for="img in imagesArray" :key="img.id">
                 <div class="card h-100 shadow-sm">
-                    <img decodong="async" :src="`/storage/images/advice/${this.post_id}/${img.filename}`"
+                    <img decodong="async" :src="`/storage/images/advice/${this.id}/${img.filename}`"
                         class="card-img-top" alt="image">
                     <div class="card-body">
                         <p class="card-text small">{{ img.filename }}</p>
@@ -26,7 +26,7 @@ import axios from 'axios';
 import { defineComponent } from 'vue';
 export default defineComponent({
     name: 'adviceImages',
-    props: ['post_id'],
+    props: ['id'],
 
     data() {
         return {
@@ -41,8 +41,8 @@ export default defineComponent({
     methods: {
         async loadImages() {
             try {
-                console.log('Загрузка изображений для Советы:', this.post_id);
-                const response = await axios.get('/api/admin/advices-images' + '/' + this.post_id);
+                console.log('Загрузка изображений для Советы:', this.id);
+                const response = await axios.get('/api/admin/advices-images' + '/' + this.id);
                 console.log('Response data:', response.data.data);
                 if (!response.data) {
                     throw new Error(`HTTP error! status: ${response.status}`);

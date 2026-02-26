@@ -1,38 +1,41 @@
 <template>
     <div class="card" style="width:auto;">
         <div class="card-body">
-            <h5 class="card-title">{{ travelpost.title }}</h5>
-            <!-- Переключатель вкладок -->
-            <ul class="nav nav-tabs mb-3">
-                <li class="nav-item">
-                    <button class="nav-link">
-                        ✏️ Редактировать
-                    </button>
-                </li>
-                <li class="nav-item">
+            <div v-if="travelpost" class="d-flex flex-column gap-3">
+                <div>
+                    <li class="nav-item">
+                        <a :href="`/travel/final/${travelpost.slug} `" target="_blank" class="btn btn-info btn-sm">
+                            👁️
+                            Предпросмотр</a>
+                    </li>
+                </div>
+                <div v-if="travelpost.table_id">Таблица: {{ travelpost.sense }}</div>
+                <div class="card-title text-center">
+                    <h3>{{ travelpost.title }}</h3>
+                </div>
+                <div class="d-flex flex-column gap-2">
+                    <input type="text" v-model="travelpost.title" class="form-control">
 
-                    <a :href="`/travel/${travelpost.slug}?type=posts `" target="_blank" class="btn btn-info btn-sm"> 👁️
-                        Предпросмотр</a>
-                </li>
-            </ul>
-            <!-- Вкладка редактирования -->
-            <div>
-                <Codemirror v-model="travelpost.content" :extensions="[html()]" :theme="oneDark" :style="{
-                    height: '500px',
-                    border: '1px solid #ccc',
-                    borderRadius: '6px'
-                }" />
-                <div class="mt-3 text-end">
-                    <button class="btn btn-primary" @click="saveChanges">
-                        💾 Сохранить
+                    <button class="btn btn-primary align-self-start" @click="changeTitle">
+                        💾 Изменить название поста
                     </button>
                 </div>
+
+
+                <div>
+                    <Codemirror v-model="travelpost.content" :extensions="[html()]" :theme="oneDark" :style="{
+                        height: '500px',
+                        border: '1px solid #ccc',
+                        borderRadius: '6px'
+                    }" />
+                    <div class="mt-3 text-end">
+                        <button class="btn btn-primary" @click="saveChanges">
+                            💾 Сохранить
+                        </button>
+                    </div>
+                </div>
+
             </div>
-
-
-
-
-
 
         </div>
     </div>
@@ -55,25 +58,26 @@ import { html as beautifyHtml } from 'js-beautify'; // 👈 импорт фор�
 export default defineComponent({
     name: 'TravelEdit',
     components: { Codemirror },
-    props: ['slug'],
+    props: ['id'],
 
     data() {
         return {
-            travelpost: {},
-
+            travelpost: null,
             html,
             oneDark,
         }
     },
 
     async mounted() {
+        console.log('ID поста для редактирования:', this.id);
+        console.log(' таблицы (если есть):', this.table);
         this.GetTravelPost();
     },
 
     methods: {
         async GetTravelPost() {
             try {
-                const response = await axios.get('/api/admin/travels-post/' + this.slug);
+                const response = await axios.get(`/api/admin/travel-post/${this.id}`);
                 if (!response.data) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -93,13 +97,39 @@ export default defineComponent({
                 this.travelpost = post;
 
             } catch (error) {
-                console.error('Error fetching travel post:', error);
+                console.error('Error fetching travelpost post:', error);
+            }
+        },
+
+        async changeTitle() {
+            const newTitle = this.travelpost.title.trim();
+            console.log(' поста sense:', this.travelpost.sense);
+            // изменения названия по разному для одиночного поста и поста внутри таблицы
+            //поэтому что в контроллере разные методы для изменения названия
+
+            try {
+                const type = this.travelpost.sense === 'SinglePost'
+                    ? 'single'
+                    : 'final';
+                console.log('Тип изменения названия:', type);
+                const result = await axios.put(`/api/admin/change-title-travel/post/${type}/${this.travelpost.id}`, {
+                    title: newTitle,
+                });
+                //console.log('Изменено:', result.data.);
+                console.log('Изменено:', result.data);
+                alert('✅ Название поста успешно изменено!');
+
+                this.$router.replace({ name: 'travelPostEdit', params: { id: this.travelpost.id } });
+
+            } catch (error) {
+                console.error('Ошибка при изменении:', error);
+                alert('❌ Ошибка при изменении имени поста');
             }
         },
 
         async saveChanges() {
             try {
-                const result = await axios.put('/api/admin/travels-post/' + this.travelpost.id, {
+                const result = await axios.put('/api/admin/travel-post/' + this.travelpost.id, {
                     content: this.travelpost.content,
                 });
                 console.log('Сохранено:', result.data);

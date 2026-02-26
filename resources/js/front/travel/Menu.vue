@@ -19,6 +19,7 @@
                     </a>
                     <figcaption>
 
+                        <!--  здесь  ссылка на компонент, который будет отображать либо таблицу либо пост в зависимости от типа, который приходит с бэка       -->
                         <router-link
                             :to="{ name: 'travel-postmenu', params: { slug: travel.slug }, query: { type: travel.type } }">
                             {{ travel.title }}
@@ -62,13 +63,13 @@ export default {
     methods: {
         async GetTravels() {
             try {
-                const response = await axios.get('/api/travels');
+                const response = await axios.get('/api/travel');
                 if (!response.data) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                console.log('Fetched travels data:', response.data);
+                console.log('Fetched travel data:', response.data);
                 this.travels = response.data.data;
-                console.table('travels:', this.travels);
+                console.table('travel:', this.travels);
             } catch (error) {
                 console.error('Error fetching travels:', error);
             }

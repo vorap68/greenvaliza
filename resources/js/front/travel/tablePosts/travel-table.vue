@@ -58,7 +58,7 @@ export default {
 
   methods: {
     async fetchData() {
-      const response = await axios.get(`/api/travels/table/${this.slug}`);
+      const response = await axios.get(`/api/travel/table/${this.slug}`);
       this.travel = response.data;
       console.log('Fetched travel dataAll:', this.travel.content);
       document.title = this.travel.title;

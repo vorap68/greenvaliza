@@ -49,13 +49,13 @@
                 <td>{{ travelpost.slug }}</td>
                 <td>
 
-                    <a :href="`/travel/${travelpost.slug}?type=posts `" target="_blank"
+                    <a :href="`/travel/final/${travelpost.slug}`" target="_blank"
                         class="btn btn-info btn-sm">Просмотр</a>
 
-                    <router-link :to="{ name: 'travelPostEdit', params: { slug: travelpost.slug } }"
+                    <router-link :to="{ name: 'travelPostEdit', params: { id: travelpost.id } }"
                         class="btn btn-warning btn-sm">Редактирование</router-link>
 
-                    <router-link :to="{ name: 'travelPostImages', params: { post_id: travelpost.id } }"
+                    <router-link :to="{ name: 'travelPostImages', params: { id: travelpost.id } }"
                         class="btn btn-secondary btn-sm">Картинки
 
                     </router-link>
@@ -114,7 +114,7 @@ export default defineComponent({
         async GetTravelPosts() {
             try {
                 console.log('Загрузка списка путешествий с сервера...', this.search);
-                const response = await axios.get('/api/admin/travels-post', {
+                const response = await axios.get('/api/admin/travel-post', {
                     params: {
                         search: this.search,
                         sort_by: this.sortBy,
@@ -152,7 +152,7 @@ export default defineComponent({
         },
 
         changeVisual(travelpost) {
-            axios.patch(`/api/admin/travels-post/${travelpost.id}/toggle-visual`)
+            axios.patch(`/api/admin/travel-post/${travelpost.id}/toggle-visual`)
                 .then(response => {
                     travelpost.is_visual = response.data.is_visual;
                 })

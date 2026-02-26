@@ -16,7 +16,7 @@
                     Дата публикации
                     <span v-if="sortColumn === 'date'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
                 </th>
-                <th>Описание</th>
+
                 <th>slug</th>
                 <th>Действия</th>
             </tr>
@@ -32,13 +32,12 @@
                     </button>
                 </td>
                 <td>{{ traveltable.date }}</td>
-                <td>{{ traveltable.description }}</td>
                 <td>{{ traveltable.slug }}</td>
                 <td>
-                    <a :href="`/travel/${traveltable.slug}?type=menus`" target="_blank"
+                    <a :href="`/travel/table/${traveltable.slug}`" target="_blank"
                         class="btn btn-info btn-sm">Просмотр</a>
 
-                    <router-link :to="{ name: 'travelTableEdit', params: { slug: traveltable.slug } }"
+                    <router-link :to="{ name: 'travelTableEdit', params: { id: traveltable.id } }"
                         class="btn btn-warning btn-sm">Редактирование</router-link>
 
 
@@ -100,12 +99,12 @@ export default defineComponent({
     methods: {
         async GetTravelTables() {
             try {
-                const response = await axios.get('/api/admin/travels-table');
+                const response = await axios.get('/api/admin/travel-table');
                 if (!response.data) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 this.traveltables = response.data.data;
-                console.table('Получено:', response.data.data);
+                console.table('Получено:', this.traveltables);
             } catch (error) {
                 console.error('Error fetching travel tables:', error);
             }

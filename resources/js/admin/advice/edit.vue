@@ -59,7 +59,7 @@ import { html as beautifyHtml } from 'js-beautify'; // 👈 импорт фор�
 export default defineComponent({
     name: 'AdviceEdit',
     components: { Codemirror },
-    props: ['post_id'],
+    props: ['id'],
 
     data() {
         return {
@@ -78,7 +78,7 @@ export default defineComponent({
     methods: {
         async GetAdvicePost() {
             try {
-                const response = await axios.get('/api/admin/advices/' + this.post_id);
+                const response = await axios.get(`/api/admin/advices/${this.id}`);
                 if (!response.data) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }

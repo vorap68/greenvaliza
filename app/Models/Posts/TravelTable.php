@@ -21,7 +21,7 @@ class TravelTable extends Model
 
     public function travelPosts()
     {
-        return $this->hasMany(TravelPost::class);
+        return $this->hasMany(TravelPost::class, 'table_id', 'id');
     }
 
     public function travelMenu(){

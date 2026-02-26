@@ -21,7 +21,7 @@ class TablePostImport
         ]);
     }
 
-    public function getPosts($perPage = 2, $page = 2, $is_acf = 'post')
+    public function getPosts($perPage = 5, $page = 1, $is_acf = 'post')
     {
         //dd($category_id, $is_acf);
         try {
@@ -67,7 +67,7 @@ class TablePostImport
         }
     }
 
-    public function createPostCurrent($title, $slug, $category_menu_id)
+    public function createTableCurrent($title, $slug, $category_menu_id)
     {
         //dd('createPostCurrent', $title, $slug, $category_menu_id);
         $newPost = TravelTable::firstOrCreate(
@@ -83,33 +83,33 @@ class TablePostImport
         return $newPost;
     }
 
-    public function savePosts($post_current)
-    {
-        try {
-            $post = TravelPost::firstOrCreate(
-                ['slug' => $post_current['slug']],
-                $post_current);
-            $this->post_id = $post->id;
-            return $post;
-        } catch (\Exception $e) {
-            throw new \RuntimeException('Ошибка: не удалось сохранить пост: ' . $e->getMessage());
-        }
-    }
+    // public function savePosts($post_current)
+    // {
+    //     try {
+    //         $post = TravelPost::firstOrCreate(
+    //             ['slug' => $post_current['slug']],
+    //             $post_current);
+    //         $this->post_id = $post->id;
+    //         return $post;
+    //     } catch (\Exception $e) {
+    //         throw new \RuntimeException('Ошибка: не удалось сохранить пост: ' . $e->getMessage());
+    //     }
+    // }
 
-    public function saveImages($images_array)
-    {
-        $records = [];
-        foreach ($images_array as $item) {
-            $records[] = [
-                'travel_post_id' => $this->post_id,
-                'filename'       => $item,
-                'created_at'     => now(),
-                'updated_at'     => now(),
-            ];
-            dump($this->post_id, $item);
-        }
+    // public function saveImages($images_array)
+    // {
+    //     $records = [];
+    //     foreach ($images_array as $item) {
+    //         $records[] = [
+    //             'travel_post_id' => $this->post_id,
+    //             'filename'       => $item,
+    //             'created_at'     => now(),
+    //             'updated_at'     => now(),
+    //         ];
+    //         dump($this->post_id, $item);
+    //     }
 
-        TravelPostImage::insert($records);
-    }
+    //     TravelPostImage::insert($records);
+    // }
 
 }

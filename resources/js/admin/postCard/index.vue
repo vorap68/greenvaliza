@@ -1,5 +1,5 @@
 <template>
-    <h1>Окна меню от</h1>
+    <h1>Окна меню от {{this.category_name}}</h1>
     <table class="table table-bordered table-hover">
         <thead>
             <tr>

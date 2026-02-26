@@ -21,9 +21,10 @@ class ImportTravelTableCommand extends Command
     {
         $importer = new TablePostImport();
         $is_acf   = 'table'; // для скачив таблиц
-        $posts    = $importer->getPosts(10, 7, $is_acf, 2);
+        $posts    = $importer->getPosts(10, 6, $is_acf, 2);
         // dd($posts);
         $result = [];
+        //dd('Посты для импорта', $posts);
         foreach ($posts as $post) {
             //dd($post);
             $title         = $post['title']['rendered'];
@@ -37,7 +38,7 @@ class ImportTravelTableCommand extends Command
             try {
                 DB::beginTransaction();
                 //создать новый пост
-                $newPost = $importer->createPostCurrent($title, $slug, $table_menu_id);
+                $newPost = $importer->createTableCurrent($title, $slug, $table_menu_id);
                 dump('Processing post: ' . $newPost);
                 //  если пост уже был — ничего не делаем
                 if (! $newPost->wasRecentlyCreated) {

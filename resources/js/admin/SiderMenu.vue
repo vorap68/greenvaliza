@@ -31,7 +31,8 @@
                             <p class="mb-0 flex-grow-1">Посты</p>
                             <i class="bi bi-chevron-down ms-auto"></i>
                         </a>
-                        <div class="collapse ps-3 {{ request()->routeIs('post.*') ? 'show' : '' }}" id="postMenu">
+                        <div class="collapse ps-3 {{ request()->routeIs('post.*') ? 'show' : '' }}" id="postMenu"
+                            data-bs-parent="#navigation">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
                                     <router-link :to="{ name: 'travelPosts' }" class="nav-link">
@@ -68,7 +69,8 @@
                             <p class="mb-0 flex-grow-1">Окна в категориях</p>
                             <i class="bi bi-chevron-down ms-auto"></i>
                         </a>
-                        <div class="collapse ps-3 {{ request()->routeIs('post.*') ? 'show' : '' }}" id="postCardMenu">
+                        <div class="collapse ps-3 {{ request()->routeIs('post.*') ? 'show' : '' }}" id="postCardMenu"
+                            data-bs-parent="#navigation">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
                                     <router-link :to="{ name: 'postCardMenu', params: { category_name: 'travel' } }"
@@ -106,26 +108,35 @@
                             <p class="mb-0 flex-grow-1">Добавить</p>
                             <i class="bi bi-chevron-down ms-auto"></i>
                         </a>
-                        <div class="collapse ps-3 {{ request()->routeIs('post.*') ? 'show' : '' }}" id="adding">
+                        <div class="collapse ps-3 {{ request()->routeIs('post.*') ? 'show' : '' }}" id="adding"
+                            data-bs-parent="#navigation">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
-                                    <router-link :to="{ name: 'AddingPost' }" class="nav-link">
+                                    <router-link :to="{ name: 'AddingPostSingle' }" class="nav-link">
                                         <i class="nav-icon bi bi-circle"></i>
-                                        <p>Пост</p>
+                                        <p>Пост-single</p>
                                     </router-link>
                                 </li>
+                                <li class="nav-item">
+                                    <router-link :to="{ name: 'AddingPostTable' }" class="nav-link">
+                                        <i class="nav-icon bi bi-circle"></i>
+                                        <p>Пост-таблица</p>
+                                    </router-link>
+                                </li>
+                                <li class="nav-item">
+                                    <router-link :to="{ name: 'AddingPostForTable' }" class="nav-link">
+                                        <i class="nav-icon bi bi-circle"></i>
+                                        <p>Пост-для-таблицы</p>
+                                    </router-link>
+                                </li>
+
                                 <li class="nav-item">
                                     <router-link :to="{ name: 'AddingImage' }" class="nav-link">
                                         <i class="nav-icon bi bi-circle"></i>
                                         <p>Фото</p>
                                     </router-link>
                                 </li>
-                                <li class="nav-item">
-                                    <router-link :to="{ name: 'AddingMenu' }" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Меню поста</p>
-                                    </router-link>
-                                </li>
+
                             </ul>
                         </div>
                     </li>
@@ -141,7 +152,7 @@
                             <i class="bi bi-chevron-down ms-auto"></i>
                         </a>
                         <div class="collapse ps-3 {{ request()->routeIs('category.*') ? 'show' : '' }}"
-                            id="categoriesMenu">
+                            id="categoriesMenu" data-bs-parent="#navigation">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
 
@@ -174,7 +185,7 @@
                             <i class="bi bi-chevron-down ms-auto"></i>
                         </a>
                         <div class="collapse ps-3 {{ request()->routeIs('postImage.*') ? 'show' : '' }}"
-                            id="postImageMenu">
+                            id="postImageMenu" data-bs-parent="#navigation">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
 

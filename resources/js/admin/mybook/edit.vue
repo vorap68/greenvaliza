@@ -6,7 +6,7 @@
             <div class="d-flex flex-column gap-3">
                 <div>
                     <li class="nav-item">
-                        <a :href="`/advice/${mybookpost.slug}?type=posts `" target="_blank" class="btn btn-info btn-sm">
+                        <a :href="`/mybook/${mybookpost.slug}?type=posts `" target="_blank" class="btn btn-info btn-sm">
                             👁️
                             Предпросмотр</a>
                     </li>
@@ -59,7 +59,7 @@ import { html as beautifyHtml } from 'js-beautify'; // 👈 импорт фор�
 export default defineComponent({
     name: 'MybookEdit',
     components: { Codemirror },
-    props: ['slug'],
+    props: ['id'],
 
     data() {
         return {
@@ -77,7 +77,7 @@ export default defineComponent({
     methods: {
         async GetMybookPost() {
             try {
-                const response = await axios.get('/api/admin/mybook/' + this.slug);
+                const response = await axios.get(`/api/admin/mybook/${this.id}`);
                 if (!response.data) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -114,10 +114,10 @@ export default defineComponent({
                 );
                 alert('✅ Название поста успешно изменено!');
 
-                this.$router.replace({ name: 'mybookPostEdit', params: { post_id: this.mybookpost.id } });
+                this.$router.replace({ name: 'mybookPostEdit', params: { id: this.mybookpost.id } });
 
             } catch (error) {
-                console.error('Ошибка при изменении:', error);
+                console.error('Ошибка при изменении:', error); 
                 alert('❌ Ошибка при изменении имени поста');
             }
         },

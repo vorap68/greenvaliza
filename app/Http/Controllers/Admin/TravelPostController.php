@@ -23,10 +23,9 @@ class TravelPostController extends Controller
     }
 
 
-    public function postShow($slug)
-    {
-
-        $travel = TravelPost::where('slug', $slug)->firstOrFail();
+    public function postShow($id)
+    {   
+      $travel = TravelPost::findOrFail($id);
         return new TravelResource($travel);
     }
 
@@ -38,13 +37,13 @@ class TravelPostController extends Controller
         $travel          = TravelPost::findOrFail($id);
         $travel->content = $content;
         $travel->save();
-        return response()->json(['message' => 'Travel post updated successfully']);
+        return response()->json(['message' => 'Travel post updated successfully']); 
 
     }
 
-    public function getImages($post_id)
+    public function getImages($id)
     {
-        $postImages = TravelPostImage::where('travel_post_id', $post_id)->get();
+        $postImages = TravelPostImage::where('travel_post_id', $id)->get();
         //dd($postImages);
         return response()->json(['data' => $postImages]);
     }

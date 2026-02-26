@@ -39,10 +39,10 @@
 
                     <a :href="`/mybook/${mybookpost.slug}`" target="_blank" class="btn btn-info btn-sm">Просмотр</a>
 
-                    <router-link :to="{ name: 'mybookPostEdit', params: { slug: mybookpost.slug } }"
+                    <router-link :to="{ name: 'mybookPostEdit', params: { id: mybookpost.id } }"
                         class="btn btn-warning btn-sm">Редактирование</router-link>
 
-                    <router-link :to="{ name: 'mybookImages', params: { post_id: mybookpost.id } }"
+                    <router-link :to="{ name: 'mybookImages', params: { id: mybookpost.id } }"
                         class="btn btn-secondary btn-sm">Картинки
 
                     </router-link>

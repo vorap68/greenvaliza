@@ -9,19 +9,54 @@
 	 background:#257759 !important;
 }
 
-@font-face {
+/* @font-face {
   font-family: 'Montserrat';
-  src: url("{{ asset('fonts/Montserrat-Regular.woff2') }}") format('woff2');
-
+  src: url('../fonts/Montserrat-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
 }
 @font-face {
   font-family: 'Montserrat';
- src: url("{{ asset('fonts/Montserrat-Bold.woff2') }}") format('woff2');
+ src: url('../fonts/Montserrat-Bold.woff2') format('woff2');
 
   font-weight: 700;
   font-style: normal;
+} */
+
+    @font-face {
+  font-family: 'Montserrat';
+  src: url('../fonts/Montserrat-Thin.woff2') format('woff2');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('../fonts/Montserrat-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('../fonts/Montserrat-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PT Serif';
+  src: url('../fonts/PT_Serif/PTSerif-Regular.ttf') format('truetype');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'PT Serif';
+  src: url('../fonts/PT_Serif/PTSerif-Bold.ttf') format('truetype');
+  font-weight: 700;
 }
 
 #larafont h1  {
@@ -39,9 +74,7 @@ h1, h2, h3, h4, h5, h6 {
     font-family: 'Montserrat';
 }
 
-/* body {
-    font-family: 'Roboto', sans-serif !important;
-} */
+
 body {
     font-family: 'Montserrat' ;
 }

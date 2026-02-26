@@ -10,24 +10,19 @@ const travelAdminPostRoutes = [
 
 
 
-    // {   path: '/admin/travelposts/show/:slug', component: () => import('../../travelPost/show.vue'),
-    //     name: 'travelPostShow',
-    //     props:true,
-       
-    // },
 
-    {   path: '/admin/travelposts/edit/:slug', component: () => import('../../travelPost/edit.vue'),
+    {   path: '/admin/travelposts/edit/:id', component: () => import('../../travelPost/edit.vue'),
         name: 'travelPostEdit',
         props:true,
        
     },
     
 
-        {   path: '/admin/travelposts/images/:post_id', component: () => import('../../travelPost/images.vue'),
+        {   path: '/admin/travelposts/images/:id', component: () => import('../../travelPost/images.vue'),
         name: 'travelPostImages',
        props: route=> ({
            
-            post_id: route.params.post_id, 
+            id: route.params.id, 
        })
     },
 

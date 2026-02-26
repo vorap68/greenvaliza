@@ -23,7 +23,7 @@ class GuideMenuImportCommand extends Command
    public function handle()
     {
         $this->initClient();
-        $posts = $this->getPosts( 10, 1 ,86); // категория sovety-i-poleznosti id=6(perPage,Page, category_id)
+        $posts = $this->getPosts( 20, 1 ,86); // категория sovety-i-poleznosti id=6(perPage,Page, category_id)
           foreach ($posts as $item) {
             //dd($item);
           $description = strip_tags($item['excerpt']['rendered']);

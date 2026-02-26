@@ -39,10 +39,10 @@
 
                     <a :href="`/advice/${advicepost.slug}`" target="_blank" class="btn btn-info btn-sm">Просмотр</a>
 
-                    <router-link :to="{ name: 'advicePostEdit', params: { post_id: advicepost.id } }"
+                    <router-link :to="{ name: 'advicePostEdit', params: { id: advicepost.id } }"
                         class="btn btn-warning btn-sm">Редактирование</router-link>
 
-                    <router-link :to="{ name: 'adviceImages', params: { post_id: advicepost.id } }"
+                    <router-link :to="{ name: 'adviceImages', params: { id: advicepost.id } }"
                         class="btn btn-secondary btn-sm">Картинки
 
                     </router-link>

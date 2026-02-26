@@ -57,7 +57,7 @@ import { html as beautifyHtml } from 'js-beautify'; // 👈 импорт фор�
 export default defineComponent({
     name: 'GuideEdit',
     components: { Codemirror },
-    props: ['slug'],
+    props: ['id'],
 
     data() {
         return {
@@ -74,7 +74,7 @@ export default defineComponent({
     methods: {
         async GetGuidePost() {
             try {
-                const response = await axios.get('/api/admin/guide/' + this.slug);
+                const response = await axios.get(`/api/admin/guide/${this.id}`);
                 if (!response.data) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -111,7 +111,7 @@ export default defineComponent({
                 );
                 alert('✅ Название поста успешно изменено!');
                 //this.guidepost.slug = result.data.slug; // обновляем slug
-                this.$router.replace({ name: 'guidePostEdit', params: { slug: this.guidepost.slug } });
+                this.$router.replace({ name: 'guidePostEdit', params: { id: this.guidepost.id } });
                 //this.GetGuidePost();
             } catch (error) {
                 console.error('Ошибка при изменении:', error);

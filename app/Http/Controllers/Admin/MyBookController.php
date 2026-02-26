@@ -18,8 +18,8 @@ class MyBookController extends Controller
       return MyBookResource::collection($MyBook);
     }
 
-     public function show($slug){ 
-     $mybook = MybookPost::where('slug', $slug)->firstOrFail();
+     public function show($id){ 
+     $mybook = MybookPost::findOrFail($id);
        return new MyBookResource($mybook);
     }
   
@@ -34,8 +34,9 @@ class MyBookController extends Controller
       
     }
 
-    public function getImages($post_id) {
-      $postImages = MybookPostImage::where('mybook_post_id', $post_id)->get();
+    public function getImages($id) {
+      //dd($id);
+      $postImages = MybookPostImage::where('mybook_post_id', $id)->get();
       return response()->json(['data' => $postImages]);
     }
 

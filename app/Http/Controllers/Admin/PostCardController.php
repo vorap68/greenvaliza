@@ -1,28 +1,37 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Services\ImageService;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\AdviceResource;
-use App\Http\Resources\GuideResource;
-use App\Http\Resources\MyBookResource;
-use App\Http\Resources\TravelResource;
-use App\Models\Categories\AdviceMenu;
 use App\Models\Categories\GuideMenu;
+use App\Http\Resources\GuideResource;
+use App\Models\Categories\AdviceMenu;
 use App\Models\Categories\MyBookMenu;
 use App\Models\Categories\TravelMenu;
-use Illuminate\Http\Request;
+use App\Http\Resources\AdviceResource;
+use App\Http\Resources\MyBookResource;
+use App\Http\Resources\TravelResource;
+
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 /**
  *  Работа с меню в админке всех 4-х категорий: guide, travel, advice, mybook
  */
 class PostCardController extends Controller
 {
+    protected ImageService $imageService;
+
+    public function __construct(ImageService $imageService)
+    {
+        $this->imageService = $imageService;
+    }
+
     public function index($category_name)
     {
         $postcards = match ($category_name) {
-            'travel' => TravelResource::collection(TravelMenu::all()),
+            'travel' => TravelResource::collection(TravelMenu::all()), 
             'guide'  => GuideResource::collection(GuideMenu::all()),
             'advice' => AdviceResource::collection(AdviceMenu::all()),
             'mybook' => MyBookResource::collection(MyBookMenu::all()),
@@ -74,11 +83,15 @@ class PostCardController extends Controller
 
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $path         = 'images/categoryMenu/' . $category_name . '/' . $postcard->slug;
+            $path         = 'images/categoryMenu/' . $category_name . '/' . $postcard->id;
+            $fileName = $image->getClientOriginalName();
+             $fullPath = Storage::disk('public')->path(
+                "{$path}/{$fileName}"
+            );
             //return  response()->json(['path'=>$path ]); 
             Storage::putFileAs($path, $image, $image->getClientOriginalName());
-             $postcard->imageName  = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
-        $postcard->imageExten = $image->getClientOriginalExtension();
+                 $this->imageService->saveResizedImages($fullPath, null);
+             $postcard->imageName  = $image->getClientOriginalName();
             // return response()->json(['imageName'=> $imageName, 'imageExten'=>$imageExten ]);
         }
         $postcard->title       = $validated['title'];

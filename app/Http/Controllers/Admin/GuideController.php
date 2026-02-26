@@ -19,9 +19,8 @@ class GuideController extends Controller
        //dd($guide);
         return GuideResource::collection($guide);
     }
-      public function show($slug){
-      //return response()->json($slug);
-        $guide = GuidePost::where('slug', $slug)->firstOrFail();
+      public function show($id){
+    $guide = GuidePost::findOrFail($id);
        return new GuideResource($guide);
     }
   
@@ -36,8 +35,8 @@ class GuideController extends Controller
       
     }
 
-    public function getImages($post_id) {
-      $postImages = GuidePostImage::where('guide_post_id', $post_id)->get();
+    public function getImages($id) {
+      $postImages = GuidePostImage::where('guide_post_id', $id)->get();
       return response()->json(['data' => $postImages]);
     }
 

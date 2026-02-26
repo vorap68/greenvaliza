@@ -18,49 +18,54 @@ class CardCreatorController extends Controller
         $this->imageService = $imageService;
     }
 
-    public function createImage($imageContent, $slug , $category = 'travel')
+    public function createImage($imageContent, $category = 'travel', $postMenu)
     {
-
-        $path = 'categoryMenu/' . $category . '/' . $slug;
-
-        // Сохраняем оригинальное изображение на диск (1 файл)
-        Storage::putFileAs('images/' . $path, $imageContent, $imageContent->getClientOriginalName()); 
-        $folderPath = Storage::disk('public')->path("images/categoryMenu/{$category}/{$slug}");
-
-        $source = $folderPath . '/' . $imageContent->getClientOriginalName();
-        $this->imageService->saveResizedImages($source, $path, null);
+        $path = "/images/categoryMenu/{$category}/{$postMenu->id}";
+        // имя файла
+        $filename = $imageContent->getClientOriginalName();
+        // сохраняем оригинал
+        Storage::disk('public')->putFileAs(
+            $path,
+            $imageContent,
+            $filename
+        );
+        //️ получаем полный путь к файлу
+        $fullPath = Storage::disk('public')->path(
+            "{$path}/{$filename}"
+        );
+        //return $fullPath;
+        //  передаём путь к ФАЙЛУ в сервис для создания ресайзов и сохранения их на диске
+        return $this->imageService->saveResizedImages($fullPath, null);
     }
 
-    public function createCard($title, $slug, $description,  $image = null ,$category='travel', $type='posts')
+    public function createCard($title, $slug, $description, $image = null, $category = 'travel', $type = 'tble')
     {
-        $imageName  = $image?->getClientOriginalName() ?? '';
-        $imageExten = $image?->getClientOriginalExtension() ?? '';
-       
-        
-        $post = [
+        $imageName = $image?->getClientOriginalName() ?? '';
+        $post      = [
             'title'       => $title,
             'slug'        => $slug,
             'description' => $description,
             'type'        => $type,
-            'imageName'   => pathinfo($imageName, PATHINFO_FILENAME) ?? '',
-            'imageExten'  => $imageExten,
+            'imageName'   => $imageName ?? '',
+
         ];
-        // return response()->json(['post' => $post]);
-       
+
+        //return response()->json(['post' => $post, 'category' => $category]);
+
         switch ($category) {
             case 'travel':
-                TravelMenu::create($post);
+                return $post = TravelMenu::create($post);
                 break;
             case 'guide':
-                GuideMenu::create($post);
+                return $post = GuideMenu::create($post);
                 break;
             case 'advice':
-                AdviceMenu::create($post);
+                return $post = AdviceMenu::create($post);
                 break;
             case 'mybook':
-                MyBookMenu::create($post);
+                return $post = MyBookMenu::create($post);
                 break;
         }
-       
+
     }
 }

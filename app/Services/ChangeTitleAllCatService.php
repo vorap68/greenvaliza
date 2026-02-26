@@ -3,14 +3,25 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Services\SlugService;
+
 
 class ChangeTitleAllCatService
 {
+      protected SlugService $slugService;
+
+    public function __construct(SlugService $slugService)
+    {
+        $this->slugService = $slugService;
+    }
+
     public function changeTitleCatAll( $post,$menuClass, $newTitle)
     {
+        
       
         $oldSlug = $post->slug;
-        $newSlug = \Illuminate\Support\Str::slug($newTitle);  
+         // используем свой сервис
+        $newSlug = $this->slugService->make($newTitle); 
         if ($oldSlug === $newSlug) {
             return;
         }

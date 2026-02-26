@@ -21,11 +21,9 @@ class AdviceResource extends JsonResource
             "date" => $this->created_at->format('Y-m-d'),
             "type" => $this->type,
             "imageName"=>$this->imageName,
-            "imageExten"=>$this->imageExten,
-            "description" => $this->description,
+           "description" => $this->description,
             "content" => $this->content,
-             "is_published" => $this->is_published,
-             "is_visual" => $this->is_visual ,
+            "is_visual" => $this->is_visual ,
               'image' => $this->imageName,
            
         ];

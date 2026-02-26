@@ -6,8 +6,8 @@
             <label class="form-label">Категория</label>
             <select v-model="category" class="form-select">
                 <option disabled value="">Выберите категорию</option>
-                <option value="travels-post">Наши путешествия (Посты)</option>
-                <option value="travels-table">Наши путешествия (Меню постов)</option>
+                <option value="travel-post">Наши путешествия (Посты)</option>
+                <option value="travel-table">Наши путешествия (Посты-таблицы)</option>
                 <option value="guide">Путеводитель</option>
                 <option value="advices">Советы и полезности</option>
                 <option value="mybook">Я и мои книги</option>
@@ -112,6 +112,7 @@ export default defineComponent({
 
             this.posts = response.data.data;
             console.log('Загруженные посты:', this.posts);
+
         },
 
         searchPost(value) {
@@ -127,6 +128,7 @@ export default defineComponent({
                 post.title.toLowerCase().includes(q)
             );
             console.log('Найденные посты:', this.filteredPosts);
+            console.log('Id пост:', this.filteredPosts.map(p => p.id));
         },
 
         selectPost(post) {
@@ -145,6 +147,7 @@ export default defineComponent({
 
         async storeImages() {
             const files = this.dropzone.getAcceptedFiles();
+            console.log('Выбранные файлы для загрузки:', files);
 
             if (!files.length) {
                 alert('Выберите файлы');
@@ -159,7 +162,7 @@ export default defineComponent({
 
             try {
                 const response = await axios.post(
-                    '/api/admin/create-image',
+                    `/api/admin/create-image/${this.category}/${this.selectedPost.id}`,
                     images,
                     {
                         headers: {

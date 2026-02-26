@@ -31,6 +31,15 @@ const routesfront = [
             type: route.query.type
         })
     },
+    {
+        path: '/travel/table/:slug',
+        name: 'travel-table-post',
+        component: () => import('../travel/tablePosts/travel-table.vue'),
+        props: route => ({
+            slug: route.params.slug,
+            type: route.query.type
+        })
+    },
     
     {
         path: '/guide/:slug',

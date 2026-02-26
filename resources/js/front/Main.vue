@@ -73,4 +73,8 @@ export default defineComponent({
 });
 
 </script>
-<style></style>
+<style scoped>
+/* .entry-title {
+    font-family: 'PT Serif';
+} */
+</style>

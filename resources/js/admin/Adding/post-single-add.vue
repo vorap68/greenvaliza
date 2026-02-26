@@ -2,7 +2,7 @@
     <div class="container mt-4">
         <div class="border-bottom mb-4 pb-2  custom-border">
             <h3>Добавить новый пост</h3>
-            <h4>1-шаг создание заставки-поста</h4>
+            <h4>1-шаг создание заставки-поста </h4>
         </div>
 
         <!-- Имя поста -->
@@ -31,20 +31,6 @@
 
             </select>
         </div>
-
-        <!-- Родительское меню-пост -->
-        <div v-if="form.category === 'travel'" class="mb-3">
-            <label class="form-label">Меню-пост-родитель. При выборе родителя заставка-пост не будет создан</label>
-
-            <select v-model="form.parent_title" class="form-select">
-                <option value=null>Без родителя</option>
-
-                <option v-for="item in menuPosts" :value="item.title">
-                    {{ item.title }}
-                </option>
-            </select>
-        </div>
-
         <input type="file" @change="onFileChange" />
         <!-- Кнопка -->
         <button class="btn btn-primary" @click="createPost">
@@ -63,7 +49,7 @@ import axios from 'axios';
 
 
 export default defineComponent({
-    name: 'AddingPost',
+    name: 'AddingPostSingle',
 
     data() {
         return {
@@ -71,60 +57,48 @@ export default defineComponent({
                 title: "",
                 description: "",
                 category: "",
-                parent_title: "",
                 image: ""
             },
             menuPosts: [] // сюда загрузим список меню-постов
         }
     },
 
-    computed: {
 
-    },
-
-    async mounted() {
-        await this.loadTables();
-    },
 
     methods: {
         onFileChange(e) {
             this.form.image = e.target.files[0];
         },
 
-        async loadTables() {
-            // пример — бери меню из /api/admin/advice (или любой свой маршрут)
-            const response = await axios.get('/api/admin/travels-table');
-            this.menuPosts = response.data.data;
-        },
+
 
         async createPost() {
 
             const formData = new FormData();
+            console.log('formData', formData);
             formData.append("title", this.form.title);
             formData.append("description", this.form.description);
             formData.append("category", this.form.category);
             formData.append("image", this.form.image);
-            formData.append("parent_title", this.form.parent_title);
+
+
 
             try {
                 //создаем пост-превью-заставка
                 const response = await axios.post(
-                    '/api/admin/create-post',
+                    '/api/admin/create-post-single',
                     formData,
                     { headers: { "Content-Type": "multipart/form-data" } }
                 );
                 console.log('response.data', response.data);
-                console.log('data_slug', response.data.slug);
-                console.log('parent_title', formData);
-                // if (this.form.parent_title === '') {
-                //     alert("пост-превью-заставка создан!");
-                // }
+
+                // После успешного создания пост-превью-заставка, получаем его ID и 
                 // redirect  на страницу редактирования созданного поста
-                this.$router.push({ name: this.form.category + 'PostEdit', params: { slug: response.data.slug } });
+                this.$router.push({ name: this.form.category + 'PostEdit', params: { id: response.data.id } });
 
             } catch (e) {
                 console.error(e);
-                alert("Ошибка создания поста");
+                alert("Ошибка создания поста (component)");
             }
         }
     }

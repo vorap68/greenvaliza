@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Support\Str;
+
 use Illuminate\Http\Request;
 use App\Models\Posts\AdvicePost;
 use App\Http\Controllers\Controller;
@@ -22,7 +22,7 @@ class AdviceController extends Controller
     }
     public function show($id)
     {
-        $advice = AdvicePost::findOrFail($id);
+       $advice = AdvicePost::findOrFail($id);
         return new AdviceResource($advice);
     }
 
@@ -37,9 +37,9 @@ class AdviceController extends Controller
 
 
 
-    public function getImages($post_id)
+    public function getImages($id)
     {
-        $postImages = AdvicePostImage::where('advice_post_id', $post_id)->get();
+        $postImages = AdvicePostImage::where('advice_post_id', $id)->get();
         return response()->json(['data' => $postImages]);
     }
 

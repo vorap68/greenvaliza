@@ -38,10 +38,10 @@
 
                     <a :href="`/guide/${guidepost.slug}`" target="_blank" class="btn btn-info btn-sm">Просмотр</a>
 
-                    <router-link :to="{ name: 'guidePostEdit', params: { slug: guidepost.slug } }"
+                    <router-link :to="{ name: 'guidePostEdit', params: { id: guidepost.id } }"
                         class="btn btn-warning btn-sm">Редактирование</router-link>
 
-                    <router-link :to="{ name: 'guideImages', params: { post_id: guidepost.id } }"
+                    <router-link :to="{ name: 'guideImages', params: { id: guidepost.id } }"
                         class="btn btn-secondary btn-sm">Картинки
 
                     </router-link>

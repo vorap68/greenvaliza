@@ -10,7 +10,7 @@ use App\Models\Categories\TravelMenu;
 class ImportTravelPostMainCommand extends Command
 {
 
-    protected $signature = 'import:travelpostmenu ';
+    protected $signature = 'import:travelpostmain'; 
 
     protected $description = 'Скачиваем посты  категории travel из меню Мои Путеш. (категория 2)';
 
@@ -45,7 +45,7 @@ class ImportTravelPostMainCommand extends Command
                 dump('Processing post: ' . $newPost);
                 //  если пост уже был — ничего не делаем
                 if (! $newPost->wasRecentlyCreated) {
-                    DB::rollBack();
+                    DB::rollBack(); 
                     continue;
                 }
                

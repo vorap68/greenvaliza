@@ -1,35 +1,25 @@
-
-  <template>
+<template>
   <table class="travel-header" width="90%" border="2" align="center">
     <tbody>
       <tr>
-        <td
-          class="cell image-cell"
-          :style="{ backgroundImage: `url(${header.background})` }"
-          width="201"
-          height="181"
-          align="center"
-        >
-          <img :src="header.left_image" width="120" height="120" />
+        <td class="cell image-cell" :style="{ backgroundImage: `url(${header.background})` }" width="201" height="181"
+          align="center">
+          <img :src="header.left_image" width="120" height="120" /> 
         </td>
 
-        <td
-          class="cell title-cell"
-          :style="{ backgroundImage: `url(${header.background})` }"
-          width="570"
-          align="center"
-        >
-          <p class="title">{{ header.title }}</p>
-          <p class="subtitle">{{ header.subtitle }}</p>
+        <td class="cell title-cell" :style="{ backgroundImage: `url(${header.background})` }" width="570"
+          align="center">
+          <p class="title" :style="{ color: header.title_color || '#708090' }">
+            {{ header.title }}
+          </p>
+
+          <p class="subtitle" :style="{ color: header.subtitle_color || '#708090' }">
+            {{ header.subtitle }}
+          </p>
         </td>
 
-        <td
-          class="cell image-cell"
-          :style="{ backgroundImage: `url(${header.background})` }"
-          width="201"
-          height="181"
-          align="center"
-        >
+        <td class="cell image-cell" :style="{ backgroundImage: `url(${header.background})` }" width="201" height="181"
+          align="center">
           <img :src="header.right_image" width="120" height="120" />
         </td>
       </tr>
@@ -49,10 +39,10 @@ export default {
       required: true
     }
   },
-  async mounted(){
+  async mounted() {
     console.log(this.header)
   },
- 
+
 };
 </script>
 
@@ -68,16 +58,20 @@ export default {
 }
 
 .title {
+  font-family: 'PT Serif';
   font-size: 32px;
+  font-style: italic;
   font-weight: bold;
-  color: #708090;
+
   margin: 0;
 }
 
 .subtitle {
-  font-size: 22px;
+  font-family: 'PT Serif';
+  font-size: 24px;
   font-style: italic;
-  color: #708090;
-  margin-top: 10px;
+
+  font-weight: bold;
+  margin-top: 40px;
 }
 </style>

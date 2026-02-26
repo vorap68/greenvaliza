@@ -8,7 +8,7 @@
     <!-- Fonts -->
     <!-- <link rel="preconnect" href="https://fonts.bunny.net" />
     <link
-      href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap"
+      href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" 
       rel="stylesheet"/> -->
 
        <!-- Modernizer должен быть в head -->
@@ -18,7 +18,7 @@
     @vite('resources/js/app.js')
 
     <!-- Кастомные стили -->
-    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}"> 
 
   </head>
   <body class="antialiased"  style="background:url('{{ Storage::url('images/categoryMain/fon.jpg') }}')

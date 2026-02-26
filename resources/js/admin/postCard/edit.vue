@@ -3,16 +3,18 @@
 
         <!-- Текущее изображение -->
         <img v-if="postCard.image"
-            :src="`/storage/images/categoryMenu/${category_name}/${postCard.slug}/${postCard.image}`"
+            :src="`/storage/images/categoryMenu/${category_name}/${postCard.id}/${postCard.image}`"
             class="card-img-top mb-3 rounded" alt="Изображение поста">
 
         <div class="card-body">
 
             <!-- Заголовок -->
-            <label class="fw-bold">Заголовок</label>
-            <input type="text" v-model="postCard.title" class="form-control mb-3" />
+          
+<h3 class="fw-bold mb-3">
+    {{ postCard.title }}
+</h3>
 
-            <!-- Описание -->
+          <!-- Описание -->
             <label class="fw-bold">Описание</label>
             <textarea v-model="postCard.description" class="form-control mb-3"></textarea>
 

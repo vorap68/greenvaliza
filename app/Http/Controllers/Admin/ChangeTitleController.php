@@ -1,11 +1,12 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Http\Request;
 use App\Models\Posts\AdvicePost;
+use App\Models\Posts\TravelPost;
 use App\Models\Posts\TravelTable;
 use App\Services\ChangeTitleAllCatService;
 use App\Services\ChangeTitleTravelService;
-use Illuminate\Http\Request;
 
 class ChangeTitleController 
 {
@@ -22,9 +23,7 @@ class ChangeTitleController
     public function updateAllCat($category_name, $id, Request $request)
     {
         $newTitle = $request->input('title');
-
        // return response()->json(['title' => $newTitle, 'category' => $category_name, 'id' => $id]);
-
         // Логика изменения заголовка в зависимости от категории
         switch ($category_name) {
             case 'guide':
@@ -47,35 +46,35 @@ class ChangeTitleController
         $post = $modelClass::with($menuClass)->find($id);
     
         //return response()->json(['post' => $post]);
-       
-          // $postMenu = $post->$menuClass;
-          //  return response()->json(['postMenu' => $postMenu]);
-        if (! $post) {
-            return response()->json(['message' => 'Post not found'], 404);
+       if (! $post) {
+            return response()->json(['message' => 'Post not found'], 404); 
         }
 
-        //return response()->json(['post' => $post->$menuClass]);
         // Вызов сервиса для изменения путей
         $result = $this->serviceAllCat->changeTitleCatAll( $post, $menuClass, $newTitle);
         return response()->json(['message' => 'Title changed successfully', 'data' => $result]);
     }
 
-    public function updateTravelTable($id, Request $request)
+    
+    public function updateTravelPostSingle($id, Request $request)
     {
         $newTitle  = $request->input('title');
-        $tablePost = TravelTable::with('travelMenu')->find($id);
-        $result    = $this->serviceTravelCat->changeTitleTravelTable($tablePost, $newTitle);
+        $singlePost = TravelPost::with('travelMenu')->find($id);
+       // return response()->json(['post' => $singlePost]);
+        $result    = $this->serviceTravelCat->changeTitlePostSingle($singlePost, $newTitle);
 
         return response()->json(['message' => 'Title changed successfully', 'data' => $result]);
 
     }
 
-    public function updateTravelPost($id, Request $request)
+    public function updateTravelPostFinal($id, Request $request)
     {
-        $newTitle = $request->input('title');
+       $newTitle = $request->input('title');
+        $finalPost = TravelPost::find($id);
+         //return response()->json(['post' => $finalPost]);
+        $result    = $this->serviceTravelCat->changeTitlePostFinal($finalPost, $newTitle);
 
-        $finalPost = TravelTable::with('travelPosts')->find($id);
-        return response()->json(['finalPost' => $finalPost]);
+        return response()->json(['message' => 'Title changed successfully', 'data' => $result]);
 
     }
 }

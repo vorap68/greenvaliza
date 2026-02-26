@@ -32,6 +32,7 @@ axios.defaults.baseURL = 'http://localhost:8889' // или из .env
 
 // Стили
 import '../css/bootstrap-grid.css';
+import '../css/custom.css';
 import '../css/font-awesome.css';
 import '../css/slicknav.css';
 import '../css/style.css';
@@ -39,6 +40,7 @@ import '../css/theme.css';
 import '../css/responsive.css';
 import '../css/post.css';
 import '../css/post-component.css';
+
 
 
 

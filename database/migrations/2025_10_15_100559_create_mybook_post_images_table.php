@@ -18,7 +18,7 @@ return new class extends Migration
            $table->string('filename');
               $table->unique(['filename', 'mybook_post_id']);
              $table->unsignedBigInteger('mybook_post_id');
-            $table->foreign('mybook_post_id')->references('id')->on('mybook_posts')->onDelete('cascade');
+            $table->foreign('mybook_post_id')->references('id')->on('mybook_posts');
             $table->timestamps();
         });
     }

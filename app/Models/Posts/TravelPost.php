@@ -30,7 +30,12 @@ class TravelPost extends Model
 
     public function travelTable()
     {
-        return $this->belongsTo(TravelTable::class);
+        return $this->belongsTo(TravelTable::class, 'table_id');
+    }
+   
+    public function travelMenu()
+    {
+        return $this->belongsTo(TravelMenu::class, 'menu_id');
     }
 
     public function travelPostImages()

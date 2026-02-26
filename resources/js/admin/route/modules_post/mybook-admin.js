@@ -7,20 +7,17 @@ const mybookAdminPostRoutes = [
         name: 'mybookPosts',
           props:true,
     },
-    // {   path: '/admin/mybookposts/show/:slug', component: () => import('../../mybook/show.vue'),
-    //     name: 'MyBookShow',
-    //       props:true,
-       
-    // },
-    {   path: '/admin/mybookposts/edit/:slug', component: () => import('../../mybook/edit.vue'),
+   
+    
+    {   path: '/admin/mybookposts/edit/:id', component: () => import('../../mybook/edit.vue'),
         name: 'mybookPostEdit',
           props:true,
        
     },
-    {   path: '/admin/mybookImages/:post_id', component: () => import('../../mybook/mybookImages.vue'),
+    {   path: '/admin/mybookImages/:id', component: () => import('../../mybook/mybookImages.vue'),
         name: 'mybookImages',
        props: route=> ({
-          post_id: route.params.post_id, 
+          id: route.params.id, 
        })
     },
 
