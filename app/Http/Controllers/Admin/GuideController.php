@@ -3,25 +3,35 @@
 namespace App\Http\Controllers\Admin;
 
 
-use Illuminate\Http\Request;
-use App\Models\Posts\GuidePost;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\GuideResource;
-use App\Models\Images\GuidePostImage;
+use App\Http\Resources\AllPostResource;
+use App\Models\Posts\GuidePost;
+use Illuminate\Http\Request;
 
 
 class GuideController extends Controller 
 
 {
-    public function index(){
+    public function index(Request $request){
         
-       $guide =  GuidePost::all();
-       //dd($guide);
-        return GuideResource::collection($guide);
+            $query = GuidePost::query();
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query  = $query->where('title', 'like', "%{$search}%");
+        }
+         $sortBy  = $request->input('sort_by', 'id');
+        $sortDir = $request->input('sort_dir', 'desc');
+        $query->orderBy($sortBy, $sortDir);
+        if ($request->boolean('all')) {
+            return AllPostResource::collection($query->get());
+        }
+        return AllPostResource::collection($query->paginate(10));
     }
+
+//метод для получения поста для компонета редактирования
       public function show($id){
     $guide = GuidePost::findOrFail($id);
-       return new GuideResource($guide);
+       return new AllPostResource($guide);
     }
   
     public function update( Request $request,  $id ){
@@ -35,10 +45,7 @@ class GuideController extends Controller
       
     }
 
-    public function getImages($id) {
-      $postImages = GuidePostImage::where('guide_post_id', $id)->get();
-      return response()->json(['data' => $postImages]);
-    }
+    
 
      public function visual($id){
       $guide = GuidePost::findOrFail($id);

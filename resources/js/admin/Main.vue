@@ -21,15 +21,35 @@
             <!--begin::Row-->
             <div class="row">
                 <!--begin::Col-->
-                <div class="col-lg-3 col-md-6 col-12">
+                <div class="col-lg-4 col-md-6 col-12">
                     <!--begin::Small Box Widget 1-->
                     <div class="small-box text-bg-primary">
                         <div class="inner">
                             <h3>{{ travel_post_count }}</h3>
-                            <p>Кол-во постов </p>
+                            <p>Общее кол-во постов </p>
                             <p>"Мои путешествия"</p>
                         </div>
 
+
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-12">
+                    <div class="small-box text-bg-primary">
+                        <div class="inner">
+                            <h3>{{ travel_table_count }}</h3>
+                            <p>Кол-во таблиц </p>
+                            <p>"Мои путешествия"</p>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-12">
+                    <div class="small-box text-bg-primary">
+                        <div class="inner">
+                            <h3>{{ travel_singlepost_count }}</h3>
+                            <p>Кол-во single-постов </p>
+                            <p>"Мои путешествия"</p>
+                        </div>
 
                     </div>
                 </div>
@@ -68,16 +88,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-3 col-md-6 col-12">
-                    <div class="small-box text-bg-success">
-                        <div class="inner">
-                            <h3>{{ travel_table_count }}</h3>
-                            <p>Кол-во таблиц </p>
-                            <p>"Мои путешествия"</p>
-                        </div>
 
-                    </div>
-                </div>
             </div>
 
         </div>
@@ -94,6 +105,7 @@ export default {
     data() {
         return {
             travel_post_count: 0,
+            travel_singlepost_count: 0,
             guide_post_count: 0,
             advice_post_count: 0,
             mybook_count: 0,
@@ -120,6 +132,7 @@ export default {
                 this.advice_post_count = responce.data.advices;
                 this.mybook_count = responce.data.mybooks;
                 this.travel_table_count = responce.data.travel_tables;
+                this.travel_singlepost_count = responce.data.travel_singleposts;
             } catch (error) {
                 console.error('Error fetching post count:', error);
             }

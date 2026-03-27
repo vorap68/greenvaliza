@@ -1,14 +1,9 @@
 <?php
 namespace App\Components;
 
-use App\Models\Images\TravelPostImage;
-use App\Models\Posts\TravelPost;
-use App\Models\Posts\TravelTable;
 use GuzzleHttp\Client;
 
 class TablePostImport
-
-
 {
     public $client;
     protected $post_id;
@@ -67,49 +62,4 @@ class TablePostImport
         }
     }
 
-    public function createTableCurrent($title, $slug, $category_menu_id)
-    {
-        //dd('createPostCurrent', $title, $slug, $category_menu_id);
-        $newPost = TravelTable::firstOrCreate(
-            ['slug' => $slug],
-            ['slug'   => $slug,
-                'title'   => $title,
-                'content' => '',
-                'menu_id' => $category_menu_id
-                ]);
-
-        $this->post_id = $newPost->id;
-        //dd('newPost', $newPost);
-        return $newPost;
-    }
-
-    // public function savePosts($post_current)
-    // {
-    //     try {
-    //         $post = TravelPost::firstOrCreate(
-    //             ['slug' => $post_current['slug']],
-    //             $post_current);
-    //         $this->post_id = $post->id;
-    //         return $post;
-    //     } catch (\Exception $e) {
-    //         throw new \RuntimeException('Ошибка: не удалось сохранить пост: ' . $e->getMessage());
-    //     }
-    // }
-
-    // public function saveImages($images_array)
-    // {
-    //     $records = [];
-    //     foreach ($images_array as $item) {
-    //         $records[] = [
-    //             'travel_post_id' => $this->post_id,
-    //             'filename'       => $item,
-    //             'created_at'     => now(),
-    //             'updated_at'     => now(),
-    //         ];
-    //         dump($this->post_id, $item);
-    //     }
-
-    //     TravelPostImage::insert($records);
-    // }
-
-}
+  }

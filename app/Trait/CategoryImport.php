@@ -14,7 +14,7 @@ trait CategoryImport
     protected function initClient() 
     {
         $this->client = new \GuzzleHttp\Client([
-            'base_uri' => 'https://greenvaliza.co.ua/wp-json/wp/v2/',
+            'base_uri' => 'https://greenvaliza.co.ua/wp-json/wp/v2/', 
             'timeout'  => 10.0,
         ]);
     }

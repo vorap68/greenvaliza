@@ -13,14 +13,14 @@ class CardCreatorController extends Controller
 {
     protected ImageService $imageService;
 
-    public function __construct(ImageService $imageService)
+    public function __construct(ImageService $imageService) 
     {
         $this->imageService = $imageService;
     }
 
     public function createImage($imageContent, $category = 'travel', $postMenu)
     {
-        $path = "/images/categoryMenu/{$category}/{$postMenu->id}";
+        $path = "/images/categoryMenu/{$category}/{$postMenu->id}/original";
         // имя файла
         $filename = $imageContent->getClientOriginalName();
         // сохраняем оригинал
@@ -33,9 +33,11 @@ class CardCreatorController extends Controller
         $fullPath = Storage::disk('public')->path(
             "{$path}/{$filename}"
         );
-        //return $fullPath;
+       
         //  передаём путь к ФАЙЛУ в сервис для создания ресайзов и сохранения их на диске
-        return $this->imageService->saveResizedImages($fullPath, null);
+      
+       $res =  $this->imageService->saveResizedImages($fullPath, null);
+       return $res;
     }
 
     public function createCard($title, $slug, $description, $image = null, $category = 'travel', $type = 'tble')

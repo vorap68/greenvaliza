@@ -13,7 +13,7 @@
     <meta name="author" content="ColorlibHQ" />
 
     <meta name="supported-color-schemes" content="light dark" />
-    @vite(['resources/js/app.js', 'resources/css/app.css'])
+    @vite(['resources/js/admin.js', 'resources/css/app.css'])
   </head>
       <body class="layout-fixed sidebar-expand-lg sidebar-open bg-body-tertiary">
              @yield('content')

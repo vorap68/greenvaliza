@@ -37,7 +37,7 @@ class MybookMenuImportCommand extends Command
             ];
 
             //dd($imageUlr);
-            $post_id = MyBookMenu::firstOrCreate($item_current)->id; // для путеводителей
+            $post_id = MyBookMenu::firstOrCreate($item_current)->id; 
             $this->saveImages($imageUlr, $cleanFileName, $post_id, 'mybook'); 
            
         }

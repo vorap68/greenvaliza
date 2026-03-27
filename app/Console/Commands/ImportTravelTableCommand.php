@@ -1,11 +1,13 @@
 <?php
 namespace App\Console\Commands;
 
+use App\Components\CreateNewPost;
 use App\Components\ImportImage;
-use Illuminate\Console\Command;
 use App\Components\TablePostImport;
-use Illuminate\Support\Facades\DB;
 use App\Models\Categories\TravelMenu;
+use App\Models\Posts\TravelTable;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class ImportTravelTableCommand extends Command
 {
@@ -19,43 +21,45 @@ class ImportTravelTableCommand extends Command
      */
     public function handle()
     {
-        $importer = new TablePostImport();
-        $is_acf   = 'table'; // для скачив таблиц
-        $posts    = $importer->getPosts(10, 6, $is_acf, 2);
+        $postCreate = new CreateNewPost();
+        $importer   = new TablePostImport();
+        $is_acf     = 'table'; // для скачив таблиц
+        $posts      = $importer->getPosts(10, 6, $is_acf, 2);
         // dd($posts);
         $result = [];
         //dd('Посты для импорта', $posts);
         foreach ($posts as $post) {
             //dd($post);
-            $title         = $post['title']['rendered'];
-            $html          = $post['content']['rendered'];
-            $slug          = $post['slug'];
-            $table_menu_id = TravelMenu::where('slug', $slug)->value('id');
-            // Удаление лишних пробелов и переносов строк
-            $cleanedText = preg_replace('/\s+/', ' ', $html);
-            // $content     = $cleanedText;
+            $title   = $post['title']['rendered'];
+            $html    = $post['content']['rendered'];
+            $slug    = $post['slug'];
+            $menu_id = TravelMenu::where('slug', $slug)->value('id');
 
             try {
                 DB::beginTransaction();
                 //создать новый пост
-                $newPost = $importer->createTableCurrent($title, $slug, $table_menu_id);
+                $newPost = $postCreate->createCurrent(
+                    modelClass: TravelTable::class,
+                    slug: $slug,
+                    data: ['menu_id' => $menu_id,
+                        'title'          => $title,
+                    ]);
                 dump('Processing post: ' . $newPost);
                 //  если пост уже был — ничего не делаем
-                if (! $newPost->wasRecentlyCreated) {
-                    DB::rollBack();
-                    continue;
-                }
+
+                //!!!!!!!!!!!!!!!!!!!!!!!!!!
+                // if (! $newPost->wasRecentlyCreated) {
+                //     DB::rollBack();
+                //     continue;
+                // }
+                //!!!!!!!!!!!!!!!!!!!!!
                 $images       = new ImportImage();
                 $result       = $images->imagesGetStore($html, $newPost->id, 'travel/table');
                 $content      = $result['html'];
-                $images_array = $result['images_array'];
-                dump('Imported images: ', $images_array);
                 $result = $newPost->update([
                     'content' => $content,
                 ]);
 
-                //  Сохраняем пути изображений в БД
-                // $importer->saveImages($images_array);
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollBack();

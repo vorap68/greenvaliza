@@ -10,21 +10,18 @@
         <td height="900">
 
           <!-- ВНУТРЕННЯЯ ТАБЛИЦА -->
-          <table width="85%" border="0" align="center"
-           style="border-spacing: 3px; border-collapse: separate;"
-         >
+          <table width="85%" border="0" align="center" style="border-spacing: 3px; border-collapse: separate;">
             <tbody>
               <tr v-for="(item, i) in items" :key="i">
                 <td width="37%" :style="{
-  backgroundColor: item.background || '#FDF5E6'
-}">
+                  backgroundColor: item.background || '#FDF5E6'
+                }">
                   <img :src="item.left_image" />
                 </td>
 
-                <td width="23%" bgcolor="#FDF5E6" align="center"
-                 :style="{
-  backgroundColor: item.background || '#FDF5E6'
-}">
+                <td width="23%" bgcolor="#FDF5E6" align="center" :style="{
+                  backgroundColor: item.background || '#FDF5E6'
+                }">
                   <em>
                     <strong>
                       <span style="font-size: x-large;">
@@ -40,8 +37,8 @@
                 </td>
 
                 <td width="37%" :style="{
-  backgroundColor: item.background || '#FDF5E6'
-}">
+                  backgroundColor: item.background || '#FDF5E6'
+                }">
                   <img :src="item.right_image" />
                 </td>
               </tr>

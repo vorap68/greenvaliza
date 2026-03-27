@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TravelResource;
 use App\Models\Images\TravelPostImage;
+use App\Models\Images\TravelTableImage;
 use App\Models\Posts\TravelTable;
 use Illuminate\Http\Request;
 
-class TravelTableController extends Controller
+class TravelTableController extends Controller 
 {
     public function index()
     {
@@ -34,10 +35,12 @@ class TravelTableController extends Controller
 
     }
 
-    public function getImages($post_id)
+    public function getImages($id)
     {
-        $traveltable = TravelPostImage::where('travel_post_id', $post_id)->get();
-        return response()->json(['data' => $traveltable]);
+        //dd($id);
+         
+        $tableImages = TravelTableImage::where('travel_table_id', $id)->get();
+        return response()->json(['data' => $tableImages]);
     }
 
     public function visual($id)

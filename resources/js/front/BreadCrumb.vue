@@ -38,12 +38,14 @@ export default {
     /* расстояние между частями */
     margin: 20px 0;
     font-family: "Trebuchet MS", Verdana, Arial, sans-serif;
-    font-size: 18px
+    font-size: 18px;
+    font-weight: bold;
+
 }
 
 .crumb {
     text-decoration: none;
-    color: #3c434a;
+    color: rgb(105, 105, 105)
 }
 
 /* эффект при наведении только для ссылок (не активной) */
@@ -55,5 +57,6 @@ export default {
 
 .crumb.active {
     font-weight: bold;
+    color: rgb(105, 105, 105)
 }
 </style>

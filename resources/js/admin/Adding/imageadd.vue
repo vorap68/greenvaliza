@@ -9,7 +9,7 @@
                 <option value="travel-post">Наши путешествия (Посты)</option>
                 <option value="travel-table">Наши путешествия (Посты-таблицы)</option>
                 <option value="guide">Путеводитель</option>
-                <option value="advices">Советы и полезности</option>
+                <option value="advice">Советы и полезности</option>
                 <option value="mybook">Я и мои книги</option>
             </select>
         </div>
@@ -48,9 +48,15 @@
         </div>
 
         <!-- Загрузка -->
-        <button class="btn btn-success" @click.prevent="storeImages">
-            Загрузить изображения
+        <button class="btn btn-success" @click.prevent="storeImages" :disabled="!selectedPost">
+            Загрузить изображения для выбраного поста
         </button>
+
+        <button class="btn btn-success" @click.prevent="storeImagesNoPost">
+            Добавить изображение без привязки к посту
+        </button>
+
+
 
     </div>
 
@@ -75,7 +81,8 @@ export default defineComponent({
             search: "",
             posts: [],
             filteredPosts: [],
-            selectedPost: null
+            selectedPost: null,
+            hasFiles: false,
         }
     },
 
@@ -89,26 +96,29 @@ export default defineComponent({
 
     },
 
-
-
     async mounted() {
-        this.dropzone = new Dropzone(this.$refs.dropzone,
-            {
-                url: '/api/admin/create-image',
-                clickable: true,
-                acceptedFiles: 'image/*',
-                autoProcessQueue: false,
-                addRemoveLinks: true,
-                dictRemoveFile: 'Удалить файл',
-                maxFilesize: 15, // MB
-            });
+        this.dropzone = new Dropzone(this.$refs.dropzone, {
+            url: '/api/admin/create-image',
+            clickable: true,
+            acceptedFiles: 'image/*',
+            autoProcessQueue: false,
+            addRemoveLinks: true,
+            dictRemoveFile: 'Удалить файл',
+            maxFilesize: 15,
+        });
+
+
     },
 
     methods: {
         async loadPosts() {
             console.log('Загрузка постов для категории:', this.category);
-            // пример — бери меню из /api/admin/advice (или любой свой маршрут)
-            const response = await axios.get(`/api/admin/${this.category}`);
+            // пример — бери меню из /api/admin/advice (или любой свой маршрут) 
+            const response = await axios.get((`/api/admin/${this.category}`), {
+                params: {
+                    all: true,
+                }
+            });
 
             this.posts = response.data.data;
             console.log('Загруженные посты:', this.posts);
@@ -163,6 +173,38 @@ export default defineComponent({
             try {
                 const response = await axios.post(
                     `/api/admin/create-image/${this.category}/${this.selectedPost.id}`,
+                    images,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        }
+                    }
+                );
+
+                console.log('Успех:', response.data);
+            } catch (error) {
+                console.error('Ошибка загрузки:', error);
+            }
+        },
+
+        async storeImagesNoPost() {
+            const files = this.dropzone.getAcceptedFiles();
+            console.log('Выбранные файлы для загрузки:', files);
+
+            if (!files.length) {
+                alert('Выберите файлы');
+                return;
+            }
+
+            const images = new FormData();
+
+            files.forEach((file, index) => {
+                images.append('images[]', file);
+            });
+
+            try {
+                const response = await axios.post(
+                    `/api/admin/create-image/nopost`,
                     images,
                     {
                         headers: {

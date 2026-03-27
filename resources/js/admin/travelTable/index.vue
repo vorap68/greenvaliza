@@ -39,6 +39,13 @@
 
                     <router-link :to="{ name: 'travelTableEdit', params: { id: traveltable.id } }"
                         class="btn btn-warning btn-sm">Редактирование</router-link>
+                    <!-- <router-link :to="{ name: 'travelTableImages', params: { id: traveltable.id } }"
+                        class="btn btn-secondary btn-sm">Картинки 
+
+                    </router-link> -->
+                    <router-link :to="{ name: 'PostImages', params: { id: traveltable.id, category: 'travelTable' } }"
+                        class="btn btn-secondary btn-sm">Картинки</router-link>
+
 
 
 

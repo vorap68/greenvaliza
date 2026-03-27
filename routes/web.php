@@ -1,11 +1,12 @@
 <?php
 
 
-use App\Models\Posts\TravelTable;
+use App\Http\Resources\AdviceResource;
 use App\Models\Categories\AdviceMenu;
 use App\Models\Categories\TravelMenu;
+use App\Models\Posts\TravelPost;
+use App\Models\Posts\TravelTable;
 use Illuminate\Support\Facades\Route;
-use App\Http\Resources\AdviceResource;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,6 +62,8 @@ Route::get('test', function () {
     dump('public_path:',public_path());
     dump('storage_path:',storage_path());
     dump('APP_URL:',env('APP_URL'));
+     $single_posts = TravelPost::where('menu_id', '!=', null )->get();
+     dd(count($single_posts));
 
   })->name('test');
 

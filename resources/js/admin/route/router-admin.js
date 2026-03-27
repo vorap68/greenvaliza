@@ -1,22 +1,20 @@
 import  {createRouter, createWebHistory} from 'vue-router';
- import routesAddinng from './index-admin-add.js';
+ import routesAddinng from './adding-admin.js';
  import travelAdminPostRoutes from './modules_post/travelpost-admin.js';
- import guideAdminPostRoutes from './modules_post/guide-admin.js';
- import adviceAdminPostRoutes from './modules_post/advice-admin.js';
-import mybookAdminPostRoutes from './modules_post/mybook-admin.js';
+ import adminPostRoutes from './modules_post/post-admin.js';
 import postCardMenuroutes from './post-card.js';
 import travelAdminTableRoutes from './modules_post/traveltable-admin.js';
+import imagesAdminRoutes from './modules_post/images-admin.js';
 
 const routeradmin = createRouter({
     history: createWebHistory(),
     routes: [
         ...routesAddinng,
         ...travelAdminPostRoutes,
-        ...guideAdminPostRoutes,
-        ...adviceAdminPostRoutes,
-        ...mybookAdminPostRoutes,
+        ...adminPostRoutes,
         ...postCardMenuroutes,
-        ...travelAdminTableRoutes
+        ...travelAdminTableRoutes,
+        ...imagesAdminRoutes,
     ]
  });
  

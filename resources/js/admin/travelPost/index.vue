@@ -55,11 +55,8 @@
                     <router-link :to="{ name: 'travelPostEdit', params: { id: travelpost.id } }"
                         class="btn btn-warning btn-sm">Редактирование</router-link>
 
-                    <router-link :to="{ name: 'travelPostImages', params: { id: travelpost.id } }"
-                        class="btn btn-secondary btn-sm">Картинки
-
-                    </router-link>
-
+                    <router-link :to="{ name: 'PostImages', params: { id: travelpost.id, category: 'travelPost' } }"
+                        class="btn btn-secondary btn-sm">Картинки</router-link>
 
 
                 </td>

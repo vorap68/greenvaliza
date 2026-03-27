@@ -52,7 +52,7 @@ class TravelContentParser
         // 🔹 ITEMS
 
         $items = [];
-
+       
         foreach ($xpath->query('//table[last()]//table//tr') as $tr) {
             if (! $tr instanceof \DOMElement) {
                 continue;
@@ -63,10 +63,12 @@ class TravelContentParser
                 continue;
             }
 
-               $tds = $tr->getElementsByTagName('td');
+              
             $link = $tr->getElementsByTagName('a')->item(0);
 
               $bgColor = null;
+            
+ $tds = $tr->getElementsByTagName('td');
     if ($tds->length >= 2) {
         $bgColor = $tds->item(1)->getAttribute('bgcolor');
     }

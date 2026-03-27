@@ -1,14 +1,13 @@
 <template>
-  <table class="travel-header" width="90%" border="2" align="center">
+  <table :style="{ backgroundImage: `url(${header.background})` }" class="travel-header" width="90%" border="2"
+    align="center">
     <tbody>
       <tr>
-        <td class="cell image-cell" :style="{ backgroundImage: `url(${header.background})` }" width="201" height="181"
-          align="center">
-          <img :src="header.left_image" width="120" height="120" /> 
+        <td class="cell image-cell" width="201" height="181" align="center">
+          <img :src="header.left_image" width="120" height="120" />
         </td>
 
-        <td class="cell title-cell" :style="{ backgroundImage: `url(${header.background})` }" width="570"
-          align="center">
+        <td class="cell title-cell" width="570" align="center">
           <p class="title" :style="{ color: header.title_color || '#708090' }">
             {{ header.title }}
           </p>
@@ -18,8 +17,7 @@
           </p>
         </td>
 
-        <td class="cell image-cell" :style="{ backgroundImage: `url(${header.background})` }" width="201" height="181"
-          align="center">
+        <td class="cell image-cell" width="201" height="181" align="center">
           <img :src="header.right_image" width="120" height="120" />
         </td>
       </tr>

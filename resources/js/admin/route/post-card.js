@@ -12,12 +12,12 @@ const postCardMenuroutes = [
     },
 
     {
-        path: '/admin/postCard/edit/:category_name/:slug',
+        path: '/admin/postCard/edit/:category_name/:id',
         name: 'postCardEdit',
         component: () => import('../postCard/edit.vue'),
         props: route => ({
             category_name: route.params.category_name,
-            slug: route.params.slug
+            id: route.params.id
         })
 
     },

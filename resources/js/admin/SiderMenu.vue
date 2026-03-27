@@ -40,15 +40,18 @@
                                         <p>Мои путешествия</p>
                                     </router-link>
 
-                                    <router-link :to="{ name: 'advicePosts' }" class="nav-link">
+                                    <router-link :to="{ name: 'PostAdminIndex', params: { category: 'advice' } }"
+                                        class="nav-link">
                                         <i class="nav-icon bi bi-circle"></i>
                                         <p>Советы и полезности</p>
                                     </router-link>
-                                    <router-link :to="{ name: 'guidePosts' }" class="nav-link">
+                                    <router-link :to="{ name: 'PostAdminIndex', params: { category: 'guide' } }"
+                                        class="nav-link">
                                         <i class="nav-icon bi bi-circle"></i>
                                         <p>Путеводители</p>
                                     </router-link>
-                                    <router-link :to="{ name: 'mybookPosts' }" class="nav-link">
+                                    <router-link :to="{ name: 'PostAdminIndex', params: { category: 'mybook' } }"
+                                        class="nav-link">
                                         <i class="nav-icon bi bi-circle"></i>
                                         <p>Я и мои книги</p>
                                     </router-link>
@@ -141,40 +144,6 @@
                         </div>
                     </li>
 
-
-                    <!-- Меню Категории -->
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" data-bs-toggle="collapse" href="#categoriesMenu"
-                            role="button" aria-expanded="{{ request()->routeIs('category.*') ? 'true' : 'false' }}"
-                            aria-controls="categoriesMenu">
-                            <i class="nav-icon bi bi-speedometer"></i>
-                            <p class="mb-0 flex-grow-1">Категории</p>
-                            <i class="bi bi-chevron-down ms-auto"></i>
-                        </a>
-                        <div class="collapse ps-3 {{ request()->routeIs('category.*') ? 'show' : '' }}"
-                            id="categoriesMenu" data-bs-parent="#navigation">
-                            <ul class="nav flex-column">
-                                <li class="nav-item">
-
-                                    <a href="#"
-                                        class="nav-link {{ request()->routeIs('category.index') ? 'active' : '' }}">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Все категории</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-
-
-                                    <a href="#"
-                                        class="nav-link {{ request()->routeIs('category.create') ? 'active' : '' }}">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Добавить категорию</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-
                     <!-- Меню Фото -->
                     <li class="nav-item">
                         <a class="nav-link d-flex align-items-center" data-bs-toggle="collapse" href="#postImageMenu"
@@ -188,22 +157,25 @@
                             id="postImageMenu" data-bs-parent="#navigation">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
-
-                                    <a href="#"
-                                        class="nav-link {{ request()->routeIs('postImage.index') ? 'active' : '' }}">
+                                    <router-link :to="{ name: 'CategoryImages' }" class="nav-link">
                                         <i class="nav-icon bi bi-circle"></i>
-                                        <p>Все фото</p>
-                                    </a>
+                                        <p>Категории</p>
+                                    </router-link>
                                 </li>
                                 <li class="nav-item">
-
-                                    <a href="#"
-                                        class="nav-link {{ request()->routeIs('postImage.create') ? 'active' : '' }}">
+                                    <router-link :to="{ name: 'CardImages' }" class="nav-link">
                                         <i class="nav-icon bi bi-circle"></i>
-                                        <p>Добавить фото</p>
-                                    </a>
+                                        <p>Заставки меню</p>
+                                    </router-link>
+                                </li>
+                                <li class="nav-item">
+                                    <router-link :to="{ name: 'ImageSearch' }" class="nav-link">
+                                        <i class="nav-icon bi bi-circle"></i>
+                                        <p>Поиск изображения</p>
+                                    </router-link>
                                 </li>
                             </ul>
+
                         </div>
                     </li>
 

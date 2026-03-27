@@ -14,6 +14,14 @@ const travelAdminTableRoutes = [
         name: 'travelTableEdit',
         props: true, 
     },
+    
+        {   path: '/admin/traveltable/images/:id', component: () => import('../../travelTable/images.vue'),
+        name: 'travelTableImages',
+       props: route=> ({
+           
+            id: route.params.id, 
+       })
+    },
   
 
 

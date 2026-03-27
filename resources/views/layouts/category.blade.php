@@ -5,25 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
    
 
-    <!-- Fonts -->
-    <!-- <link rel="preconnect" href="https://fonts.bunny.net" />
-    <link
-      href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" 
-      rel="stylesheet"/> -->
 
        <!-- Modernizer должен быть в head -->
     <script src="{{ asset('js/modernizer.js') }}"></script>
 
     <!-- Vue + стили через Vite -->
-    @vite('resources/js/app.js')
+    @vite('resources/js/front.js')
 
     <!-- Кастомные стили -->
-    <link rel="stylesheet" href="{{ asset('css/custom.css') }}"> 
+    <!-- <link rel="stylesheet" href="{{ asset('css/custom.css') }}">  -->
 
   </head>
-  <body class="antialiased"  style="background:url('{{ Storage::url('images/categoryMain/fon.jpg') }}')
-             no-repeat center center fixed;
-             background-size: cover;">
+  <body class="antialiased" >
     
                @yield('content')
             

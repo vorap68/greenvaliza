@@ -30,7 +30,7 @@ class PostSingleCreatorController extends Controller
             'description'  => 'nullable|string',
             'category'     => 'required|string',
             'parent_title' => 'nullable|string',
-            'image'        => 'nullable|image|max:14096',
+            'image'        => 'nullable|image|max:14096', 
         ]);
           
           $slug = $this->slugService->make($validated['title']); 
@@ -51,10 +51,12 @@ class PostSingleCreatorController extends Controller
             // метод из CardCreatorController
              $allRezolutions =null;
             if ($request->hasFile('image')) {
-               // return response()->json(['message' => 'Image file received']);
+           // return response()->json(['message' => 'Image file received']);
                 $imageContent = $request->file('image');
-               $allRezolutions = $cardCreate->createImage($imageContent, $validated['category'], $postMenu);
-            };
+              // $allRezolutions = $cardCreate->createImage($imageContent, $validated['category'], $postMenu);
+               $cardCreate->createImage($imageContent, $validated['category'], $postMenu);
+               // return response()->json(['message' => 'Image processed', 'allRezolutions' => $allRezolutions]);
+               };
             //return response()->json(['message' => 'No image file provided']);
         
      // Создание поста в таблице. 
@@ -77,7 +79,8 @@ class PostSingleCreatorController extends Controller
                 return response()->json(['message' => 'Error creating post (controller)'], 500);
             }
 
-            return response()->json(['id' => $post->id,'images' => $allRezolutions]);
+           // return response()->json(['id' => $post->id,'images' => $allRezolutions]);
+            return response()->json(['id' => $post->id]);
         
     }
 

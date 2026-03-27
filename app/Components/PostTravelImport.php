@@ -1,12 +1,9 @@
 <?php
 namespace App\Components;
 
-use App\Models\Images\TravelPostImage;
-use App\Models\Posts\TravelPost;
-use App\Models\Posts\TravelTable;
 use GuzzleHttp\Client;
 
-class PostTravelImport  
+class PostTravelImport
 {
     public $client;
     protected $post_id;
@@ -19,7 +16,7 @@ class PostTravelImport
         ]);
     }
 
-    public function getPosts($perPage = 2, $page = 2, $is_acf = 'post',$category_id)
+    public function getPosts($perPage = 2, $page = 2, $is_acf = 'post', $category_id)
     {
         //dd($category_id, $is_acf);
         try {
@@ -32,9 +29,9 @@ class PostTravelImport
                 'query'          => [
                     'per_page'   => $perPage,
                     'page'       => $page,
-                    'categories' => $category_id , // ID категории
+                    'categories' => $category_id, // ID категории
                     '_fields'    => 'id,title,slug,excerpt,content,acf,status',
-                    //'_fields'    => 'title, slug, acf',
+                    //'_fields'    => 'id,title, slug, acf',
 
                 ],
             ]);
@@ -65,39 +62,7 @@ class PostTravelImport
         }
     }
 
-    public function createPostCurrent($title, $slug, $description ='', $menu_id= null, $table_id = null)
-    {
-       // dd('createPostCurrent', $title, $slug, $travelMenu_id);
-        $newPost = TravelPost::firstOrCreate(
-            ['slug' => $slug],
-            ['slug'   => $slug,
-                'title'   => $title,
-                'description' => $description,  
-                'content' => '',
-                'menu_id' => $menu_id,
-                'table_id' => $table_id,
-                ]);
-
-        $this->post_id = $newPost->id;
-        //dd('newPost', $newPost);
-        return $newPost;
-    }
-
   
-    public function saveImages($images_array)
-    {
-        $records = [];
-        foreach ($images_array as $item) {
-            $records[] = [
-                'travel_post_id' => $this->post_id,
-                'filename'       => $item,
-                'created_at'     => now(),
-                'updated_at'     => now(),
-            ];
-            dump($this->post_id, $item);
-        }
-
-        TravelPostImage::insert($records);
-    }
+ 
 
 }

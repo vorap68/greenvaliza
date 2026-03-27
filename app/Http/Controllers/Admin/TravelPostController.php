@@ -3,7 +3,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TravelResource;
-use App\Models\Images\TravelPostImage;
 use App\Models\Posts\TravelPost;
 use Illuminate\Http\Request;
 
@@ -18,7 +17,9 @@ class TravelPostController extends Controller
             $search  = $request->input('search');
             $query = $query->where('title', 'like', "%{$search}%");
         }
-        $query = $query->orderBy($request->sort_by,$request->sort_dir) ;
+         if ($request->boolean('all')) {
+        return TravelResource::collection($query->get());
+    }
         return TravelResource::collection($query->paginate(10));
     }
 
@@ -41,14 +42,7 @@ class TravelPostController extends Controller
 
     }
 
-    public function getImages($id)
-    {
-        $postImages = TravelPostImage::where('travel_post_id', $id)->get();
-        //dd($postImages);
-        return response()->json(['data' => $postImages]);
-    }
-
-  
+   
 
     public function visual($id)
     {

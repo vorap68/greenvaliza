@@ -18,13 +18,6 @@ const travelAdminPostRoutes = [
     },
     
 
-        {   path: '/admin/travelposts/images/:id', component: () => import('../../travelPost/images.vue'),
-        name: 'travelPostImages',
-       props: route=> ({
-           
-            id: route.params.id, 
-       })
-    },
 
    
 ]

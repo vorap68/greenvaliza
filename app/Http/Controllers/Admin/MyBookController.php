@@ -3,24 +3,38 @@
 namespace App\Http\Controllers\Admin;
 
 
-use Illuminate\Http\Request;
-use App\Models\Posts\MybookPost;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\MyBookResource;
+use App\Http\Resources\AllPostResource;
 use App\Models\Categories\MyBookMenu;
-use App\Models\Images\MybookPostImage; 
+use App\Models\Posts\MybookPost;
+use Illuminate\Http\Request;
 
 class MyBookController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $MyBook = MybookPost::all();
-      return MyBookResource::collection($MyBook);
+       $query = MybookPost::query();
+     
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query  = $query->where('title', 'like', "%{$search}%"); 
+        }
+
+          $sortBy  = $request->input('sort_by', 'id');
+          $sortDir = $request->input('sort_dir', 'desc');
+            $query->orderBy($sortBy, $sortDir);
+              if ($request->boolean('all')) {
+        return AllPostResource::collection($query->get());
+    }
+       
+        return AllPostResource::collection($query->paginate(10));
+       
     }
 
-     public function show($id){ 
-     $mybook = MybookPost::findOrFail($id);
-       return new MyBookResource($mybook);
+    //метод для получения поста для компонета редактирования
+      public function show($id){
+    $guide = MybookPost::findOrFail($id);
+       return new AllPostResource($guide);
     }
   
     public function update( Request $request,  $id ){
@@ -34,11 +48,7 @@ class MyBookController extends Controller
       
     }
 
-    public function getImages($id) {
-      //dd($id);
-      $postImages = MybookPostImage::where('mybook_post_id', $id)->get();
-      return response()->json(['data' => $postImages]);
-    }
+   
 
        public function visual($id){
       $mybook = MybookPost::findOrFail($id);

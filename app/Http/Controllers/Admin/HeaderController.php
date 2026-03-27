@@ -17,7 +17,9 @@ class HeaderController extends Controller
    
     public function countall(){
      // return response()->json(['test' => 'ok']);
-        $posts = TravelPost::count();
+        $single_posts = TravelPost::where('menu_id', '!=', null )->get();
+
+        $travel_singleposts = count($single_posts);
         $postsAll = TravelPost::all();
         $countPosts = count($postsAll); 
         $guides = GuidePost::count();
@@ -31,6 +33,7 @@ class HeaderController extends Controller
             'advices' => $advices,
              'mybooks' => $mybooks,
              'travel_tables' => $travel_tables,
+             'travel_singleposts' => $travel_singleposts,
             ]);
     }
 

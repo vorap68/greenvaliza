@@ -49,7 +49,7 @@ export default {
     containerStyle() {
       if (!this.travel.id) return {};
       return {
-        backgroundImage: `url('/storage/images/travel/table/${this.travel.id}/firstfon.jpg')`,
+        backgroundImage: `url('/storage/images/travelTable/${this.travel.id}/firstfon.jpg')`,
         backgroundPosition: 'center',
       };
     }

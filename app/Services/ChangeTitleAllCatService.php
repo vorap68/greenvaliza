@@ -3,40 +3,40 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Services\SlugService;
 
 
 class ChangeTitleAllCatService
 {
-      protected SlugService $slugService;
+    // Я убрал изменение слага при изменении названия поста
+    //   protected SlugService $slugService;
 
-    public function __construct(SlugService $slugService)
-    {
-        $this->slugService = $slugService;
-    }
+    // public function __construct(SlugService $slugService)
+    // {
+    //     $this->slugService = $slugService;
+    // }
 
     public function changeTitleCatAll( $post,$menuClass, $newTitle)
     {
         
       
-        $oldSlug = $post->slug;
-         // используем свой сервис
-        $newSlug = $this->slugService->make($newTitle); 
-        if ($oldSlug === $newSlug) {
-            return;
-        }
+        // $oldSlug = $post->slug;
+        //  // используем свой сервис
+        // $newSlug = $this->slugService->make($newTitle); 
+        // if ($oldSlug === $newSlug) {
+        //     return;
+        // }
         // return  $post->$menuClass;
     
          try {
-            DB::transaction(function () use ( $post, $newTitle, $newSlug,$menuClass) { 
+            DB::transaction(function () use ( $post, $newTitle, $menuClass) { 
 
                 //Обновление БД
                 //$post->content = $updatedContent;
                 $post->title   = $newTitle;
-                $post->slug    = $newSlug;
+                // $post->slug    = $newSlug;
                 $post->save();
                 $post->$menuClass->title = $newTitle;
-                $post->$menuClass->slug = $newSlug;
+                // $post->$menuClass->slug = $newSlug;
                 $post->$menuClass->save();
                
             });

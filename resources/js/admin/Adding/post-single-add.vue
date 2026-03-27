@@ -90,11 +90,11 @@ export default defineComponent({
                     formData,
                     { headers: { "Content-Type": "multipart/form-data" } }
                 );
-                console.log('response.data', response.data);
+                console.log('response.data_after_create', response.data);
 
                 // После успешного создания пост-превью-заставка, получаем его ID и 
                 // redirect  на страницу редактирования созданного поста
-                this.$router.push({ name: this.form.category + 'PostEdit', params: { id: response.data.id } });
+                this.$router.push({ name: 'postAdminEdit', params: { category: this.form.category, id: response.data.id } });
 
             } catch (e) {
                 console.error(e);

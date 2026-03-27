@@ -3,18 +3,18 @@
 
         <!-- Текущее изображение -->
         <img v-if="postCard.image"
-            :src="`/storage/images/categoryMenu/${category_name}/${postCard.id}/${postCard.image}`"
+            :src="`/storage/images/categoryMenu/${category_name}/${postCard.id}/original/${postCard.image}`"
             class="card-img-top mb-3 rounded" alt="Изображение поста">
 
         <div class="card-body">
 
             <!-- Заголовок -->
-          
-<h3 class="fw-bold mb-3">
-    {{ postCard.title }}
-</h3>
 
-          <!-- Описание -->
+            <h3 class="fw-bold mb-3">
+                {{ postCard.title }}
+            </h3>
+
+            <!-- Описание -->
             <label class="fw-bold">Описание</label>
             <textarea v-model="postCard.description" class="form-control mb-3"></textarea>
 
@@ -47,7 +47,7 @@ import { defineComponent } from "vue";
 export default defineComponent({
     name: "PostCardEdit",
 
-    props: ["category_name", "slug"],
+    props: ["category_name", "id"],
 
     data() {
         return {
@@ -65,7 +65,7 @@ export default defineComponent({
         async loadPostCard() {
             try {
                 const response = await axios.get(
-                    `/api/admin/postcard/${this.category_name}/${this.slug}`
+                    `/api/admin/postcard/${this.category_name}/${this.id}`
                 );
                 console.log("Загруженная карточка редактирования:", response.data);
                 this.postCard = response.data;
@@ -92,7 +92,7 @@ export default defineComponent({
                 }
 
                 const response = await axios.post(
-                    `/api/admin/postcard/update/${this.category_name}/${this.slug}`,
+                    `/api/admin/postcard/update/${this.category_name}/${this.id}`,
                     formData,
                     { headers: { "Content-Type": "multipart/form-data" } }
                 );

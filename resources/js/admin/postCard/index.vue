@@ -1,5 +1,5 @@
 <template>
-    <h1>Окна меню от {{this.category_name}}</h1>
+    <h1>Окна меню от {{ this.category_name }}</h1>
     <table class="table table-bordered table-hover">
         <thead>
             <tr>
@@ -34,14 +34,15 @@
                     </button>
                 </td>
                 <td>{{ postCard.date }}</td>
-                <td><img :src="`/storage/images/categoryMenu/${category_name}/${postCard.id}/${postCard.image}`">
+                <td><img
+                        :src="`/storage/images/categoryMenu/${category_name}/${postCard.id}/original/${postCard.image}`">
                 </td>
 
                 <td>{{ postCard.slug }}</td>
                 <td>
 
                     <router-link
-                        :to="{ name: 'postCardEdit', params: { category_name: category_name, slug: postCard.slug } }"
+                        :to="{ name: 'postCardEdit', params: { category_name: category_name, id: postCard.id } }"
                         class="btn btn-warning btn-sm">Редактирование</router-link>
                 </td>
             </tr>
@@ -62,22 +63,28 @@ export default defineComponent({
     data() {
         return {
             postCards: [],
-
-
         }
     },
+
     props: ['category_name'],
 
     watch: {
-        category_name(newValue, oldValue) {
-            this.GetPostCardMenu();
+        // category_name(newValue, oldValue) {
+        //     this.GetPostCardMenu();
+        // }
+        '$route.params.category_name': {
+            immediate: true,
+            handler(newValue, oldValue) {
+                console.log('Категория изменилась:', oldValue, '→', newValue);
+                this.GetPostCardMenu();
+            }
         }
     },
 
 
     mounted() {
         console.log('PostCadrs component mounted.');
-        this.GetPostCardMenu();
+        // this.GetPostCardMenu();
     },
 
     methods: {
