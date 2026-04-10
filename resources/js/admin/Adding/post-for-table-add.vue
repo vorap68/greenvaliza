@@ -96,7 +96,7 @@ export default defineComponent({
 
                 // redirect  на страницу редактирования созданного поста
                 this.$router.push({
-                    name: 'travelPostEdit', params: { id: response.data.id }
+                    name: 'travelPostEdit', params: { id: response.data.post_id }
                 }); // передаем id поста и таблицы в параметры маршрута
 
 

@@ -13,19 +13,25 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 /**
- *  Работа с меню в админке всех 4-х категорий: guide, travel, advice, mybook
+ *  Работа с card-menu в админке всех 4-х категорий: guide, travel, advice, mybook
  */
 class PostCardController extends Controller
 {
     protected ImageService $imageService;
 
+    /**
+     * Конструктор для внедрения зависимости ImageService
+     * @param ImageService $imageService Сервис для работы с изображениями
+     */
     public function __construct(ImageService $imageService)
     {
         $this->imageService = $imageService;
-        
-
     }
 
+    /**
+     * Метод для получения данных выбранной категории для компонента card-menu
+     * @param  string $category_name Название категории для получения данных
+     */
     public function index($category_name)
     {
         $postcards = match ($category_name) {
@@ -37,17 +43,14 @@ class PostCardController extends Controller
         return response()->json($postcards);
     }
 
-    public function visual($category_name, $id)
-    {
-       $postcard = $this->getPostCard($category_name, $id);
-        //return response()->json(['current_post  ' => $postcard]);
-        $postcard->is_visual = ! $postcard->is_visual;
-        $postcard->save();
+   
 
-        return response()->json(['is_visual' => $postcard->is_visual]);
-    }
-
-
+/**
+ * метод для получения данных одного поста card-menu 
+ * @param  string $category_name Название категории для получения данных
+ * @param  int $id   ID поста для получения данных
+ * @return \Illuminate\Http\JsonResponse
+ */
     public function show($category_name, $id)
     {
         response()->json(['category_name' => $category_name, 'id' => $id]);
@@ -60,9 +63,16 @@ class PostCardController extends Controller
         return response()->json($postcard);
     }
 
+
+    /**
+     * метод для обновления данных одного поста card-menu
+     * @param  Request $request  Объект запроса, содержащий обновленные данные
+     * @param  string $category_name Название категории для обновления данных
+     * @param  int $id   ID поста для обновления данных
+     * @return \Illuminate\Http\JsonResponse    
+     */
     public function update(Request $request, $category_name, $id)
     {
-
         $validated = $request->validate([
             'title'       => 'required|string',
             'description' => 'required|string',
@@ -78,19 +88,37 @@ class PostCardController extends Controller
             $fullPath[] = Storage::disk('public')->path(
                 "{$path}/{$fileName}"
             );
-            //return  response()->json(['path'=>$path ]);
             Storage::putFileAs($path, $image, $fileName);
             $successResize       = $this->imageService->saveResizedImages($fullPath, null);
             $postcard->imageName = $fileName;
-            // return response()->json(['imageName'=> $imageName, 'imageExten'=>$imageExten ]);
         }
         $postcard->title = $validated['title'];
         $postcard->description = $validated['description'];
         $postcard->save();
-// return response()->json(['successResize' => $successResize]);
         return response()->json($postcard);
     }
 
+    /**
+     * метод для переключения видимости поста card-menu
+      * @param  string $category_name Название категории 
+      * @param  int $id   ID поста для переключения видимости
+      * @return \Illuminate\Http\JsonResponse
+     */
+ public function visual($category_name, $id)
+    {
+       $postcard = $this->getPostCard($category_name, $id);
+        $postcard->is_visual = ! $postcard->is_visual;
+        $postcard->save();
+        return response()->json(['is_visual' => $postcard->is_visual]);
+    }
+
+    /**
+     * приватный метод для получения модели поста card-menu по категории и ID
+      * @param  string $category_name 
+      * @param  int $id   ID поста для получения модели
+      * @return  экземпляр одной из моделей $postcard
+      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     */
     private function getPostCard($category_name,$id) 
     {
       $postcard = match ($category_name) {

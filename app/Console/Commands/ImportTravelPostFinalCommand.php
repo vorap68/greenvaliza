@@ -3,7 +3,7 @@ namespace App\Console\Commands;
 
 use App\Components\CreateNewPost;
 use App\Components\ImportImage;
-use App\Components\PostTravelImport;
+use App\Components\TravelPostTableImport;
 use App\Models\Posts\TravelPost;
 use App\Models\Posts\TravelTable;
 use Illuminate\Console\Command;
@@ -28,8 +28,9 @@ class ImportTravelPostFinalCommand extends Command
         // те это все посты из одной таблицы
         $table_id   = TravelTable::where('term_id', $category_id)->value('id');
         $postCreate = new CreateNewPost();
-        $importer   = new PostTravelImport();
-        $posts      = $importer->getPosts(20, 1, '', $category_id);
+        $importer   = new TravelPostTableImport();
+        $posts      = $importer->getPosts(perPage: 20, page :2, category_id: $category_id) ;
+      
         //dd($posts);
         foreach ($posts as $post) {
             $title   = $post['title']['rendered'];

@@ -29,8 +29,7 @@ class ImportAllPostCommand extends Command
         $category_id = $this->argument('category_id');
         $importer    = new PostAllImport();
         $postCreate  = new CreateNewPost();
-        $posts       = $importer->getPosts(10, 1, $category_id);
-
+        $posts       = $importer-> getPosts(perPage: 10, page: 1,category_id:  $category_id);
         switch ($category_id) {
             case '6':
                 $this->category_name = 'advice';
@@ -47,10 +46,9 @@ class ImportAllPostCommand extends Command
                 $catClassName        = MybookPost::class;
                 $catMenuСlass       = MyBookMenu::class;
                 break;
-
-        }
-        // dd($posts);
-        foreach ($posts as $post) {
+            }
+            
+       foreach ($posts as $post) {
             // dump($post);
             $title            = $post['title']['rendered'];
             $content          = $post['content']['rendered'];

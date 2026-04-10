@@ -109,13 +109,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/images/card/{categoryCard}', [App\Http\Controllers\Admin\Images\ImagesController::class, 'CardMenuImages'])->name('api.images.category.card');
    Route::get('/images/{category}/{id}', [App\Http\Controllers\Admin\Images\ImagesController::class, 'postCategoryImages'])->name('api.post.images.category');
    Route::post('/images/search', [App\Http\Controllers\Admin\Images\ImagesController::class, 'imageSearch'])->name('api.post.images.search');
-    // Route::get('/images/{category}/{id}',function(Request $request) {
-    //     $category = $request->category;
-    //     $id = $request->id;
-    //     dd($category, $id);
-    // });
-
-    //роуты для одного для всех категорий компонента index
+  
 
 });
 

@@ -1,28 +1,40 @@
 <?php
 namespace App\Http\Controllers\Admin\Adding;
 
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Services\SlugService;
 use App\Models\Posts\GuidePost;
 use App\Models\Posts\AdvicePost;
 use App\Models\Posts\MybookPost;
 use App\Models\Posts\TravelPost;
-use App\Models\Posts\TravelTable;
 use App\Http\Controllers\Controller;
 
-use function PHPSTORM_META\type;
 
+/**
+ * Контроллер для создания поста во всех  категориях кроме travel-final 
+ * (для travel-final отдельный контроллер) 
+ */
 class PostSingleCreatorController extends Controller  
 {
  protected SlugService $slugService;
 
+ /**
+  * Конструктор для внедрения сервиса генерации slugов
+  * @param SlugService $slugService 
+  */
     public function __construct(SlugService $slugService)
     {
         $this->slugService = $slugService;
     }
 
 
+    /**
+     * метод для создания поста в категориях travel, guide, advice, mybook для компонента post single
+     * @param  Request $request  Объект запроса, содержащий данные для создания поста
+     *   заголовок, описание, категория, родительский заголовок (для таблицы) и изображение (для карточки меню)
+     * @param  CardCreatorController $cardCreate  Контроллер для создания карточки меню и сохранения изображения
+     * @return \Illuminate\Http\JsonResponse    
+     */
     public function createPost(Request $request, CardCreatorController $cardCreate) 
     {
         $validated = $request->validate([
@@ -34,11 +46,9 @@ class PostSingleCreatorController extends Controller
         ]);
           
           $slug = $this->slugService->make($validated['title']); 
-           //return response()->json(['validated' => $validated]);  
             // Создаем запись в главном меню категории - пост-заставку
-             //Со всеми фото + копии для всех разрешений. И сохраняем  все фото в файловой  системе
-            // метод из CardCreatorController
-            $postMenu = $cardCreate->createCard(
+             // метод createCard из CardCreatorController
+            $postCard = $cardCreate->createCard(
                 title: $validated['title'],
                 slug: $slug,
                 description: $validated['description'],
@@ -46,18 +56,19 @@ class PostSingleCreatorController extends Controller
                 category: $validated['category'],
                 type: 'post'
             );
-           // return response()->json(['card_after_Create' => $postMenu]);
+
               // Сохряняем изображение на диске и создаем ресайзы
-            // метод из CardCreatorController
-             $allRezolutions =null;
+            // метод createImage из CardCreatorController
             if ($request->hasFile('image')) {
-           // return response()->json(['message' => 'Image file received']);
-                $imageContent = $request->file('image');
-              // $allRezolutions = $cardCreate->createImage($imageContent, $validated['category'], $postMenu);
-               $cardCreate->createImage($imageContent, $validated['category'], $postMenu);
-               // return response()->json(['message' => 'Image processed', 'allRezolutions' => $allRezolutions]);
-               };
-            //return response()->json(['message' => 'No image file provided']);
+               $imageContent = $request->file('image');
+               $imageResult = $cardCreate->createImage($imageContent, $validated['category'], $postCard);
+               if (! $imageResult['success']) {
+                   return response()->json(['message' => 'Фото или ресайзы не сохранились (controller)'], 500);
+               }
+            //    return response()->json(['message' => 'Фото сохранено успешно (controller)',
+            //   'image_result' => $imageResult]);
+            } else {
+                return response()->json(['message' => 'фото не выбрано']);};
         
      // Создание поста в таблице. 
             $model = match ($validated['category']) {
@@ -67,7 +78,6 @@ class PostSingleCreatorController extends Controller
                 'mybook' => MybookPost::class,
             };
            
-          //return response()->json(['model' => $model,'cardCreate' => $postMenu]);
             $post = $model::create([
                 'title'       => $validated['title'],
                 'slug'        => $slug,
@@ -78,9 +88,8 @@ class PostSingleCreatorController extends Controller
             if (! $post) {
                 return response()->json(['message' => 'Error creating post (controller)'], 500);
             }
-
-           // return response()->json(['id' => $post->id,'images' => $allRezolutions]);
-            return response()->json(['id' => $post->id]);
+            return response()->json(['post_id' => $post->id,
+            'File_Location' => $imageResult['File_Location']]);
         
     }
 

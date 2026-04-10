@@ -9,8 +9,6 @@
 
         <div class=" content-block">
             <div class="entry-content" v-html="advice.content">
-
-
             </div>
         </div>
     </div>

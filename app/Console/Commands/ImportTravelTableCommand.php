@@ -3,7 +3,7 @@ namespace App\Console\Commands;
 
 use App\Components\CreateNewPost;
 use App\Components\ImportImage;
-use App\Components\TablePostImport;
+use App\Components\TravelPostTableImport;
 use App\Models\Categories\TravelMenu;
 use App\Models\Posts\TravelTable;
 use Illuminate\Console\Command;
@@ -22,10 +22,10 @@ class ImportTravelTableCommand extends Command
     public function handle()
     {
         $postCreate = new CreateNewPost();
-        $importer   = new TablePostImport();
+        $importer   = new TravelPostTableImport();
         $is_acf     = 'table'; // для скачив таблиц
-        $posts      = $importer->getPosts(10, 6, $is_acf, 2);
-        // dd($posts);
+        $posts      =  $importer->getPosts(perPage:10, page:6 , is_acf: $is_acf , category_id: 2);
+        
         $result = [];
         //dd('Посты для импорта', $posts);
         foreach ($posts as $post) {
@@ -48,10 +48,10 @@ class ImportTravelTableCommand extends Command
                 //  если пост уже был — ничего не делаем
 
                 //!!!!!!!!!!!!!!!!!!!!!!!!!!
-                // if (! $newPost->wasRecentlyCreated) {
-                //     DB::rollBack();
-                //     continue;
-                // }
+                if (! $newPost->wasRecentlyCreated) {
+                    DB::rollBack();
+                    continue;
+                }
                 //!!!!!!!!!!!!!!!!!!!!!
                 $images       = new ImportImage();
                 $result       = $images->imagesGetStore($html, $newPost->id, 'travel/table');

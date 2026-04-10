@@ -4,52 +4,44 @@ namespace App\Services;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-
+/**
+ *  Сервис для изменения заголовков в категориях (guide, advice, mybook) в админке
+ *  Этот сервис отвечает за обновление заголовков постов и связанных с ними меню
+ *  при изменении названия поста в админке. Он обеспечивает целостность данных и корректное
+ * обновление всех связанных записей в базе данных, используя транзакции для обеспечения атомарности операций.
+ *
+ */
 class ChangeTitleAllCatService
 {
-    // Я убрал изменение слага при изменении названия поста
-    //   protected SlugService $slugService;
 
-    // public function __construct(SlugService $slugService)
-    // {
-    //     $this->slugService = $slugService;
-    // }
-
-    public function changeTitleCatAll( $post,$menuClass, $newTitle)
+/**
+ * @param object $post          Модель поста, который нужно обновить
+ * @param  string $menuClass      Название связи для доступа к меню (guideMenu, adviceMenu, mybookMenu)
+ * @param  string $newTitle       Новый заголовок для поста и меню
+ * @return \Illuminate\Database\Eloquent\Model  Обновленная модель меню после изменения заголовка
+ * @throws \Exception  Исключение, если возникает ошибка при обнов
+ */
+    public function changeTitleCatAll($post, $menuClass, $newTitle)
     {
-        
-      
-        // $oldSlug = $post->slug;
-        //  // используем свой сервис
-        // $newSlug = $this->slugService->make($newTitle); 
-        // if ($oldSlug === $newSlug) {
-        //     return;
-        // }
-        // return  $post->$menuClass;
-    
-         try {
-            DB::transaction(function () use ( $post, $newTitle, $menuClass) { 
+
+        try {
+            DB::transaction(function () use ($post, $newTitle, $menuClass) {
 
                 //Обновление БД
-                //$post->content = $updatedContent;
-                $post->title   = $newTitle;
-                // $post->slug    = $newSlug;
+                $post->title = $newTitle;
                 $post->save();
                 $post->$menuClass->title = $newTitle;
-                // $post->$menuClass->slug = $newSlug;
                 $post->$menuClass->save();
-               
             });
-            return  $post->$menuClass;
+            return $post->$menuClass;
         } catch (\Exception $e) {
-            
-           Log::error('Change title error',
+
+            Log::error('Change title error',
                 [
-                  //  'category' => $category,
-                    'title'    => $newTitle,
-                    'error'    => $e->getMessage(),
+                    'title' => $newTitle,
+                    'error' => $e->getMessage(),
                 ]);
-            throw $e; // ⬅️ ВАЖНО
+            throw $e;
         }
     }
 

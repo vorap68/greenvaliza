@@ -91,10 +91,27 @@ export default defineComponent({
                     { headers: { "Content-Type": "multipart/form-data" } }
                 );
                 console.log('response.data_after_create', response.data);
+                alert("Карточка меню создана успешно ",
+
+                );
 
                 // После успешного создания пост-превью-заставка, получаем его ID и 
                 // redirect  на страницу редактирования созданного поста
-                this.$router.push({ name: 'postAdminEdit', params: { category: this.form.category, id: response.data.id } });
+                if (this.form.category === 'travel') {
+                    this.$router.push({
+                        name: 'travelPostEdit',
+                        params: { id: response.data.post_id }
+                    });
+                } else {
+                    this.$router.push({
+                        name: 'postAdminEdit',
+                        params: {
+                            category: this.form.category,
+                            id: response.data.post_id
+                        }
+                    });
+                }
+
 
             } catch (e) {
                 console.error(e);

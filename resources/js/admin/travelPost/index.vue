@@ -4,7 +4,7 @@
 
         <div class="input-group" style="max-width: 300px;">
             <input v-model="search" type="text" class="form-control" placeholder="Поиск по названию..."
-                @keyup.enter="loadPosts" />
+                @keyup.enter="page = 1; GetTravelPosts()" />
             <button class="btn btn-primary" @click="page = 1; GetTravelPosts()">
                 🔍
             </button>
@@ -16,9 +16,12 @@
             <tr>
                 <th @click="sort('id')" style="cursor: pointer;">
                     ID
+                    <span v-if="sortBy === 'id'">{{ sortDir === 'asc' ? '▲' : '▼' }}</span>
                 </th>
+
                 <th @click="sort('title')" style="cursor: pointer;">
                     Заголовок
+                    <span v-if="sortBy === 'title'">{{ sortDir === 'asc' ? '▲' : '▼' }}</span>
                 </th>
                 <th>
                     Назначение поста
@@ -93,8 +96,10 @@ export default defineComponent({
             perPage: 10,
             meta: {},
             links: [],
+
         }
     },
+
 
     computed: {
 
@@ -133,16 +138,13 @@ export default defineComponent({
             }
         },
 
-        sort(field) {
-            console.log(field);
-            if (this.sortBy === field) {
+        sort(column) {
+            if (this.sortBy === column) {
                 this.sortDir = this.sortDir === 'asc' ? 'desc' : 'asc';
             } else {
-                this.sortBy = field;
+                this.sortBy = column;
                 this.sortDir = 'asc';
             }
-            console.log(this.sortBy);
-            console.log(this.sortDir);
 
             this.page = 1;
             this.GetTravelPosts();

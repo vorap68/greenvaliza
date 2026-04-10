@@ -3,7 +3,7 @@ namespace App\Console\Commands;
 
 use App\Components\CreateNewPost;
 use App\Components\ImportImage;
-use App\Components\PostTravelImport;
+use App\Components\TravelPostTableImport;
 use App\Models\Categories\TravelMenu;
 use App\Models\Posts\TravelPost;
 use Illuminate\Console\Command;
@@ -22,9 +22,10 @@ class ImportTravelPostMainCommand extends Command
     public function handle()
     {
 
-        $importer   = new PostTravelImport();
+        $importer   = new TravelPostTableImport();
         $postCreate = new CreateNewPost();
-        $posts      = $importer->getPosts(10, 6, 'post', 2);
+         $is_acf     = 'post'; // для скачив постов
+        $posts = $importer->getPosts(perPage: 10, page: 6 , is_acf:  $is_acf , category_id: 2);
         //dd($posts);
         $result = [];
         foreach ($posts as $post) {

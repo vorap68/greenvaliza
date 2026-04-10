@@ -90,7 +90,7 @@ export default defineComponent({
     methods: {
         async GetPostCardMenu() {
             try {
-                const response = await axios.get('/api/admin/postcard-menu/' + this.category_name);
+                const response = await axios.get(`/api/admin/postcard-menu/${this.category_name}`);
                 if (!response.data) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }

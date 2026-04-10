@@ -1,5 +1,10 @@
 <template>
     <div class="row">
+        <div class="col-md-12">
+            <div class="welcome-section sub-header">
+                <h1 class="page-title">Советы и полезности</h1>
+            </div>
+        </div>
 
         <div class="col-sm-6 col-md-4" v-for="advice in advices">
             <article id="post-63989"
@@ -8,17 +13,12 @@
                     <a href="#">
                         <ResponsiveImage class="post-thumb lazyloaded" folder="categoryMenu/advice" :id="advice.id"
                             :imageName="advice.imageName" />
-
-                        <!-- <noscript><img class="post-thumb"
-                                src="https://greenvaliza.co.ua/wp-content/uploads/2025/05/riga40-768x768.jpg"
-                                alt="Рига. Путеводитель" /></noscript> -->
                     </a>
                     <figcaption>
                         <router-link :to="{ name: 'advice-post', params: { slug: advice.slug } }">
                             {{ advice.title }}
                         </router-link>
                         <h2 class="entry-title">
-
                             <a href="#" rel="bookmark">{{ advice.title }}</a>
                         </h2>
                         <p>{{ advice.description }}</p>
@@ -44,10 +44,7 @@ export default {
     data() {
         return {
             advices: [],
-            imageUrl: '',
             imageName: '',
-
-            slug: ''
         }
     },
     methods: {

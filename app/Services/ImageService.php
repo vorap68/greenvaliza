@@ -8,22 +8,39 @@ use Intervention\Image\Drivers\Imagick\Encoders\JpegEncoder;
 use Intervention\Image\Drivers\Imagick\Encoders\PngEncoder;
 use Intervention\Image\ImageManager;
 
+
+/**
+ * 
+ */
 class ImageService
 {
     protected ImageManager $manager;
     protected string $disk = 'public';
     public $path;
 
+    /**
+     * Конструктор для инициализации менеджера изображений с драйвером Imagick
+     
+     */
     public function __construct()
     {
         $this->manager = new ImageManager(new Driver());
     }
 
-    public function saveResizedImages(array $filePathArray) 
+    /**
+     * Метод для создания ресайзов изображения и сохранения их на диске
+     * @param array $filePathArray Массив путей к исходным изображениям для обработки
+     * @return bool Результат успешности сохранения изображений
+     */
+    public function saveResizedImages($filePathArray) 
     {
+        if (!is_array($filePathArray) ) {
+            $filePathArray = [$filePathArray];
+        }
+        //return response()->json(['filePathArray' => $filePathArray]);
         // пример элемента массива fileNameArray
         // /var/www/storage/app/public/images/mybook/2/original/my.jpg
-        foreach ($filePathArray as $key => $source) {
+        foreach ($filePathArray as $key => $source) { 
             // return response()->json(['key'=>$key,'source' => $source]);
             // Размеры: ключ => [width, height, use_as_width_for_srcset]
             $sizes = [
@@ -39,7 +56,6 @@ class ImageService
             // Сделаем базовое имя и расширение
             $basename   = pathinfo($imageData['filename'], PATHINFO_FILENAME);
             $imageExten = pathinfo($imageData['filename'], PATHINFO_EXTENSION);
-            //  return response()->json(['source' => $source, 'basename' => $basename,'imageExten'=>$imageExten]);
             $results = [];
             // Кодируем исход в строку, чтобы многократно делать make() без побочек
             $originalBlob = $imageData['contents'];
@@ -56,13 +72,6 @@ class ImageService
                 storage_path('app/public') . '/',
                 '', $absoluteDir);
             //  dump('Относительный путь к директории для сохранения', $relativeDir);
-
-        //    // Добавл права на папку resize
-        //    $resizeDir = Storage::disk('public')->path( "{$relativeDir}/resize");
-        //    if(is_dir($resizeDir)){
-        //    //return response()->json(['path', $resizeDir]);
-        //     chmod($resizeDir, 0777);
-        //    }
 
             foreach ($sizes as $key => [$w, $h, $mode]) {
                 $filename = "{$basename}_{$key}";
@@ -111,9 +120,7 @@ class ImageService
                         default:
                             $encoded = $img->encode(new JpegEncoder(quality: 90));
                     }
-                    //  dd($encoded);
-
-                   $success = Storage::disk('public')->put($path, (string) $encoded);
+                $success = Storage::disk('public')->put($path, (string) $encoded);
                   
                   // return response()->json(['save result', $success, $path]);
 
@@ -123,14 +130,6 @@ class ImageService
                 }
             }
 
-            // Соберём srcset (widths для каждого размера)
-            $srcsetParts = [];
-            foreach ($sizes as $key => [$w, $h]) {
-                if (isset($results[$key])) {
-                    $srcsetParts[] = $results[$key] . ' ' . $w . 'w';
-                }
-            }
-          
         }
              return $success;
     }

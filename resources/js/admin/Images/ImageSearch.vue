@@ -11,28 +11,27 @@
     </button>
   </div>
 
-  <!-- <div class="col" v-for="img in imagesArray">
+
+  <div class="row row-cols-1 row-cols-md-3 g-3">
+    <div class="col" v-for="img in images" :key="img.id">
       <div class="card h-100 shadow-sm">
-        <img decoding="async" :src="`/storage/images/${img.category}/${img.post_id}/resize/${img.filethumb}`"
-          class="card-img-top" alt="image">
-        <div class="card-body">
-          <p class="card-text small">{{ img.filethumb }}</p>
 
-        </div>
-      </div>
-    </div> -->
-  <div class="col" v-for="img in images">
-    <div class="card h-100 shadow-sm">
-
-
-      <div class="card-body">
-        <div class="card h-100 shadow-sm">
+        <div class="text-center p-2">
           <img decoding="async" :src="`/storage/images/${img.category}/${img.post_id}/resize/${img.filethumb}`"
-            class="card-img-top" alt="image">
+            class="img-fluid rounded" alt="image" style="max-height: 240px; width: auto; object-fit: contain;">
         </div>
-        <p class="card-text small">{{ img.filename }}</p>
-        <p class="card-text small">{{ img.category }}</p>
-        <p class="card-text small">{{ img.post_id }}</p>
+
+        <div class="card-body pt-2">
+          <p class="card-text small mb-1">
+            имя: <span class="fw-semibold text-primary ms-1">{{ img.filename }}</span>
+          </p>
+          <p class="card-text small mb-1">
+            категория: <span class="fw-semibold text-success ms-1">{{ img.category }}</span>
+          </p>
+          <p class="card-text small mb-1">
+            id поста: <span class="fw-semibold text-dark ms-1">{{ img.post_id }}</span>
+          </p>
+        </div>
 
       </div>
     </div>

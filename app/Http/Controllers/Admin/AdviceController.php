@@ -11,6 +11,11 @@ use Illuminate\Http\Request;
  */
 class AdviceController extends Controller
 {
+    /**
+     * Метод для получения всех постов с пагинацией, поиском и сортировкой для админки
+     * @param  Request $request  Объект запроса, содержащий параметры поиска, сортировки и пагинации
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
     public function index(Request $request)
     { 
         $query = AdvicePost::query();
@@ -28,6 +33,12 @@ class AdviceController extends Controller
         return AllPostResource::collection($query->paginate(10));
     }
 
+    /**
+     * Метод для обновления совета
+     * @param  Request $request  Объект запроса, содержащий обновленные данные
+     * @param  int $id           ID совета для обновления
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update(Request $request, $id)
     {
         $content         = $request->input('content');
@@ -37,13 +48,21 @@ class AdviceController extends Controller
         return response()->json(['message' => 'advice post updated successfully']);
     }
 
-    //метод для получения поста для компонета редактирования
+    /**
+     * метод для получения поста для компонета редактирования
+     * @param  int $id           ID поста для получения
+     * @return AllPostResource
+     */
     public function show($id)
     {
         $guide = AdvicePost::findOrFail($id);
         return new AllPostResource($guide);
     }
 
+     /**
+      *  метод для переключения видимости поста
+      * @param  int $id   ID поста для переключения видимости 
+      */   
     public function visual($id)
     {
         $advice            = AdvicePost::findOrFail($id);

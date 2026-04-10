@@ -3,7 +3,7 @@ namespace App\Components;
 
 use GuzzleHttp\Client;
 
-class TablePostImport
+class TravelPostTableImport
 {
     public $client;
     protected $post_id;
@@ -16,7 +16,7 @@ class TablePostImport
         ]);
     }
 
-    public function getPosts($perPage = 5, $page = 1, $is_acf = 'post')
+    public function getPosts(int $perPage,int $page ,int $category_id,  string $is_acf = 'post') 
     {
         //dd($category_id, $is_acf);
         try {
@@ -29,9 +29,9 @@ class TablePostImport
                 'query'          => [
                     'per_page'   => $perPage,
                     'page'       => $page,
-                    'categories' => 2 , // ID категории
+                    'categories' => $category_id, // ID категории
                     '_fields'    => 'id,title,slug,excerpt,content,acf,status',
-                    //'_fields'    => 'title, slug, acf',
+                    //'_fields'    => 'id,title, slug, acf',
 
                 ],
             ]);
@@ -61,5 +61,4 @@ class TablePostImport
             dd('Ошибка при загрузке постов:', $e->getMessage());
         }
     }
-
-  }
+}

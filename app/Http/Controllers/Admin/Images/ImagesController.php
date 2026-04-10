@@ -9,20 +9,35 @@ use App\Models\Categories\TravelMenu;
 use App\Models\Images\Images;
 use Illuminate\Http\Request;
 
+
+/**
+ * Контроллер для работы с изображениями в админке
+ */
 class ImagesController extends Controller
 {
-     //Возвращает фото для опред категории , для админ->фото->категории
+    /**
+     * 
+     * метод для получения всех фото определенной категории для админки->фото
+     * @param  string $category  категория для получения фото
+     * @return \Illuminate\Http\JsonResponse
+     */
+     
   public function categoryImages($category)
     {
        $imagesData = [];   
         $imagesData = Images::where('category', $category)->paginate(20);
-        return response()->json(['imageData' => $imagesData
+        return response()->json(
+            ['imageData' => $imagesData
        ]);
     }
 
 
-    //Возвращает фото выбраного поста для опред категории
-    //Для админ->посты
+    /**
+     * Возвращает фото выбраного поста для опред категории  для админ->посты
+     * @param  string $category  категория для получения фото
+     * @param  int $id  ID поста для получения фото
+     * @return \Illuminate\Http\JsonResponse
+     */
   public function postCategoryImages($category,$id)
     {
        $imagesData = [];   
@@ -31,11 +46,15 @@ class ImagesController extends Controller
        ]);
     }
     
-      //Возвращает фото для карточек меню опред категории , для админ-фото
+      
+    /**
+     * Возвращает фото для карточек меню опред категории , для админ-фото
+     * @param  string $categoryCard  категория для получения фото
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function CardMenuImages($categoryCard)
     {
         $imagesCard = [];   
-        //dd($categoryCard);
         $imagesCard = match ($categoryCard) {
             'travel' => TravelMenu::select('id','imageName')->get(),
             'guide'  => GuideMenu::select('id','imageName')->get(),
@@ -46,8 +65,12 @@ class ImagesController extends Controller
       
     }
 
-    //поиск фото по именим
-         public function imageSearch(Request $request)
+    /**
+     * поиск фото по именим
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function imageSearch(Request $request)
     { 
         $query = Images::query();
         if ($request->has('search')) {

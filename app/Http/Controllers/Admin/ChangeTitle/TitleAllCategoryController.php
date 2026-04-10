@@ -1,28 +1,38 @@
 <?php
 namespace App\Http\Controllers\Admin\ChangeTitle;
 
-use Illuminate\Http\Request;
 use App\Models\Posts\AdvicePost;
-use App\Models\Posts\TravelPost;
-use App\Models\Posts\TravelTable;
 use App\Services\ChangeTitleAllCatService;
-use App\Services\ChangeTitleTravelService;
+use Illuminate\Http\Request;
 
-class TitleAllCategoryController 
+/**
+ * Контроллер для изменения заголовков в категориях (guide, advice, mybook) в админке
+ *  непосредственное изменение заголовков происходит в сервисе ChangeTitleAllCatService
+ * контроллер отвечает за получение данных из запроса и передачу их в сервис, а также за возврат ответа клиенту
+ */
+class TitleAllCategoryController
 {
-
     protected $serviceAllCat;
-    protected $serviceTravelCat;
 
-    public function __construct(ChangeTitleAllCatService $serviceAllCat) 
+    /**
+     *  Конструктор для внедрения сервиса изменения заголовков
+     * @param  ChangeTitleAllCatService $serviceAllCat  Сервис для изменения заголовков
+     */
+    public function __construct(ChangeTitleAllCatService $serviceAllCat)
     {
-        $this->serviceAllCat    = $serviceAllCat;
-       }
+        $this->serviceAllCat = $serviceAllCat;
+    }
 
+    /**
+     * Метод для обновления заголовка поста в зависимости от категории (кроме travel)
+     * @param  string $category_name  Название категории (guide, advice, mybook)
+     * @param  int $id                ID поста для обновления
+     * @param  Request $request        Объект запроса, содержащий новый заголовок
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateAllCat($category_name, $id, Request $request)
     {
         $newTitle = $request->input('title');
-       // return response()->json(['title' => $newTitle, 'category' => $category_name, 'id' => $id]);
         // Логика изменения заголовка в зависимости от категории
         switch ($category_name) {
             case 'guide':
@@ -39,21 +49,18 @@ class TitleAllCategoryController
                 $menuClass  = 'mybookMenu';
                 break;
             default:
-                return response()->json(['message' => 'Invalid category name'], 400); 
+                return response()->json(['message' => 'Invalid category name'], 400);
         }
 
         $post = $modelClass::with($menuClass)->find($id);
-    
-        //return response()->json(['post' => $post]);
-       if (! $post) {
-            return response()->json(['message' => 'Post not found'], 404); 
+
+        if (! $post) {
+            return response()->json(['message' => 'Post not found'], 404);
         }
 
         // Вызов сервиса для изменения путей
-        $result = $this->serviceAllCat->changeTitleCatAll( $post, $menuClass, $newTitle);
+        $result = $this->serviceAllCat->changeTitleCatAll($post, $menuClass, $newTitle);
         return response()->json(['message' => 'Title changed successfully', 'data' => $result]);
     }
 
-    
-   
 }

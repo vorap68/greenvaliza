@@ -22,7 +22,7 @@
 
                     </li>
 
-                    <!-- Меню Статьи -->
+                    <!-- Меню Посты -->
                     <li class="nav-item">
                         <a class="nav-link d-flex align-items-center" data-bs-toggle="collapse" href="#postMenu"
                             role="button" aria-expanded="{{ request()->routeIs('post.*') ? 'true' : 'false' }}"
@@ -64,6 +64,9 @@
                             </ul>
                         </div>
                     </li>
+
+
+                    <!-- Меню Карточки-меню -->
                     <li class="nav-item">
                         <a class="nav-link d-flex align-items-center" data-bs-toggle="collapse" href="#postCardMenu"
                             role="button" aria-expanded="{{ request()->routeIs('post.*') ? 'true' : 'false' }}"
@@ -103,6 +106,9 @@
                         </div>
                     </li>
 
+
+
+                    <!-- Меню добавления контента -->
                     <li class="nav-item">
                         <a class="nav-link d-flex align-items-center" data-bs-toggle="collapse" href="#adding"
                             role="button" aria-expanded="{{ request()->routeIs('post.*') ? 'true' : 'false' }}"

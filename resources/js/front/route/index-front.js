@@ -1,5 +1,3 @@
-//import travelMenuRoutes from './modules/travelMenuRoutes';
-
 const routesfront = [
     {
         path: '/', component: () => import('../Main.vue'),
@@ -7,12 +5,27 @@ const routesfront = [
     },
 
     {
-        path: '/:slug',
-        name: 'Category',
-        props: true,
-        component: () => import('../CategoryView.vue'),
+        path: '/travel',
+        name: 'Travel',
+       component: () => import('../travel/Menu.vue'),
+    },
+    {
+        path: '/advice',
+        name: 'Advice',
+       component: () => import('../advice/Menu.vue'),
+    },
+    {
+        path: '/guide',
+        name: 'Guide',
+       component: () => import('../guide/Menu.vue'),
+    },
+    {
+        path: '/mybook',
+        name: 'Mybook',
+       component: () => import('../mybook/Menu.vue'),
     },
 
+   
     {
         path: '/travel/:slug',
         name: 'travel-postmenu',
@@ -40,14 +53,14 @@ const routesfront = [
             type: route.query.type
         })
     },
-    
+
     {
         path: '/guide/:slug',
         name: 'guide-post',
         component: () => import('../guide/guide-post.vue'),
         props: route => ({
             slug: route.params.slug,
-          
+
         })
     },
     {
@@ -56,26 +69,20 @@ const routesfront = [
         component: () => import('../advice/advice-post.vue'),
         props: route => ({
             slug: route.params.slug,
-          
+
         })
     },
-    
+
     {
         path: '/mybook/:slug',
         name: 'mybook-post',
         component: () => import('../mybook/mybook-post.vue'),
         props: route => ({
             slug: route.params.slug,
-          
+
         })
     }
 
-
-
-
-
-
-   
 ]
 
 export default routesfront; 

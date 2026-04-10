@@ -11,7 +11,6 @@ class CreateNewPost
             ['slug' => $slug],
             array_merge(['slug' => $slug], $data)
         );
-        // $this->post_id = $newPost->id;
-        return $newPost;
+       return $newPost;
     }
 }

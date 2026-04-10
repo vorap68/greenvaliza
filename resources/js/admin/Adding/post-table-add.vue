@@ -18,27 +18,17 @@
                 placeholder="Краткое описание"></textarea>
         </div>
 
-        <!-- Категория -->
-
-
-
-
         <input type="file" @change="onFileChange" />
         <!-- Кнопка -->
         <button class="btn btn-primary" @click="createPost">
             Создать таблицу и заставку-пост
         </button>
-
     </div>
-
-
 </template>
 
 <script>
 import { defineComponent } from 'vue';
 import axios from 'axios';
-
-
 
 export default defineComponent({
     name: 'AddingPostTable',
@@ -54,17 +44,12 @@ export default defineComponent({
         }
     },
 
-
-
-
     methods: {
         onFileChange(e) {
             this.form.image = e.target.files[0];
         },
 
-
         async createPost() {
-
             const formData = new FormData();
             console.log('formData', formData);
             formData.append("title", this.form.title);
@@ -80,12 +65,14 @@ export default defineComponent({
                 );
                 console.log('response.data', response.data);
 
-
-                // redirect  на страницу редактирования созданного поста
-                this.$router.push({ name: 'travelTableEdit', params: { id: response.data.id } });
+                // redirect  на страницу редактирования созданного поста-таблицы
+                this.$router.push({ name: 'travelTableEdit', params: { id: response.data.post_id } });
 
             } catch (e) {
-                console.error(e);
+                console.error('FULL ERROR:', e);
+                console.log('response:', e.response);
+                console.log('data:', e.response?.data);
+                console.log('status:', e.response?.status);
                 alert("Ошибка создания поста (component)");
             }
         }

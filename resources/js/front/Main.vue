@@ -4,7 +4,7 @@
 
             <article class="grid hentry">
                 <figure class="effect-smart">
-                    <router-link :to="{ name: 'Category', params: { slug: category.slug } }">
+                    <router-link :to="`${category.name}`">
 
                         <ResponsiveImage class="post-thumb lazyloaded" :id="category.id" :imageName="category.imageName"
                             folder="categoryMain" />
@@ -15,7 +15,7 @@
 
                     <figcaption>
                         <h2 class="entry-title">
-                            <router-link :to="{ name: 'Category', params: { slug: category.slug } }">
+                            <router-link :to="`${category.name}`">
                                 {{ category.title }}
 
                             </router-link>

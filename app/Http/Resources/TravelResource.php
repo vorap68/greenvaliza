@@ -27,7 +27,7 @@ class TravelResource extends JsonResource
              "is_visual" => $this->is_visual,
               'image' => $this->imageName,
             'table_id' => $this->table_id, // только для постов внутри таблицы
-              // только для админки, для вывода таблицы всех постов
+              // только для админки, для вывода таблицы всех постов (поле "Назначение поста") 
               'sense' => $this->table_id ? TravelTable::select('title')->where('id', $this->table_id)->value('title') : 'SinglePost',   
            
         ];
