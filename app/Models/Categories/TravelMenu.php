@@ -2,7 +2,6 @@
 
 namespace App\Models\Categories;
 
-use App\Models\Post;
 use App\Models\Posts\TravelPost;
 use App\Models\Posts\TravelTable;
 use Illuminate\Database\Eloquent\Model;
@@ -11,9 +10,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class TravelMenu extends Model
 {
     use HasFactory;
+
+    /**
+     * The table associated with the model.
+     */
      protected $table = 'travel_menu';
 
-      
+      /**
+       * The attributes that are mass assignable.
+         */
     protected $fillable = [
         'title',
        'imageName',
@@ -25,6 +30,9 @@ class TravelMenu extends Model
       
     ];  
 
+    /**
+     * Get the travel post associated with the travel menu.
+     */
     public function travelPost()
     {
         return $this->hasOne(TravelPost::class, 'menu_id', 'id');

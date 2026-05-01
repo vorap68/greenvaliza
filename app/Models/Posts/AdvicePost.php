@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class AdvicePost extends Model
 {
     use HasFactory;
+
+    /**
+     * The table associated with the model.
+         */
      protected $table = 'advice_posts';
 
     protected $fillable = [
@@ -19,6 +23,9 @@ class AdvicePost extends Model
         'menu_id',
     ];  
 
+    /**
+     * Get the advice menu associated with the advice post.
+     */
     public function adviceMenu()
     {
         return $this->belongsTo(\App\Models\Categories\AdviceMenu::class,'menu_id'); 

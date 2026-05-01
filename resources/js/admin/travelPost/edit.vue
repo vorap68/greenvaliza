@@ -21,7 +21,6 @@
                     </button>
                 </div>
 
-
                 <div>
                     <Codemirror v-model="travelpost.content" :extensions="[html()]" :theme="oneDark" :style="{
                         height: '500px',
@@ -54,11 +53,19 @@ import { oneDark } from '@codemirror/theme-one-dark';
 import { html as beautifyHtml } from 'js-beautify'; // 👈 импорт форматтера
 
 
-
+/** @typedef {Object} TravelPost
+ * @property {number} id - ID путешествия
+ * @property {string} title - Заголовок путешествия
+ * @property {string} content - Содержание путешествия
+ * @property {string} slug - Slug путешествия
+ * @property {string} sense - Тип путешествия
+ */
 export default defineComponent({
     name: 'TravelEdit',
     components: { Codemirror },
-    props: ['id'],
+    props: [
+        /** @type {number} */
+        'id'],
 
     data() {
         return {
@@ -104,10 +111,15 @@ export default defineComponent({
         async changeTitle() {
             const newTitle = this.travelpost.title.trim();
             console.log(' поста sense:', this.travelpost.sense);
-            // изменения названия по разному для одиночного поста и поста внутри таблицы
-            //поэтому что в контроллере разные методы для изменения названия
+
 
             try {
+                /**
+                 * изменения названия по происходит разному для одиночного поста и поста внутри таблицы
+                 * поэтому что в контроллере разные методы для изменения названия
+                 * @type {string} type - тип изменения названия 
+                 * ('single' для одиночного поста, 'final' для поста внутри таблицы)
+                 */
                 const type = this.travelpost.sense === 'SinglePost'
                     ? 'single'
                     : 'final';

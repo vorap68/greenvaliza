@@ -9,6 +9,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class GuidePost extends Model
 {
     use HasFactory;
+     /**
+     * The table associated with the model.
+         */
+     protected $table = 'guide_posts';
+    
        protected $fillable = [
          'title',
         'content',
@@ -18,6 +23,10 @@ class GuidePost extends Model
          'menu_id',
          ]; 
 
+
+         /**
+          * Get the guide menu associated with the guide post.
+          */
          public function guideMenu()
          {
              return $this->belongsTo(GuideMenu::class, 'menu_id');

@@ -74,20 +74,18 @@ Route::prefix('admin')->group(function () {
     Route::get('/guide/{slug}', [App\Http\Controllers\Admin\GuideController::class, 'show'])->name('api.guide.show');
     Route::put('/guide/{id}', [App\Http\Controllers\Admin\GuideController::class, 'update'])->name('api.guide.update');
     Route::patch('/guide/{id}/toggle-visual', [App\Http\Controllers\Admin\GuideController::class, 'visual'])->name('api.guide.visual');
-    Route::get('/guide-images/{id}', [App\Http\Controllers\Admin\GuideController::class, 'getImages'])->name('api.guides.getImages');
 
-    // роуты для тревел постов и травел таблиц
+    // роуты для тревел постов 
     Route::get('/travel-post', [App\Http\Controllers\Admin\TravelPostController::class, 'index'])->name('api.travels.index');
    Route::get('/travel-post/{id}', [App\Http\Controllers\Admin\TravelPostController::class, 'postShow'])->name('api.travels.postshow');
    Route::put('/travel-post/{id}', [App\Http\Controllers\Admin\TravelPostController::class, 'update'])->name('api.travels.update');
     Route::patch('/travel-post/{id}/toggle-visual', [App\Http\Controllers\Admin\TravelPostController::class, 'visual'])->name('api.travels.visual');
-    Route::get('/travel-post-images/{id}', [App\Http\Controllers\Admin\TravelPostController::class, 'getImages'])->name('api.travels.getImages');
     
+    // роуты для  травел таблиц
     Route::get('/travel-table', [App\Http\Controllers\Admin\TravelTableController::class, 'index'])->name('api.travels.index');
     Route::get('/travel-table/{id}', [App\Http\Controllers\Admin\TravelTableController::class, 'tableShow'])->name('api.travels.tableshow');
     Route::put('/travel-table/{id}', [App\Http\Controllers\Admin\TravelTableController::class, 'update'])->name('api.travels.update');
     Route::patch('/travel-table/{id}/toggle-visual', [App\Http\Controllers\Admin\TravelTableController::class, 'visual'])->name('api.travels.visual');
-       Route::get('/travel-table-images/{id}', [App\Http\Controllers\Admin\TravelTableController::class, 'getImages'])->name('api.travels.getImages');
  
 
     //роуты для советов 
@@ -95,16 +93,14 @@ Route::prefix('admin')->group(function () {
     Route::get('/advice/{id}', [App\Http\Controllers\Admin\AdviceController::class, 'show'])->name('api.advices.show');
     Route::put('/advice/{id}', [App\Http\Controllers\Admin\AdviceController::class, 'update'])->name('api.advices.update');
     Route::patch('/advice/{id}/toggle-visual', [App\Http\Controllers\Admin\AdviceController::class, 'visual'])->name('api.advices.visual');
-    Route::get('/advice-images/{id}', [App\Http\Controllers\Admin\AdviceController::class, 'getImages'])->name('api.advices.getImages');
 
     // роуты для моих книг
     Route::get('/mybook', [App\Http\Controllers\Admin\MyBookController::class, 'index']);
     Route::get('/mybook/{slug}', [App\Http\Controllers\Admin\MyBookController::class, 'show'])->name('api.mybook.show');
     Route::put('/mybook/{id}', [App\Http\Controllers\Admin\MyBookController::class, 'update'])->name('api.mybook.update');
     Route::patch('/mybook/{id}/toggle-visual', [App\Http\Controllers\Admin\MyBookController::class, 'visual'])->name('api.mybook.visual');
-    Route::get('/mybook-images/{id}', [App\Http\Controllers\Admin\MyBookController::class, 'getImages'])->name('api.mybook.getImages');
 
-//роуты для фото
+//роуты для получения фото по категориям,по постам и для поиска фото
     Route::get('/images/{category}', [App\Http\Controllers\Admin\Images\ImagesController::class, 'categoryImages'])->name('api.images.category');
     Route::get('/images/card/{categoryCard}', [App\Http\Controllers\Admin\Images\ImagesController::class, 'CardMenuImages'])->name('api.images.category.card');
    Route::get('/images/{category}/{id}', [App\Http\Controllers\Admin\Images\ImagesController::class, 'postCategoryImages'])->name('api.post.images.category');

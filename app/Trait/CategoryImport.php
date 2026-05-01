@@ -2,24 +2,28 @@
 namespace App\Trait;
 
 use Illuminate\Support\Facades\Storage;
-use App\Services\ImageService;
 
 trait CategoryImport
 {
     protected $client;
     public $imageExten;
     public $imageName;
-    //public $category_name;
 
-    protected function initClient() 
+    /**
+     * Инициализация клиента Guzzle
+     */
+    protected function initClient()
     {
         $this->client = new \GuzzleHttp\Client([
-            'base_uri' => 'https://greenvaliza.co.ua/wp-json/wp/v2/', 
+            'base_uri' => 'https://greenvaliza.co.ua/wp-json/wp/v2/',
             'timeout'  => 10.0,
         ]);
     }
 
-    protected function getPosts($perPage=10, $page = 1, $category_id )
+    /**
+     * Получение постов из API для конкретной категории
+     */
+    protected function getPosts($perPage = 10, $page = 1, $category_id)
     {
         $response = $this->client->get('posts', [
             'verify' => false, // отключает SSL проверку
@@ -36,18 +40,21 @@ trait CategoryImport
         return $data;
     }
 
-    protected function saveImages($imageUlr, $cleanFileName,$post_id, $category_name)
+/**
+ * Сохранение изображения для карточек главного меню   и его ресайз
+ */
+    protected function saveImages($imageUlr, $cleanFileName, $post_id, $category_name)
     {
-        $imageContent     = file_get_contents($imageUlr);
-      $relativePath     = "images/categoryMenu/{$category_name}/{$post_id}/original/{$cleanFileName}";
+        $imageContent = file_get_contents($imageUlr);
+        $relativePath = "images/categoryMenu/{$category_name}/{$post_id}/original/{$cleanFileName}";
         Storage::disk('public')->put($relativePath, $imageContent);
-         // абсолютный путь к сохранённому оригиналу
-    $absolutePath = Storage::disk('public')->path($relativePath);
+        // абсолютный путь к сохранённому оригиналу
+        $absolutePath = Storage::disk('public')->path($relativePath);
 
-    // вызываем сервис ресайзов
-    $imageService = app(\App\Services\ImageService::class);
-    $imageService->saveResizedImages($absolutePath);
-        
+        // вызываем сервис ресайзов
+        $imageService = app(\App\Services\ImageService::class);
+        $imageService->saveResizedImages($absolutePath);
+
     }
 
 }

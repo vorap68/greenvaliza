@@ -18,6 +18,10 @@
 export default {
   name: 'TravelItem',
 
-  props: ['item']
+  props: [
+    /**
+     * @type {Object} item - объект, содержащий данные для отображения элемента путешествия
+     */
+    'item']
 };
 </script>

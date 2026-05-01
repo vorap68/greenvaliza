@@ -1,8 +1,6 @@
 <template>
     <div class="card" style="width:auto;">
         <div class="card-body">
-
-
             <div class="d-flex flex-column gap-3">
                 <div>
                     <li class="nav-item">
@@ -16,13 +14,10 @@
                 </div>
                 <div class="d-flex flex-column gap-2">
                     <input type="text" v-model="post.title" class="form-control">
-
                     <button class="btn btn-primary align-self-start" @click="changeTitle">
                         💾 Изменить название поста
                     </button>
                 </div>
-
-
                 <div>
                     <Codemirror v-model="post.content" :extensions="[html()]" :theme="oneDark" :style="{
                         height: '500px',
@@ -54,12 +49,27 @@ import { html } from '@codemirror/lang-html';
 import { oneDark } from '@codemirror/theme-one-dark';
 import { html as beautifyHtml } from 'js-beautify'; // 👈 импорт форматтера
 
-
+/**
+ * @typedef {Object} Post
+ * @property {number} id
+ * @property {string} title
+ * @property {string} content
+ * @property {string} slug
+ */
 
 export default defineComponent({
     name: 'postAdminEdit',
     components: { Codemirror },
-    props: ['id',
+    props: [
+        /**
+         *  ID поста, который нужно отредактировать
+         * @type {number}
+          */
+        'id',
+        /**
+         * Категория поста (например, 'advice', 'travel' и т.д.)
+            * @type {string}
+         */
         'category'
     ],
 
@@ -73,7 +83,6 @@ export default defineComponent({
     },
 
     async mounted() {
-
         await this.GetPost();
         console.log('Редактирование поста с категория:', this.category);
     },
@@ -86,7 +95,6 @@ export default defineComponent({
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 const postContent = response.data.data;
-                //console.log('Полученный пост на редактирование :', post);
 
                 // автоформатирование HTML-контента
                 postContent.content = beautifyHtml(postContent.content || '', {
@@ -106,8 +114,11 @@ export default defineComponent({
         },
 
         async changeTitle() {
+            /**
+             * Отправляет запрос на сервер для изменения названия поста. После успешного изменения,
+             * обновляет URL страницы, чтобы отразить новый slug поста. 
+             */
             const newTitle = this.post.title.trim();
-            //console.log('Новое название:', newTitle);
             try {
                 const result = await axios.put(`/api/admin/change-title/${this.category}/${this.post.id}`, {
                     title: newTitle,
@@ -117,9 +128,8 @@ export default defineComponent({
 
                 );
                 alert('✅ Название поста успешно изменено!');
-                //this.advicepost.slug = result.data.slug; // обновляем slug
                 this.$router.replace({ name: 'postAdminEdit', params: { id: this.post.id, category: this.category } });
-                //this.GetAdvicePost();
+
             } catch (error) {
                 console.error('Ошибка при изменении:', error);
                 alert('❌ Ошибка при изменении имени поста');

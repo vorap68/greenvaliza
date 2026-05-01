@@ -1,7 +1,6 @@
 <template>
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h1 class="mb-0">Путешествия</h1>
-
         <div class="input-group" style="max-width: 300px;">
             <input v-model="search" type="text" class="form-control" placeholder="Поиск по названию..."
                 @keyup.enter="page = 1; GetTravelPosts()" />
@@ -75,35 +74,51 @@
         @click="page++; GetTravelPosts()">
         →
     </button>
-
 </template>
 
 <script>
 import { defineComponent } from 'vue';
 import axios from 'axios';
 
+/**
+ * @typedef {Object} TravelPost
+ * @property {number} id - ID путешествия
+ * @property {string} title - Заголовок путешествия
+ * @property {string} description - Описание путешествия
+ * @property {string} image - Имя файла изображения путешествия
+ * @property {string} date - Дата публикации путешествия
+ */
 
+/**
+ * $typedef {Object} PaginationMeta
+ * @property {number} current_page - Текущая страница
+ * @property {number} last_page - Последняя страница
+ * @property {number} per_page - Количество элементов на странице
+ * @property {number} total - Общее количество элементов   
+ */
 export default defineComponent({
     name: 'TravelIndex',
 
     data() {
         return {
+            /** @type {TravelPost[]}    */
             travelposts: [],
+
             search: '',
             sortBy: 'id',
             sortDir: 'desc',
             page: 1,
             perPage: 10,
+            /** @type {PaginationMeta} */
             meta: {},
+
             links: [],
 
         }
     },
 
 
-    computed: {
 
-    },
 
     mounted() {
 
@@ -151,6 +166,10 @@ export default defineComponent({
         },
 
         changeVisual(travelpost) {
+            /**
+              * Отправляет запрос на сервер для переключения статуса публикации поста.
+             *  @type {TravelPost}
+             *  */
             axios.patch(`/api/admin/travel-post/${travelpost.id}/toggle-visual`)
                 .then(response => {
                     travelpost.is_visual = response.data.is_visual;

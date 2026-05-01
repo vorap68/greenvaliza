@@ -27,8 +27,7 @@ class ImagesController extends Controller
        $imagesData = [];   
         $imagesData = Images::where('category', $category)->paginate(20);
         return response()->json(
-            ['imageData' => $imagesData
-       ]);
+            ['imageData' => $imagesData]);
     }
 
 
@@ -40,7 +39,7 @@ class ImagesController extends Controller
      */
   public function postCategoryImages($category,$id)
     {
-       $imagesData = [];   
+        $imagesData = [];   
         $imagesData = Images::where(['category'=> $category,'post_id'=>$id])->paginate(20);
         return response()->json(['imageData' => $imagesData
        ]);

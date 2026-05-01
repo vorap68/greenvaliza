@@ -1,11 +1,16 @@
 <template>
-
+    /**
+    * Этот компонент отвечает за создание нового поста-меню.
+    * Вызывается при содании single-post и table-post
+    * Он содержит форму, которая позволяет администратору ввести название, описание
+    * и загрузить изображение для нового меню.
+    */
     <div class="border-bottom mb-4 pb-2  custom-border">
         <h3>Добавить новое меню</h3>
         <h4>1-шаг создание заставки-поста</h4>
     </div>
     <div class="container mt-4">
-        <!-- Имя менюпоста -->
+        <!-- Имя меню поста -->
         <div class="mb-3">
             <label class="form-label">название поста-меню</label>
             <input type="text" v-model="form.title" class="form-control" placeholder="Введите название поста">
@@ -44,16 +49,19 @@ export default defineComponent({
 
     methods: {
         onFileChange(e) {
+            /**
+             * Этот метод вызывается при выборе файла в input type="file". 
+             * Он сохраняет выбранный файл в объекте form.image,
+             */
             this.form.image = e.target.files[0];
         },
+
         async createTable() {
 
             const formData = new FormData();
             formData.append("title", this.form.title);
             formData.append("description", this.form.description);
-
             formData.append("image", this.form.image);
-
 
             try {
                 //создаем пост-превью-заставка
@@ -65,8 +73,8 @@ export default defineComponent({
                 console.log('response.data', response.data);
                 console.log('data_slug', response.data.slug);
 
-
-                // redirect  на страницу редактирования созданного поста
+                // После успешного создания поста-меню, мы перенаправляем пользователя 
+                //redirect  на страницу редактирования созданного поста
                 this.$router.push({ name: 'travelTableEdit', params: { slug: response.data.slug } });
 
             } catch (e) {

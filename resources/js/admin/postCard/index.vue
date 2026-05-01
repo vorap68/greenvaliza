@@ -56,22 +56,40 @@
 import { defineComponent } from 'vue';
 import axios from 'axios';
 
-
+/** 
+ * @typedef {Object} PostCard
+ * @property {number} id
+ * @property {string} title
+ * @property {string} description
+ * @property {boolean} is_visual
+ * @property {string} date
+ * @property {string} image
+ * @property {string} slug
+ * @property {string} category_name
+ */
 export default defineComponent({
     name: 'PostCardsIndex',
 
     data() {
         return {
+            /**
+             * @type {PostCard[]}
+             */
             postCards: [],
         }
     },
 
-    props: ['category_name'],
+    props: [
+        /**
+        * Название категории, для которой отображаются карточки
+        * @type {string} 
+        */
+        'category_name'],
 
     watch: {
-        // category_name(newValue, oldValue) {
-        //     this.GetPostCardMenu();
-        // }
+        /**
+         * Отслеживание изменения категории
+         */
         '$route.params.category_name': {
             immediate: true,
             handler(newValue, oldValue) {
@@ -84,7 +102,7 @@ export default defineComponent({
 
     mounted() {
         console.log('PostCadrs component mounted.');
-        // this.GetPostCardMenu();
+
     },
 
     methods: {
@@ -102,6 +120,10 @@ export default defineComponent({
         },
 
         changeVisual(postCard) {
+            /**
+           * Отправляет запрос на сервер для переключения статуса публикации поста.
+           * @param {PostCard} postCard - карточка, для которой нужно изменить статус публикации
+           */
             axios.patch(`/api/admin/postcard/${this.category_name}/${postCard.id}/toggle-visual`)
                 .then(response => {
                     postCard.is_visual = response.data.is_visual;

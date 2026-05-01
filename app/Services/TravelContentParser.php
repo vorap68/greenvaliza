@@ -4,6 +4,14 @@ namespace App\Services;
 use DOMDocument;
 use DOMXPath;
 
+/** 
+ * Сервис для парсинга HTML-контента из travel-table-post и извлечения данных для header, gallery и items
+ * Используется для обработки контента при извлечении постов в категорию travel-final на фронте
+ * Позволяет извлекать изображения, заголовки, подзаголовки, цвета текста и другие данные из HTML-структуры поста
+ * Те DomDocument и DOMXPath для парсинга HTML и извлечения нужных данных
+ * для удобной работы с компонентом на фронте
+ * и формировать массив данных для сохранения в базе данных и отображения на сайте   
+ */
 class TravelContentParser
 {
     public static function parse(string $html): array

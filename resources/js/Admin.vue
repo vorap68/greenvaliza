@@ -1,3 +1,10 @@
+/**
+* Компонент для админки, который содержит сайд-меню и основной контент
+* Внутри основного контента отображается компонент, который соответствует текущему маршруту
+* Сайд-меню импортируется из отдельного компонента SiderMenu.vue
+* Роуты для админки загружаются в файле router-admin.js и отображаются внутри <router-view />
+* Все что я выбираю в SiderMenu.vue (роуты )отображается внутри <router-view /> в этом компоненте
+*/
 <template>
     <div class="app-wrapper">
         <SiderMenu />
@@ -16,10 +23,7 @@ import SiderMenu from './admin/SiderMenu.vue';
 
 export default defineComponent({
     name: 'Admin',
-    components: {
-        SiderMenu,
-        TravelIndex: () => import('./admin/travelPost/index.vue'),
-    },
+
 })
 </script>
 <style scoped>

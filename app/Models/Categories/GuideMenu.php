@@ -11,9 +11,14 @@ class GuideMenu extends Model
 {
     use HasFactory;
 
+    /**
+     * The table associated with the model.
+     */
     protected $table = 'guide_menu';
 
-    
+    /**
+     * The attributes that are mass assignable.
+     */
     protected $fillable = [
         'title',
         'imageName',
@@ -23,6 +28,10 @@ class GuideMenu extends Model
          'is_visual',
     ];  
 
+
+    /**
+     * Get the guide post associated with the guide menu.
+     */
     public function guidePost()
     {
         return $this->hasOne(GuidePost::class);

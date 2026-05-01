@@ -1,6 +1,4 @@
 <template>
-
-    <!-- <div id="masthead" class="site-content"> -->
     <header id="masthead" class="site-header" role="banner">
         <div class="container">
             <div class="row">
@@ -30,7 +28,7 @@
             </div>
         </div>
     </header>
-    <!-- </div> -->
+
 
 </template>
 <script>

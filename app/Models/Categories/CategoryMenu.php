@@ -9,7 +9,14 @@ class CategoryMenu extends Model
 {
     use HasFactory;
 
+    /**
+     * The table associated with the model.
+     */
     protected $table = 'categories';
+
+    /**
+     * The attributes that are mass assignable.
+     */
     protected $fillable = [
         'title',
         'imageName',
@@ -18,6 +25,9 @@ class CategoryMenu extends Model
         'description',
     ];
     
+    /**
+     * Get all categories.
+     */
     public function index()
     {
         $categories_menu = CategoryMenu::all();

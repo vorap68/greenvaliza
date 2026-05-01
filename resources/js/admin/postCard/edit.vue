@@ -1,6 +1,5 @@
 <template>
     <div class="card shadow-sm border-0 rounded-3 p-3" style="max-width: 28rem;">
-
         <!-- Текущее изображение -->
         <img v-if="postCard.image"
             :src="`/storage/images/categoryMenu/${category_name}/${postCard.id}/original/${postCard.image}`"
@@ -44,10 +43,29 @@
 import axios from "axios";
 import { defineComponent } from "vue";
 
+/**
+ * @typedef {Object} PostCard
+ * @property {number} id - ID карточки
+ * @property {string} title - Заголовок карточки
+ * @property {string} description - Описание карточки
+ * @property {string} image - Имя файла изображения карточки
+ * @property {string} date - Дата публикации карточки
+ */
 export default defineComponent({
     name: "PostCardEdit",
 
-    props: ["category_name", "id"],
+    props: [
+        /** 
+         * Название категории, для которой отображаются карточки
+         * @type {string}
+         */
+        'category_name',
+
+        /**
+         * ID карточки, которую нужно отредактировать
+         * @type {number}
+         */
+        'id'],
 
     data() {
         return {

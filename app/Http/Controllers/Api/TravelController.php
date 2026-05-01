@@ -39,6 +39,8 @@ class TravelController extends Controller
 
       /**
      * Return single traveltable by slug where is_visual = 1
+     * Весь контент($content) traveltable парсится сервисом TravelContentParser 
+     * для извлечения данных для header, gallery и items
      * @param string $slug  Слаг запрашиваемой таблицы
      * @return \Illuminate\Http\JsonResponse
      */

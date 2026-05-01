@@ -62,21 +62,7 @@ class CardCreatorController extends Controller
         }
     }
 
-    // switch ($category) {
-    //         case 'travel':
-    //             return $post = TravelMenu::make($post);
-    //             break;
-    //         case 'guide':
-    //             return $post = GuideMenu::make($post);
-    //             break;
-    //         case 'advice':
-    //             return $post = AdviceMenu::make($post);
-    //             break;
-    //         case 'mybook':
-    //             return $post = MyBookMenu::make($post);
-    //             break;
-    //     }
-    // }
+    
 
     /**
      * метод для сохранения изображения на диске и создания ресайзов для карточки меню
@@ -96,10 +82,7 @@ class CardCreatorController extends Controller
             $path = "images/categoryMenu/{$category}/{$postMenu->id}/original";
             // имя файла
             $filename = $imageContent->getClientOriginalName();
-            // return response()->json(['message' => 'Путь для сохранения изображения сформирован (controller)',
-            // 'path' => $path,
-            // 'filename' => $filename,]);
-            // сохраняем оригинал и проверяем успешность сохранения
+           // сохраняем оригинал и проверяем успешность сохранения
             Storage::disk('public')->putFileAs(
                 $path,
                 $imageContent,
@@ -113,8 +96,7 @@ class CardCreatorController extends Controller
             if (! file_exists($fullPath)) {
                 return ['success' => false, 'message' => 'Error saving image (controller)'];
             }
-
-           // return  $fullPath;    
+    
              //  передаём путь к ФАЙЛУ в сервис для создания ресайзов и сохранения их на диске
              $res = $this->imageService->saveResizedImages($fullPath, null);
              if (! $res) {

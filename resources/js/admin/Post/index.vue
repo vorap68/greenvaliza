@@ -75,19 +75,39 @@
 import { defineComponent } from 'vue';
 import axios from 'axios';
 
+/**
+ * @typedef {Object} Post
+ * @property {number} id
+ * @property {string} title
+ * @property {boolean} is_visual
+ * @property {string} date
+ * @property {string} description
+ * @property {string} slug
+ */
 
+/** 
+ * @typedef {Object} Meta
+ * @property {number} current_page      
+ */
 export default defineComponent({
     name: 'PostAdminIndex',
 
 
     data() {
         return {
+            /**
+             * @type {Post[]} - массив постов, полученных с сервера
+             */
             posts: [],
             search: '',
             sortBy: 'id',
             sortDir: 'desc',
             page: 1,
             perPage: 10,
+
+            /**
+             * @type    {Meta} - объект с метаданными пагинации, полученными с сервера
+             */
             meta: {},
             links: [],
             sortColumn: null,
@@ -97,6 +117,9 @@ export default defineComponent({
 
 
     props: {
+        /**
+         * @type {string} - категория постов 
+         */
         category: {
             type: String,
             required: true
@@ -104,6 +127,11 @@ export default defineComponent({
     },
 
     computed: {
+        /**
+         *  Возвращает отсортированный массив постов на основе выбранного столбца и
+         *  направления сортировки.
+         * @returns {Post[]} - отсортированный массив постов
+         */
         sortedData() {
             if (!this.sortColumn) {
                 return this.posts;
@@ -126,6 +154,10 @@ export default defineComponent({
     },
 
     watch: {
+        /**
+         * При изменении категории, сбрасывает страницу на 1 и 
+         * загружает новые посты для выбранной категории.
+         */
         category() {
             this.page = 1
             this.GetPosts()
@@ -140,7 +172,7 @@ export default defineComponent({
     methods: {
         async GetPosts() {
             try {
-                console.log('Загрузка списка путешествий с сервера...', this.search);
+                console.log('Загрузка списка постов с сервера...', this.search);
                 const response = await axios.get((`/api/admin/${this.category}`), {
                     params: {
                         search: this.search,
@@ -157,6 +189,7 @@ export default defineComponent({
                 this.meta = response.data.meta;
                 this.links = response.data.links;
                 console.table('Получено:', response.data.data);
+                console.table('Получено:meta', response.data.meta);
             } catch (error) {
                 console.error('Error fetching  posts:', error);
             }
@@ -172,6 +205,10 @@ export default defineComponent({
         },
 
         changeVisual(post) {
+            /**
+             * Отправляет запрос на сервер для переключения статуса публикации поста.
+             * @param {Post} post - объект поста, для которого нужно изменить статус публикации
+             */
 
             axios.patch(`/api/admin/${this.category}/${post.id}/toggle-visual`)
                 .then(response => {

@@ -1,3 +1,6 @@
+/**
+* Вывод всех фото для выбираемой категории
+*/
 <template>
   <div>
     <label class="form-label">Категория</label>
@@ -14,7 +17,7 @@
   <div v-if="category" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
 
 
-    <div class="col" v-for="img in imagesArray">
+    <div class="col" v-for="img in imagesArray" :key="img.post_id">
       <div class="card h-100 shadow-sm">
         <img decoding="async" :src="`/storage/images/${category}/${img.post_id}/resize/${img.filethumb}`"
           class="card-img-top" alt="image">
@@ -46,18 +49,48 @@
 
 <script>
 import axios from 'axios';
+/**
+   * @typedef {Object} Pagination
+   * @property {number} current_page
+   * @property {number} next_page
+   * @property {number} last_page
+   * @property {string|null} next_page_url
+   * @property {string|null} prev_page_url
+   */
+
+/**
+* @typedef {Object} Image
+* @property {number} post_id
+* @property {string} filethumb
+* 
+*/
 export default {
   name: "CategoryImages",
 
   data() {
     return {
       category: '',
+
+      /**
+       * @type {Image[]}
+       */
       imagesArray: [],
+
+      /**
+       * @type {Pagination|null}
+       */
       pagination: null
     };
   },
 
+
   watch: {
+    /**
+     * Следит за изменением выбранной категории
+    * и перезагружает список постов (обновляя страницу)
+     * @param {string|null} newCategory -новое значение категории
+     * @returns {void}
+     */
     category(newCategory) {
       if (!newCategory) return;
       this.loadPosts(1);
@@ -66,6 +99,10 @@ export default {
 
 
   methods: {
+    /**
+     * Получает фото для выбраной категории + текущая страница 
+     * @param {number} [page=1] - номер страницы
+     */
     async loadPosts(page = 1) {
       console.log('Загрузка изображений для категории:', this.category);
       const response = await axios.get(`/api/admin/images/${this.category}?page=${page}`)
@@ -74,6 +111,7 @@ export default {
       this.imagesArray = response.data.imageData.data || []; // на случай, если в ответе нет поля images
       console.log('Загруженные изображения:', this.imagesArray);
       this.pagination = response.data.imageData
+      console.log('объект пагинации:', this.pagination);
 
     },
 

@@ -39,21 +39,12 @@
 
                     <router-link :to="{ name: 'travelTableEdit', params: { id: traveltable.id } }"
                         class="btn btn-warning btn-sm">Редактирование</router-link>
-                    <!-- <router-link :to="{ name: 'travelTableImages', params: { id: traveltable.id } }"
-                        class="btn btn-secondary btn-sm">Картинки 
 
-                    </router-link> -->
                     <router-link :to="{ name: 'PostImages', params: { id: traveltable.id, category: 'travelTable' } }"
                         class="btn btn-secondary btn-sm">Картинки</router-link>
 
-
-
-
-
-
                 </td>
             </tr>
-
         </tbody>
     </table>
 </template>
@@ -62,7 +53,13 @@
 import { defineComponent } from 'vue';
 import axios from 'axios';
 
-
+/** @typedef {Object} TravelTable
+ * @property {number} id - ID таблицы путешествий
+ * @property {string} title - Заголовок таблицы путешествий
+ * @property {boolean} is_visual - Статус публикации таблицы путешествий
+ * @property {string} date - Дата публикации таблицы путешествий
+ * @property {string} slug - Slug таблицы путешествий
+ */
 export default defineComponent({
     name: 'travelTables',
 
@@ -127,6 +124,11 @@ export default defineComponent({
         },
 
         changeVisual(traveltable) {
+            /**
+             * Отправляет запрос на сервер для переключения статуса публикации таблицы путешествий.
+             * @param {TravelTable} traveltable - Таблица путешествий,
+             *  для которой нужно переключить статус публикации
+             */
             axios.patch(`/api/admin/travels-table/${traveltable.id}/toggle-visual`)
                 .then(response => {
                     console.log('Visual status toggled:', response.data);

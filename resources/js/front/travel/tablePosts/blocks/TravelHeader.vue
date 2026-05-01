@@ -32,6 +32,14 @@ export default {
   name: "TravelHeader",
 
   props: {
+    /**
+     * @type {Object} header - объект, содержащий данные для отображения заголовка путешествия, включая:
+     * - title: заголовок путешествия
+     * - subtitle: подзаголовок путешествия
+     * - background: URL фонового изображения для заголовка
+     * - left_image: URL изображения для левой ячейки
+     * - right_image: URL изображения для правой ячейки
+     */
     header: {
       type: Object,
       required: true

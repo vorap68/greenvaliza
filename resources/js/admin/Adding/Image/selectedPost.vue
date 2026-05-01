@@ -1,7 +1,6 @@
 <template>
     <div class="d-flex flex-column gap-3" style="max-width: 340px;">
-
-        <!-- Категория -->
+        <!-- выбор категории -->
         <div>
             <label class="form-label">Категория</label>
             <select v-model="category" class="form-select">
@@ -14,7 +13,7 @@
             </select>
         </div>
 
-        <!-- Поиск -->
+        <!-- Поиск поста в категории-->
         <div v-if="category" class="input-group">
             <input v-model="search" @keyup.enter="searchPost(search)" type="text" class="form-control"
                 placeholder="Поиск по названию...">
@@ -23,7 +22,7 @@
             </button>
         </div>
 
-        <!-- Результаты -->
+        <!-- список полученых постов для выбора,и передача выбраного поста в метод selectPost()-->
         <ul v-if="filteredPosts.length" class="list-group">
             <li v-for="post in filteredPosts" :key="post.id" class="list-group-item list-group-item-action"
                 @click="selectPost(post)" style="cursor:pointer">
@@ -40,100 +39,91 @@
         <button class="btn btn-outline-secondary" @click="cleanSearch">
             Очистить поиск
         </button>
-
-        <!-- Dropzone -->
-        <div ref="dropzone" class="border border-2 border-dashed rounded p-4 text-center bg-dark text-light"
-            style="cursor:pointer">
-            <h5 class="mb-0">Добавить фото</h5>
-        </div>
-
-        <!-- Загрузка -->
-        <button class="btn btn-success" @click.prevent="storeImages" :disabled="!selectedPost">
-            Загрузить изображения для выбраного поста
-        </button>
-
-        <button class="btn btn-success" @click.prevent="storeImagesNoPost">
-            Добавить изображение без привязки к посту
-        </button>
-
-
-
     </div>
-
-
-
 </template>
-
 <script>
 import { defineComponent } from 'vue';
 import axios from 'axios';
-import Dropzone from 'dropzone';
 
-
+/**
+ * @typedef {Object} Post выбранный пост полученный из компонента selectedPost.vue
+ * @property {number} id - Идентификатор поста
+ * @property {string} title - Название поста
+ * @property {string} category - Категория поста    
+ */
+/**
+ * @typedef {Object} selectedPost  объект, который содержит информацию о выбранном посте и его категории.
+ * @property {Post} post - Выбранный пост, который содержит id и title.
+ * @property {string} category - Категория, к которой принадлежит выбранный пост
+ */
 
 export default defineComponent({
-    name: 'AddingImage',
+    name: 'SelectedPost',
+
 
     data() {
         return {
-            dropzone: null,
             category: "",
             search: "",
+
+            /** 
+             * @type {Post[]} posts - Массив всех постов для выбранной категории.
+            */
             posts: [],
             filteredPosts: [],
+
+            /** 
+             * @type {selectedPost} selectedPost - Выбранный пост.
+            */
             selectedPost: null,
             hasFiles: false,
         }
     },
 
+    /**
+   * При изменении категории, сбрасываем все данные и загружаем посты для новой категории.
+   */
     watch: {
         category(newCategory) {
             if (!newCategory) return;
             this.loadPosts();
         },
-
-
-
-    },
-
-    async mounted() {
-        this.dropzone = new Dropzone(this.$refs.dropzone, {
-            url: '/api/admin/create-image',
-            clickable: true,
-            acceptedFiles: 'image/*',
-            autoProcessQueue: false,
-            addRemoveLinks: true,
-            dictRemoveFile: 'Удалить файл',
-            maxFilesize: 15,
-        });
-
-
     },
 
     methods: {
+
+        /**
+          * Загрузка постов для выбранной категории.
+          *  Отправляем GET-запрос на сервер с параметром all=true, 
+          * чтобы получить все посты для данной категории.
+          *  Полученные данные сохраняем в массив posts и выводим в консоль для проверки.
+          */
         async loadPosts() {
             console.log('Загрузка постов для категории:', this.category);
-            // пример — бери меню из /api/admin/advice (или любой свой маршрут) 
             const response = await axios.get((`/api/admin/${this.category}`), {
                 params: {
                     all: true,
                 }
             });
-
             this.posts = response.data.data;
             console.log('Загруженные посты:', this.posts);
 
         },
 
+        /**
+         * Поиск постов по введенному запросу.
+         * Поиск идет из массива posts, который был загружен для выбранной категории.
+         */
         searchPost(value) {
             console.log('Поиск постов по запросу:', value);
             if (value.length < 2) {
                 this.filteredPosts = [];
                 return;
             }
-
             const q = value.toLowerCase();
-
+            /**
+             * Фильтруем посты, оставляя только те, в названии которых есть введенный запрос.
+             */
             this.filteredPosts = this.posts.filter(post =>
                 post.title.toLowerCase().includes(q)
             );
@@ -141,12 +131,22 @@ export default defineComponent({
             console.log('Id пост:', this.filteredPosts.map(p => p.id));
         },
 
+        /**
+         * Выбранный пост сохраняем в selectedPost, отображаем его название в поле поиска 
+         * и очищаем список найденных постов.
+         * @param post 
+         */
         selectPost(post) {
             this.selectedPost = post;
             this.search = post.title;
             this.filteredPosts = [];
+            this.$emit('post-selected', { post, category: this.category }); // Эмитим событие с выбранным постом    
         },
 
+        /**
+         * Сброс всех данных: очистка поля поиска, выбранной категории,
+         *  списка постов и выбранного поста.
+         */
         cleanSearch() {
             this.search = "";
             this.category = "";
@@ -154,78 +154,6 @@ export default defineComponent({
             this.filteredPosts = [];
             this.selectedPost = null;
         },
-
-        async storeImages() {
-            const files = this.dropzone.getAcceptedFiles();
-            console.log('Выбранные файлы для загрузки:', files);
-
-            if (!files.length) {
-                alert('Выберите файлы');
-                return;
-            }
-
-            const images = new FormData();
-
-            files.forEach((file, index) => {
-                images.append('images[]', file);
-            });
-
-            try {
-                const response = await axios.post(
-                    `/api/admin/create-image/${this.category}/${this.selectedPost.id}`,
-                    images,
-                    {
-                        headers: {
-                            'Content-Type': 'multipart/form-data',
-                        }
-                    }
-                );
-
-                console.log('Успех:', response.data);
-            } catch (error) {
-                console.error('Ошибка загрузки:', error);
-            }
-        },
-
-        async storeImagesNoPost() {
-            const files = this.dropzone.getAcceptedFiles();
-            console.log('Выбранные файлы для загрузки:', files);
-
-            if (!files.length) {
-                alert('Выберите файлы');
-                return;
-            }
-
-            const images = new FormData();
-
-            files.forEach((file, index) => {
-                images.append('images[]', file);
-            });
-
-            try {
-                const response = await axios.post(
-                    `/api/admin/create-image/nopost`,
-                    images,
-                    {
-                        headers: {
-                            'Content-Type': 'multipart/form-data',
-                        }
-                    }
-                );
-
-                console.log('Успех:', response.data);
-            } catch (error) {
-                console.error('Ошибка загрузки:', error);
-            }
-        }
-
     }
-});
-
-
+})
 </script>
-<style>
-.custom-border {
-    border-color: #28a745 !important;
-}
-</style>

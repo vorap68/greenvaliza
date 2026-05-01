@@ -1,8 +1,4 @@
 <template>
-  <div>
-
-  </div>
-
   <div class="input-group" style="max-width: 300px;">
     <input v-model="search" type="text" class="form-control" placeholder="Поиск фото по имени..."
       @keyup.enter="GetImages" />
@@ -10,10 +6,8 @@
       🔍
     </button>
   </div>
-
-
   <div class="row row-cols-1 row-cols-md-3 g-3">
-    <div class="col" v-for="img in images" :key="img.id">
+    <div class="col" v-for="img in images" :key="img.post_id">
       <div class="card h-100 shadow-sm">
 
         <div class="text-center p-2">
@@ -41,13 +35,20 @@
 
 <script>
 import axios from 'axios';
+/**
+ * @typedef {Object} Image
+ */
+
 export default {
   name: "ImageSearch",
 
   data() {
     return {
       search: "",
-      image: null,
+
+      /**
+       * @type {Image[]}
+       */
       images: [],
     };
   },

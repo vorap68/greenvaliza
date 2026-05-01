@@ -3,6 +3,11 @@
         :current-title="travel.title || ''" />
 
     <div class="post-container-block" :style="{
+        /**
+      * Устанавливаем фоновое изображение для блока поста. Путь к изображению формируется на основе slug поста.
+      * В папке каждого поста должно быть изображение с именем firstfon.jpg, 
+      * которое будет использоваться в качестве фонового изображения.
+       */
         backgroundImage: `url('/storage/images/travels/${travel.slug}/firstfon.jpg')`,
         backgroundPosition: 'center',
     }">
@@ -19,9 +24,24 @@
 import axios from 'axios';
 import { defineComponent } from 'vue';
 import BreadCrumb from '../../BreadCrumb.vue';
+
+/**
+ * @typedef {Object} Travel
+ * @property {number} id - The unique identifier of the travel.
+ * @property {string} slug - The slug of the travel, used for routing and image paths.
+ * @property {string} title - The title of the travel.
+ * @property {string} description - A brief description of the travel.
+ * @property {string} content - The full content of the travel, which may include HTML.
+ * @property {string} imageName - The name of the image associated with the travel,
+ */
 export default {
     name: 'travel-post',
-    props: ['slug'],
+    props: [
+        /**
+           * slug поста, который используется для получения данных о посте и формирования пути к фоновому изображению.
+            * @type {string}
+           */
+        'slug'],
 
     components: {
         BreadCrumb,
@@ -29,6 +49,9 @@ export default {
 
     data() {
         return {
+            /**
+             * @type {Travel}
+             */
             travel: {},
         };
     },
@@ -40,9 +63,10 @@ export default {
     methods: {
         async fetchData() {
             try {
-                // Example API call, replace with actual endpoint
                 const response = await axios.get(`/api/travel/post/${this.slug}`);
                 let content = response.data.data.content;
+                //Заменяем все вхождения ${travel.slug} на фактический this.slug
+
                 content = content.replace(/\$\{travel\.slug\}/g, this.slug);
                 this.travel = {
                     ...response.data.data,

@@ -1,8 +1,6 @@
 <template>
     <div class="card" style="width:auto;">
         <div class="card-body">
-
-
             <div class="d-flex flex-column gap-3">
                 <div>
                     <li class="nav-item">
@@ -46,12 +44,9 @@
                         💾 Сохранить
                     </button>
                 </div>
-
             </div>
-
         </div>
     </div>
-
 </template>
 
 <script>
@@ -65,14 +60,24 @@ import { html } from '@codemirror/lang-html';
 import { oneDark } from '@codemirror/theme-one-dark';
 import { html as beautifyHtml } from 'js-beautify'; // 👈 импорт форматтера
 
-
+/** @typedef {Object} TravelTable
+ * @property {number} id - ID таблицы путешествий
+ * @property {string} title - Заголовок таблицы путешествий
+ * @property {string} content - Контент таблицы путешествий
+ * @property {string} slug - Slug таблицы путешествий
+ */
 
 export default defineComponent({
     name: 'TravelTableEdit',
     components: {
         Codemirror,
     },
-    props: ['id'],
+    props: [
+        /** 
+        * ID таблицы путешествий, который нужно отредактировать
+        * @type {number} 
+        */
+        'id'],
 
     data() {
         return {
@@ -119,8 +124,7 @@ export default defineComponent({
 
             } catch (error) {
                 console.error('Error fetching travel table:', error);
-                // } finally {
-                //     this.loading = false;
+
             }
         },
 
@@ -146,6 +150,12 @@ export default defineComponent({
         },
 
         copyPath() {
+            /**
+             * Копирует в буфер обмена путь к папке с изображениями для данной таблицы путешествий.
+             * Путь формируется на основе ID таблицы путешествий.
+             * Например: /storage/images/travel/table/123/
+             * где 123 - это ID текущей таблицы путешествий (this.traveltable.id)   
+             */
             const path = `/storage/images/travel/table/${this.traveltable.id}/`;
             navigator.clipboard.writeText(path);
         },

@@ -14,6 +14,10 @@ export default {
     },
 
     props: {
+        /**
+         * slug поста, который используется для получения данных о посте и формирования пути к фоновому изображению.
+         * В зависимости от типа поста (travel-table или travel-post) будет загружаться
+         */
         slug: String,
         type: String
     },
@@ -23,7 +27,7 @@ export default {
             console.log('PostView component loaded with slug:', this.slug, 'and type:', this.type);
         },
 
-        //выбор компонента в зависимости от типа либо меню-table либо пост-final
+        //выбор компонента в зависимости от типа this.type либо меню-table либо пост-final
         CurrentComponent() {
             switch (this.type) {
                 case 'tble':

@@ -1,11 +1,10 @@
 <?php
 namespace App\Http\Controllers\Admin\Adding;
 
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use App\Services\SlugService;
-use App\Models\Posts\TravelTable;
 use App\Http\Controllers\Controller;
+use App\Models\Posts\TravelTable;
+use App\Services\SlugService;
+use Illuminate\Http\Request;
 
 /**
  *  Контроллер для создания поста-таблицы в категории travel, включая создание карточки меню и сохранение изображения
@@ -20,7 +19,7 @@ use App\Http\Controllers\Controller;
 class TableCreatorController extends Controller
 {
 
-protected SlugService $slugService;
+    protected SlugService $slugService;
 
 /**
  * Конструктор для инициализации сервиса генерации слагов
@@ -29,65 +28,65 @@ protected SlugService $slugService;
     {
         $this->slugService = $slugService;
     }
-    
 
-    /** 
+    /**
      * метод для создания поста-таблицы в категории travel, включая создание карточки меню и сохранение изображения
      * @param Request $request HTTP-запрос, содержащий данные для создания поста-таблицы (заголовок, описание, изображение)
      * @param CardCreatorController $cardCreate Контроллер для создания карточки меню и сохранения изображения
-     * @return \Illuminate\Http\JsonResponse JSON-ответ с ID созданного поста-таблицы 
+     * @return \Illuminate\Http\JsonResponse JSON-ответ с ID созданного поста-таблицы
      */
     public function createTable(Request $request, CardCreatorController $cardCreate)
     {
-       $validated = $request->validate([
+        $validated = $request->validate([
             'title'       => 'required|string',
             'description' => 'required|string',
             'image'       => 'nullable|image|max:14096',
         ]);
 
-       $slug = $this->slugService->make($validated['title']); 
+        $slug = $this->slugService->make($validated['title']);
 
-  // Создаем запись в главном меню категории - пост-заставку
+        // Создаем запись в главном меню категории - пост-заставку
         // метод из CardCreatorController
         $postCard = $cardCreate->createCard(
-               title: $validated['title'],
-                slug: $slug,
-                description: $validated['description'],
-                image: $validated['image'],
-                type: 'tble',
+            title: $validated['title'],
+            slug: $slug,
+            description: $validated['description'],
+            image: $validated['image'],
+            type: 'tble',
         );
-    if (! $postCard) {  
-        return response()->json(['message' => 'Error creating menu card'], 500);
-    }
-              // Сохряняем изображение на диске и создаем ресайзы
-            // метод createImage из CardCreatorController
-            if ($request->hasFile('image')) {
-                $imageContent = $request->file('image');
-               $imageResult = $cardCreate->createImage($imageContent, $category = 'travel', $postCard);
-               if (! $imageResult['success']) {
-                   return response()->json(['message' => 'Фото или ресайзы не сохранились (controller)'], 500);
-               }
-          
-          } else {
-                return response()->json(['message' => 'фото не выбрано']);};
+        if (! $postCard) {
+            return response()->json(['message' => 'Error creating menu card'], 500);
+        }
+        // Сохряняем изображение на диске и создаем ресайзы
+        // метод createImage из CardCreatorController
+        if ($request->hasFile('image')) {
+            $imageContent = $request->file('image');
+            $imageResult  = $cardCreate->createImage($imageContent, $category = 'travel', $postCard);
+            if (! $imageResult['success']) {
+                return response()->json(['message' => 'Фото или ресайзы не сохранились (controller)'], 500);
+            }
 
-                // Создаем сырой контент для поста-таблицы из шаблона Blade 
+        } else {
+            return response()->json(['message' => 'фото не выбрано']);
+        };
+
+        // Создаем сырой контент для поста-таблицы из шаблона Blade
         $content = view('travel_table')->render();
 
         // Создание поста в таблице для категории travelTable
-         $value = [
-                'title'           => $validated['title'],
-                'slug'            => $slug,
-                'description'     => $validated['description'],
-                'content'         => $content,
-                'menu_id'         => $postCard->id,
-            ];
-               $post = TravelTable::create($value);
-            if (! $post) {
-                return response()->json(['message' => 'Error creating travel post'], 500);
-            }
-             return response()->json(['post_id' => $post->id,
-            'File_Location' => $imageResult['File_Location']]);
+        $value = [
+            'title'       => $validated['title'],
+            'slug'        => $slug,
+            'description' => $validated['description'],
+            'content'     => $content,
+            'menu_id'     => $postCard->id,
+        ];
+        $post = TravelTable::create($value);
+        if (! $post) {
+            return response()->json(['message' => 'Error creating travel post'], 500);
+        }
+        return response()->json(['post_id' => $post->id,
+            'File_Location'                    => $imageResult['File_Location']]);
     }
-    
+
 }

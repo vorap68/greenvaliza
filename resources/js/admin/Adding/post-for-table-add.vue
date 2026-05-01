@@ -24,7 +24,7 @@
         <select v-model="form.parent_title" class="form-select">
             <option disabled value="">Выберите пост-таблицу</option>
 
-            <option v-for="item in menuPosts" :value="item.id" :key="item.id">
+            <option v-for="item in menuTables" :value="item.id" :key="item.id">
                 {{ item.title }}
             </option>
         </select>
@@ -32,19 +32,15 @@
     <button class="btn btn-primary" @click="createPost">
         Создать пост
     </button>
-
-
-
-
-
 </template>
 
 <script>
 import { defineComponent } from 'vue';
 import axios from 'axios';
 
-
-
+/**
+ * @typedef {object} menuTables   
+ */
 export default defineComponent({
     name: 'AddingPostForTable',
 
@@ -56,12 +52,20 @@ export default defineComponent({
                 parent_title: "",
 
             },
-            menuPosts: [] // сюда загрузим список меню-постов
+
+            /** 
+             * @type {menuTables[]} menuTables - Список меню-таблиц.
+             */
+            menuTables: [] // сюда загрузим список меню-таблиц
         }
     },
 
 
     async mounted() {
+        /**
+         * При монтировании компонента, мы загружаем список существующих пост-таблиц (меню-постов) 
+         *  с сервера,  чтобы администратор мог выбрать, к какой таблице будет привязан новый пост.
+         */
         await this.loadTables();
     },
 
@@ -72,18 +76,26 @@ export default defineComponent({
 
         async loadTables() {
             const response = await axios.get('/api/admin/travel-table');
-            this.menuPosts = response.data.data;
-            console.log('menuPosts', this.menuPosts);
+            this.menuTables = response.data.data;
+            console.log('menuTables', this.menuTables);
         },
 
         async createPost() {
-
+            /** 
+             * Этот метод вызывается при нажатии на кнопку "Создать пост". Он собирает данные из формы,
+             * включая название, описание и выбранную таблицу, и отправляет их на сервер для создания
+             *  нового поста. 
+             * После успешного создания поста, пользователь перенаправляется на страницу редактирования 
+             * этого поста, где он может добавить контент и изображения.
+             */
             const formData = new FormData();
             console.log('formData', formData);
             formData.append("title", this.form.title);
             formData.append("description", this.form.description);
             formData.append("table_id", this.form.parent_title);
 
+            console.log('formData', formData);
+            die();
             try {
                 //создаем пост-превью-заставка
                 const response = await axios.post(

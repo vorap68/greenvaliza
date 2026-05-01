@@ -1,25 +1,17 @@
 <template>
     <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
-
-        <!--begin::Sidebar Brand-->
         <div class="sidebar-brand">
-            <!--begin::Brand Link-->
-            <a href="./index.html" class="brand-link">
-
-                <span class="brand-text fw-light">Админ Панель</span></a>
-
+            <span class="brand-text fw-light">Админ Панель</span>
         </div>
         <div class="sidebar-wrapper">
             <nav class="mt-2">
                 <ul class="nav sidebar-menu flex-column" role="navigation" id="navigation">
                     <li class="nav-item">
-
                         <router-link :to="{ name: 'adminMain' }"
                             class="nav-link {{ request() -> routeIs('admin') ? 'active' : '' }}">
                             <i class="nav-icon bi bi-box-seam-fill"></i>
                             <p>Главная</p>
                         </router-link>
-
                     </li>
 
                     <!-- Меню Посты -->
@@ -145,7 +137,6 @@
                                         <p>Фото</p>
                                     </router-link>
                                 </li>
-
                             </ul>
                         </div>
                     </li>
@@ -184,7 +175,6 @@
 
                         </div>
                     </li>
-
                 </ul>
             </nav>
         </div>

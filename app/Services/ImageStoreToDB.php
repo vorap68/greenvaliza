@@ -3,8 +3,19 @@ namespace App\Services;
 
 use App\Models\Images\Images;
 
+/** 
+ * Сервис для сохранения имени файлов изображениях в базе данных
+ * Тех что добавляются через админку при загрузке изображений к посту
+ */
 class ImageStoreToDB
 {
+    /** 
+     * Метод для сохранения информации об изображениях в базе данных
+     * @param array $fileNameArray
+     * @param int $post_id
+     * @param string $category_name
+     * @return void
+     */
     public function imageStoreDb($fileNameArray, $post_id, $category_name)
     {
         $records = [];
@@ -22,6 +33,6 @@ class ImageStoreToDB
             ];
         }
 
-        Images::insertOrIgnore($records);
+        return Images::insertOrIgnore($records);
     }
 }

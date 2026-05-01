@@ -4,11 +4,8 @@
       <tr v-for="(img, index) in images" :key="index">
         <td class="gallery-td" align="center">
           <img :src="img" loading="lazy" decoding="async" />
-
         </td>
-
       </tr>
-
     </tbody>
   </table>
 </template>
@@ -18,6 +15,9 @@ export default {
   name: 'TravelGallery',
 
   props: {
+    /**
+     * @type {Array} images - массив URL изображений для отображения в галерее (2 фото)
+     */
     images: {
       type: Array,
       required: true
@@ -27,12 +27,6 @@ export default {
 </script>
 
 <style scoped>
-/* аналог <p class="ab">&nbsp;</p> */
-
-
-/* td как в старой table */
-
-/* картинки — широкие, одна под другой */
 .gallery-td img {
   width: 100%;
   max-width: 100%;

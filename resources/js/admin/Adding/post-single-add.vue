@@ -36,10 +36,7 @@
         <button class="btn btn-primary" @click="createPost">
             Создать пост
         </button>
-
     </div>
-
-
 </template>
 
 <script>
@@ -59,18 +56,21 @@ export default defineComponent({
                 category: "",
                 image: ""
             },
-            menuPosts: [] // сюда загрузим список меню-постов
         }
     },
 
-
-
     methods: {
+
         onFileChange(e) {
+            /**
+        * Для создания нового поста, вначале создается его превью-заставка,
+        *  которая содержит основную информацию о посте (название, описание, категория и изображение).
+        * Этот метод onFileChange вызывается при выборе файла в input type="file".
+        *  Он сохраняет выбранный файл в объекте form.image,
+        *  который затем будет отправлен на сервер при создан
+        */
             this.form.image = e.target.files[0];
         },
-
-
 
         async createPost() {
 
@@ -80,8 +80,6 @@ export default defineComponent({
             formData.append("description", this.form.description);
             formData.append("category", this.form.category);
             formData.append("image", this.form.image);
-
-
 
             try {
                 //создаем пост-превью-заставка
@@ -111,7 +109,6 @@ export default defineComponent({
                         }
                     });
                 }
-
 
             } catch (e) {
                 console.error(e);

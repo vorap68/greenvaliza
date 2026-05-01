@@ -37,7 +37,6 @@ class ImageService
         if (!is_array($filePathArray) ) {
             $filePathArray = [$filePathArray];
         }
-        //return response()->json(['filePathArray' => $filePathArray]);
         // пример элемента массива fileNameArray
         // /var/www/storage/app/public/images/mybook/2/original/my.jpg
         foreach ($filePathArray as $key => $source) { 

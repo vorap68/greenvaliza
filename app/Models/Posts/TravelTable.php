@@ -10,7 +10,12 @@ class TravelTable extends Model
 {
     use HasFactory;
 
+    /**
+     * The table associated with the model.
+     */
     protected $table = 'travel_table';
+
+
     protected $fillable = [
         'title',
         'content',
@@ -19,13 +24,20 @@ class TravelTable extends Model
         'is_visual',
     ];
 
+    /**
+     * Get the travel posts associated with the travel table.
+     */
     public function travelPosts()
     {
         return $this->hasMany(TravelPost::class, 'table_id', 'id');
     }
 
-    public function travelMenu(){
-        return $this->belongsTo(TravelMenu::class,'menu_id','id');
+    /**
+     * Get the travel menu associated with the travel table.
+     */
+    public function travelMenu()
+    {
+        return $this->belongsTo(TravelMenu::class, 'menu_id', 'id');
     }
 
 }

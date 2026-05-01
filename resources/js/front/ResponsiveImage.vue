@@ -1,5 +1,8 @@
+/**
+* Компонент для отображения адаптивного изображения с поддержкой различных размеров и форматов.
+* Использует пропсы для получения информации о изображении и вычисляет пути к различным размерам изображения.
+*/
 <template>
-
     <img class="post-thumb lazyloaded" :src="image.medium ? image.medium : '/image/no-image.jpg'" :srcset="srcSet"
         :sizes="sizes" :alt="alt" data-ll-status="loaded" />
 </template>
@@ -8,11 +11,22 @@
 export default {
     name: 'ResponsiveImage',
     props: {
+        /**
+         * @type {string}   Имя файла фото получ с БД.
+         */
         imageName: { type: String, required: true },
+
+        /**
+         * @type {string}   Папка, в которой хранятся изображения категории.
+         */
         folder: { type: String, required: true },
-        // slug: { type: String, required: true },
-        alt: { type: String, default: '' },
+
+        /**
+         * @type {string|number}   id (категории , поста, таблицы), для полного пути к фото 
+         */
         id: { type: [String, Number], default: null },
+        alt: { type: String, default: '' },
+
     },
 
     computed: {
@@ -56,15 +70,14 @@ export default {
                  ${this.image.large} 1200w
             `
         },
-        sizes() {
 
+        sizes() {
             return `(max-width: 575.98px) 100vw, 
           (max-width: 767.98px) 50vw, 
                (max-width: 991.98px) 33.333vw, 
               33.333vw`;
         }
     },
-
 
 }
 </script>

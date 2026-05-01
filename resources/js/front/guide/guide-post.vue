@@ -18,9 +18,23 @@
 import axios from 'axios';
 import { defineComponent } from 'vue';
 import BreadCrumb from '../BreadCrumb.vue';
+
+/**
+ * @typedef {Object} Guide
+ * @property {number} id - The unique identifier of the guide.
+ * @property {string} slug - The slug of the guide, used for routing and image paths.
+ * @property {string} title - The title of the guide.
+ * @property {string} description - A brief description of the guide.
+ * @property {string} content - The full content of the guide, which may include HTML.
+ * @property {string} imageName - The name of the image associated with the guide,
+ */
 export default {
     name: 'guide-post',
-    props: ['slug'],
+    props: [
+          /**
+         * slug поста, который используется для получения данных о посте и формирования пути к фоновому изображению.
+          * @type {string} .
+         */'slug'],
 
     components: {
         BreadCrumb,
@@ -28,6 +42,9 @@ export default {
 
     data() {
         return {
+            /**
+             * @type {Guide}
+             */
             guide: {},
         };
     },
@@ -39,9 +56,9 @@ export default {
     methods: {
         async fetchData() {
             try {
-                // Example API call, replace with actual endpoint
                 const response = await axios.get(`/api/guide/${this.slug}`);
                 let content = response.data.data.content;
+                //Заменяем все вхождения ${guide.slug} на фактический this.slug
                 content = content.replace(/\$\{guide\.slug\}/g, this.slug);
                 this.guide = {
                     ...response.data.data,

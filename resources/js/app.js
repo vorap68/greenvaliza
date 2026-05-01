@@ -1,11 +1,21 @@
 import { createApp } from 'vue'
 
+/**
+ * Загрузка компонентов Vue 
+ * для клиента и их регистрация
+ * Загрузка роутов для клиента и их регистрация
+ */
 import App from './App.vue'
 import routerfront from './front/route/router-front.js'; 
 const app = createApp(App);
 app.use(routerfront);
 app.mount('#app');
 
+/**
+ * Загрузка компонентов Vue 
+ * для администратора и их регистрация
+ * Загрузка роутов для администратора и их регистрация
+ */
 import Admin from './Admin.vue'
 import routeradmin from './admin/route/router-admin.js'; 
 const admin = createApp(Admin);
