@@ -65,7 +65,7 @@ export default {
                 }
                 console.log('Response data:', response.data);
                 this.guides = response.data.data;
-                console.table(this.guide);
+                console.table(this.guides);
             } catch (error) {
                 console.error('Error fetching guide:', error);
             }

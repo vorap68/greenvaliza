@@ -47,11 +47,14 @@ class TravelController extends Controller
     public function tableShow($slug)
     {
         $travel = TravelTable::where('slug', $slug)->where('is_visual', 1)->firstOrFail();
-        return response()->json([
+       
+        $parser = new TravelContentParser($travel->content);
+        $content = $parser->parse();
+         return response()->json([
           'id'    => $travel->id,
           'title' => $travel->title,
           'slug'  => $travel->slug,
-          'content' => TravelContentParser::parse($travel->content),
+          'content' => $content,
         ]);
        
     }

@@ -21,33 +21,9 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/testid', function () {
-     $advices = AdviceMenu::all();
-     $ttt = AdviceResource::collection($advices);
-      dd($ttt);
-});
-// Route::get('/testtable/{slug}', function($slug){
-//    $travel = TravelTable::where('slug', $slug)->firstOrFail();
-//    dd($travel);
-
-// });
 
 // Auth::routes();
 
-// измененные БД
-Route::get('changeBD',function(){
-$posts = TravelMenu::get(['id', 'slug', 'term_id']);
-//dd($posts);
-foreach($posts as $post){
-    $tablePost = TravelTable::where('slug',$post->slug)->first();
-    if($tablePost){
-        $tablePost->term_id = $post->term_id;
-        $tablePost->save();
-       // die();
-    }
-}
-
-});
 
 
 
@@ -62,7 +38,7 @@ Route::get('test', function () {
     dump('public_path:',public_path());
     dump('storage_path:',storage_path());
     dump('APP_URL:',env('APP_URL'));
-     $single_posts = TravelPost::where('menu_id', '!=', null )->get();
+     $single_posts = TravelPost::where('menu_id', '!=', null )->get(); 
      dd(count($single_posts));
 
   })->name('test');

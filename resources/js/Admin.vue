@@ -23,6 +23,10 @@ import SiderMenu from './admin/SiderMenu.vue';
 
 export default defineComponent({
     name: 'Admin',
+    components: {
+        SiderMenu,
+        TravelIndex: () => import('./admin/travelPost/index.vue'),
+    }
 
 })
 </script>
