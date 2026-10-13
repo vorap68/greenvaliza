@@ -58,6 +58,7 @@ export default {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 this.MyBooks = response.data.data;
+                //this.MyBooks = response.data;
                 console.log('получено:', this.MyBooks);
             } catch (error) {
                 console.error('Error fetching MyBook:', error);

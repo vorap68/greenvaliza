@@ -13,7 +13,7 @@ class AllPostResource extends JsonResource
      * @return array<string, mixed>
      */
     public function toArray(Request $request): array
-    {
+    {  
        return [
             'id' => $this->id,
             'title' => $this->title,
@@ -25,6 +25,7 @@ class AllPostResource extends JsonResource
             "content" => $this->content,
             "is_visual" => $this->is_visual ,
               'image' => $this->imageName,
+              'comment_count' => $this->comments_count,
            
         ];
     }

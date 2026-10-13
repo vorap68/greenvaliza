@@ -9,6 +9,7 @@ import postAllAdminRoutes from './modules_post/post-admin.js';
 import postCardMenuroutes from './post-card.js';
 import travelTableAdminRoutes from './modules_post/traveltable-admin.js';
 import imagesAdminRoutes from './modules_post/images-admin.js';
+import commentsForPost from './comment.js';
 
 const routeradmin = createRouter({
     history: createWebHistory(),
@@ -17,8 +18,9 @@ const routeradmin = createRouter({
         ...travelPostAdminRoutes,
         ...postAllAdminRoutes,
         ...postCardMenuroutes,
-        ...travelTableAdminRoutes,
+        ...travelTableAdminRoutes, 
         ...imagesAdminRoutes,
+        ...commentsForPost,
     ]
  });
  

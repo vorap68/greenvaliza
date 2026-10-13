@@ -5,6 +5,8 @@ namespace App\Models\Posts;
 use App\Models\Categories\GuideMenu;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use App\Models\Comment;
 
 class GuidePost extends Model
 {
@@ -31,4 +33,10 @@ class GuidePost extends Model
          {
              return $this->belongsTo(GuideMenu::class, 'menu_id');
          }
+
+          public function comments(): MorphMany
+    {
+        return $this->morphMany(Comment::class,'commentable');
+
+    }
 }

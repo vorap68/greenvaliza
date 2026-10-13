@@ -1,5 +1,5 @@
 <template>
-    <BreadCrumb :parent-slug="'nashi-puteshestviya'" :parent-title="'Наши путешествия'"
+    <BreadCrumb :parent-slug="'travel'" :parent-title="'Наши путешествия'"
         :current-title="travel.title || ''" />
 
     <div class="post-container-block" :style="{
@@ -19,11 +19,24 @@
             </div>
         </div>
     </div>
+      <Comments 
+    v-if="travel.id"
+   :postId = "travel.id"
+    post-type ="travel"/>
+
+       <CommentPanel
+       v-if="travel.id"
+    :slug="slug"
+    post-type ="travel"
+      :postId = "travel.id"
+    />
 </template>
 <script>
 import axios from 'axios';
 import { defineComponent } from 'vue';
 import BreadCrumb from '../../BreadCrumb.vue';
+import Comments from '../../comments/Comments.vue';
+import CommentPanel from '../../comments/CommentPanel.vue';
 
 /**
  * @typedef {Object} Travel
@@ -45,6 +58,8 @@ export default {
 
     components: {
         BreadCrumb,
+        Comments,
+        CommentPanel
     },
 
     data() {

@@ -6,6 +6,7 @@ use App\Http\Resources\TravelResource;
 use App\Models\Categories\TravelMenu;
 use App\Models\Posts\TravelPost;
 use App\Models\Posts\TravelTable;
+use App\Services\CommentService;
 use App\Services\TravelContentParser;
 
 /**
@@ -47,16 +48,22 @@ class TravelController extends Controller
     public function tableShow($slug)
     {
         $travel = TravelTable::where('slug', $slug)->where('is_visual', 1)->firstOrFail();
-       
-        $parser = new TravelContentParser($travel->content);
-        $content = $parser->parse();
-         return response()->json([
+        return response()->json([
+
           'id'    => $travel->id,
           'title' => $travel->title,
           'slug'  => $travel->slug,
-          'content' => $content,
+          'content' => TravelContentParser::parse($travel->content),
         ]);
-       
+
     }
+
+      public function comments(string $slug, CommentService $comment)
+    {
+        $post = TravelPost::where('slug',$slug)->firstOrFail();
+        $commitResult = $comment->getComments('App\Models\Posts\TravelPost', $post->id);
+        return response()->json(['comments'=>$commitResult]); 
+    }
+   
 
 }

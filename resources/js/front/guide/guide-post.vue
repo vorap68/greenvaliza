@@ -1,5 +1,6 @@
 <template>
-    <BreadCrumb :parent-slug="'putevoditeli'" :parent-title="'Путеводители'" :current-title="guide.title || ''" />
+    <BreadCrumb :parent-slug="'guide'" :parent-title="'Путеводители'"
+     :current-title="guide.title || ''" />
 
     <div class="post-container-block" :style="{
         backgroundImage: `url('/storage/images/travels/${guide.slug}/firstfon.jpg')`,
@@ -8,16 +9,28 @@
 
         <div class=" content-block">
             <div class="entry-content" v-html="guide.content">
-
-
             </div>
         </div>
     </div>
+     <Comments 
+    v-if="guide.id"
+     :postId = "guide.id"
+    post-type ="guide"/>
+
+      <CommentPanel
+       v-if="guide.id"
+    :slug="guide.id"
+    :postId = "guide.id"
+    post-type ="guide" 
+    />
+    
 </template>
 <script>
 import axios from 'axios';
 import { defineComponent } from 'vue';
 import BreadCrumb from '../BreadCrumb.vue';
+import Comments from '../comments/Comments.vue';
+import CommentPanel from '../comments/CommentPanel.vue';
 
 /**
  * @typedef {Object} Guide
@@ -38,6 +51,8 @@ export default {
 
     components: {
         BreadCrumb,
+        Comments,
+        CommentPanel
     },
 
     data() {

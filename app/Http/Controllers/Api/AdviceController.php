@@ -32,4 +32,7 @@ class AdviceController extends Controller
         return new AllPostResource($advice);
     }
 
+    
+   
+
 }

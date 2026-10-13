@@ -41,26 +41,29 @@ class PostSingleCreatorController extends Controller
             'title'        => 'required|string',
             'description'  => 'nullable|string',
             'category'     => 'required|string',
-            'parent_title' => 'nullable|string',
+            'parent_title' => 'nullable|string', 
             'image'        => 'nullable|image|max:14096', 
         ]);
-          
+            //dd('validated',$validated);
           $slug = $this->slugService->make($validated['title']); 
             // Создаем запись в главном меню категории - пост-заставку
              // метод createCard из CardCreatorController
+             //dd('slug',$slug);
             $postCard = $cardCreate->createCard(
                 title: $validated['title'],
                 slug: $slug,
                 description: $validated['description'],
-                image: $validated['image'],
+                image: $validated['image'] ?? null , 
                 category: $validated['category'],
                 type: 'post'
             );
-
+            //dd('postCard', $postCard);
               // Сохряняем изображение на диске и создаем ресайзы
             // метод createImage из CardCreatorController
+            // проверка наличия фото  не работает в тестах 
             if ($request->hasFile('image')) {
-               $imageContent = $request->file('image');
+                $imageContent = $request->file('image');
+                //dd('imageContent',$imageContent);
                $imageResult = $cardCreate->createImage($imageContent, $validated['category'], $postCard);
                if (! $imageResult['success']) {
                    return response()->json(['message' => 'Фото или ресайзы не сохранились (controller)'], 500);
@@ -77,13 +80,14 @@ class PostSingleCreatorController extends Controller
                 'advice' => AdvicePost::class,
                 'mybook' => MybookPost::class,
             };
+            dump('model',$model);
            
             $post = $model::create([
                 'title'       => $validated['title'],
                 'slug'        => $slug,
                 'description' => $validated['description'],
                 'content'     => '',
-                'menu_id'     => $postMenu->id ?? null,
+                'menu_id'     => $postCard->id ?? null,
             ]);
             if (! $post) {
                 return response()->json(['message' => 'Error creating post (controller)'], 500);

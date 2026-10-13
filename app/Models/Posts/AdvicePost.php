@@ -4,6 +4,8 @@ namespace App\Models\Posts;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use App\Models\Comment;
 
 class AdvicePost extends Model
 {
@@ -30,4 +32,11 @@ class AdvicePost extends Model
     {
         return $this->belongsTo(\App\Models\Categories\AdviceMenu::class,'menu_id'); 
     }
+
+     public function comments(): MorphMany
+    {
+        return $this->morphMany(Comment::class,'commentable');
+
+    }
+
 }

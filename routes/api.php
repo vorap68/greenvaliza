@@ -1,8 +1,10 @@
 <?php
 
+
+use App\Models\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
-use App\Models\Categories\CategoryMenu;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,10 +20,28 @@ use App\Models\Categories\CategoryMenu;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Route::get('/test-api-auth', function (Request $request) {
+    return response()->json([
+        'auth' => auth()->check(),
+        'user' => auth()->user(),
+        'session' => session()->getId(),
+        'session_driver' => config('session.driver'),
+        'session_domain' => config('session.domain'),
+
+        'origin' => $request->header('Origin'),
+        'referer' => $request->header('Referer'),
+        'host' => $request->header('Host'),
+
+        'cookies' => $request->cookies->all(),
+    ]);
+});
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 Route::get('/test', function () {
-    $categories = CategoryMenu::all();
-    dd($categories);
+    $comments = Comment::where(['commentable_type' => 'App\Models\Posts\TravelPost', 'commentable_id' => 11])
+            ->get();
+    dd($comments);
 
 });
 
@@ -30,7 +50,7 @@ Route::get('/categories', [App\Http\Controllers\Api\CategoryController::class, '
 
 // Front роуты
 Route::get('/guide', [App\Http\Controllers\Api\GuideController::class, 'index']);
-Route::get('/guide/{slug}', [App\Http\Controllers\Api\GuideController::class, 'show'])->name('api.guides.show');
+Route::get('/guide/{slug}', [App\Http\Controllers\Api\GuideController::class, 'show'])->name('api.guides.show'); 
 
 Route::get('/travel', [App\Http\Controllers\Api\TravelController::class, 'index'])->name('api.travel.index');
 Route::get('/travel/post/{slug}', [App\Http\Controllers\Api\TravelController::class, 'postShow'])->name('api.travel.postshow');
@@ -39,10 +59,19 @@ Route::get('/travel/table/{slug}', [App\Http\Controllers\Api\TravelController::c
 Route::get('/advice', [App\Http\Controllers\Api\AdviceController::class, 'index']);
 Route::get('/advice/{slug}', [App\Http\Controllers\Api\AdviceController::class, 'show'])->name('api.advice.show');
 
+
 Route::get('/mybook', [App\Http\Controllers\Api\MyBookController::class, 'index']);
 Route::get('/mybook/{slug}', [App\Http\Controllers\Api\MyBookController::class, 'show'])->name('api.mybook.show');
 
-//
+// Роуты для комментов для фронта
+Route::get('{postType}/{postId}/comments',[App\Http\Controllers\Api\CommentController::class,'index']);
+Route::post('{postType}/{postId}/comments',[App\Http\Controllers\Api\CommentController::class,'store']);
+
+
+// Роуты для авторизации
+//  Route::post('/login',[App\Http\Controllers\Auth\LoginController::class,'login']);
+
+
 // Admin routes!!!!!!!!!!! 
 Route::prefix('admin')->group(function () {
     // Main page
@@ -71,7 +100,7 @@ Route::prefix('admin')->group(function () {
 
     // роуты для гайдов
     Route::get('/guide', [App\Http\Controllers\Admin\GuideController::class, 'index']);
-    Route::get('/guide/{slug}', [App\Http\Controllers\Admin\GuideController::class, 'show'])->name('api.guide.show');
+    Route::get('/guide/{id}', [App\Http\Controllers\Admin\GuideController::class, 'show'])->name('api.guide.show');
     Route::put('/guide/{id}', [App\Http\Controllers\Admin\GuideController::class, 'update'])->name('api.guide.update');
     Route::patch('/guide/{id}/toggle-visual', [App\Http\Controllers\Admin\GuideController::class, 'visual'])->name('api.guide.visual');
 
@@ -96,7 +125,7 @@ Route::prefix('admin')->group(function () {
 
     // роуты для моих книг
     Route::get('/mybook', [App\Http\Controllers\Admin\MyBookController::class, 'index']);
-    Route::get('/mybook/{slug}', [App\Http\Controllers\Admin\MyBookController::class, 'show'])->name('api.mybook.show');
+    Route::get('/mybook/{id}', [App\Http\Controllers\Admin\MyBookController::class, 'show'])->name('api.mybook.show');
     Route::put('/mybook/{id}', [App\Http\Controllers\Admin\MyBookController::class, 'update'])->name('api.mybook.update');
     Route::patch('/mybook/{id}/toggle-visual', [App\Http\Controllers\Admin\MyBookController::class, 'visual'])->name('api.mybook.visual');
 
@@ -106,6 +135,11 @@ Route::prefix('admin')->group(function () {
    Route::get('/images/{category}/{id}', [App\Http\Controllers\Admin\Images\ImagesController::class, 'postCategoryImages'])->name('api.post.images.category');
    Route::post('/images/search', [App\Http\Controllers\Admin\Images\ImagesController::class, 'imageSearch'])->name('api.post.images.search');
   
-
+// Роуты для комментов для админа
+    Route::get('{postType}/{postId}/comments',[App\Http\Controllers\Admin\CommentController::class,'index']);
+   Route::post('/comments/{commentId}/add',[App\Http\Controllers\Admin\CommentController::class,'store']);
+    Route::post('/comments/{commentId}/changeStatus', [App\Http\Controllers\Admin\CommentController::class,'changeStatus']);
+    Route::delete('/comments/{commentId}/remove', [App\Http\Controllers\Admin\CommentController::class,'remove']);
+    Route::delete('/comments/{commentId}/reply-delete/', [App\Http\Controllers\Admin\CommentController::class,'replyDelete']);
 });
 

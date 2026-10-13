@@ -18,7 +18,7 @@ class AdviceController extends Controller
      */
     public function index(Request $request)
     { 
-        $query = AdvicePost::query();
+        $query = AdvicePost::query()->withCount('comments');
         if ($request->has('search')) {
             $search = $request->input('search');
             $query  = $query->where('title', 'like', "%{$search}%");
@@ -55,8 +55,8 @@ class AdviceController extends Controller
      */
     public function show($id)
     {
-        $guide = AdvicePost::findOrFail($id);
-        return new AllPostResource($guide);
+        $advice = AdvicePost::findOrFail($id);
+        return new AllPostResource($advice);
     }
 
      /**

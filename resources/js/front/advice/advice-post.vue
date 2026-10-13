@@ -1,5 +1,5 @@
 <template>
-    <BreadCrumb :parent-slug="'sovety-i-poleznosti'" :parent-title="'Советы и полезности'"
+    <BreadCrumb :parent-slug="'advice'" :parent-title="'Советы и полезности'"
         :current-title="advice.title || ''" />
 
     <div class="post-container-block" :style="{
@@ -16,11 +16,25 @@
             </div>
         </div>
     </div>
+    <Comments 
+    v-if="advice.id"
+   :postId = "advice.id"
+    post-type ="advice"/>
+
+     <CommentPanel
+       v-if="advice.id"
+   
+    post-type ="advice"
+        :postId = "advice.id"
+
+    />
 </template>
 <script>
 import axios from 'axios';
 import { defineComponent } from 'vue';
 import BreadCrumb from '../BreadCrumb.vue';
+import Comments from '../comments/Comments.vue';
+import CommentPanel from '../comments/CommentPanel.vue';
 
 /**
  * @typedef {Object} Advice
@@ -43,6 +57,8 @@ export default {
 
     components: {
         BreadCrumb,
+        Comments,
+        CommentPanel
     },
 
     data() {
@@ -63,16 +79,16 @@ export default {
             try {
                 const response = await axios.get(`/api/advice/${this.slug}`);
                 let content = response.data.data.content;
-                console.log('Fetched advice content:', content);
+                //console.log('Fetched advice content:', content);
                 //Заменяем все вхождения ${advice.slug} на фактический this.slug
                 content = content.replace(/\$\{advice\.slug\}/g, this.slug);
-                console.log('Fetched advice content_NEW:', content);
+               // console.log('Fetched advice content_NEW:', content);
 
                 this.advice = {
                     ...response.data.data,
                     content
                 };
-                console.log('Fetched advice this.advice:', this.advice);
+                //console.log('Fetched advice this.advice:', this.advice);
 
                 if (this.advice.title) {
                     document.title = this.advice.title;

@@ -18,11 +18,24 @@
             </div>
         </div>
     </div>
+      <Comments 
+    v-if="mybook.id"
+  :postId = "mybook.id"
+    post-type ="mybook"/>
+
+     <CommentPanel
+       v-if="mybook.id"
+    :slug="slug"
+    post-type ="mybook"
+      :postId = "mybook.id"
+    />
 </template>
 <script>
 import axios from 'axios';
 import { defineComponent } from 'vue';
 import BreadCrumb from '../BreadCrumb.vue';
+import Comments from '../comments/Comments.vue';
+import CommentPanel from '../comments/CommentPanel.vue';
 
 /**
  * @typedef {Object} Mybook
@@ -44,6 +57,8 @@ export default {
 
     components: {
         BreadCrumb,
+        Comments,
+        CommentPanel
     },
 
     data() {

@@ -4,6 +4,8 @@ namespace App\Models\Posts;
 use App\Models\Categories\TravelMenu;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use App\Models\Comment;
 
 class TravelPost extends Model
 {
@@ -48,5 +50,10 @@ class TravelPost extends Model
         return $this->belongsTo(TravelMenu::class, 'menu_id');
     }
 
+     public function comments(): MorphMany
+    {
+        return $this->morphMany(Comment::class,'commentable');
+
+    }
   
 }

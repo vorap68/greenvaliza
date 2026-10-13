@@ -53,7 +53,20 @@
                         class="btn btn-warning btn-sm">Редактирование</router-link>
 
                     <router-link :to="{ name: 'PostImages', params: { id: post.id, category: this.category } }"
-                        class="btn btn-secondary btn-sm">Картинки</router-link>
+                        class="btn btn-secondary btn-sm text-white">Картинки</router-link>
+                    <router-link v-if="post.comment_count > 0" :to="{
+                        name: 'CommentEdit',
+                        params: {
+                            postId: post.id,
+                            category: category,
+                            }
+                    }" class="btn btn-primary btn-sm text-white">
+                        Комментарии ({{ post.comment_count }})
+                    </router-link>
+
+                    <button v-else type="button" class="btn btn-secondary btn-sm text-white" disabled>
+                        Комментарии (0)
+                    </button>
 
                 </td>
             </tr>
@@ -217,7 +230,9 @@ export default defineComponent({
                 .catch(error => {
                     console.error('Error toggling visual status:', error);
                 });
-        }
+        },
+
+
     }
 });
 </script>

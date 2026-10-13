@@ -47,7 +47,7 @@ import { defineComponent } from 'vue';
  * @property {number} next_page
  * @property {number} last_page
  * @property {string|null} next_page_url
- * @property {string|null} prev_page_url
+ * @property {string|null} prev_page_url 
  */
 
 export default defineComponent({

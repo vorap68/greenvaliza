@@ -19,7 +19,7 @@ class MyBookController extends Controller
  */
     public function index(Request $request)
     {
-        $query = MybookPost::query();
+        $query = MybookPost::query()->withCount('comments');
 
         if ($request->has('search')) {
             $search = $request->input('search');
@@ -44,8 +44,8 @@ class MyBookController extends Controller
      */
     public function show($id)
     {
-        $guide = MybookPost::findOrFail($id);
-        return new AllPostResource($guide);
+        $mybook = MybookPost::findOrFail($id);
+        return new AllPostResource($mybook);
     }
 
     /**

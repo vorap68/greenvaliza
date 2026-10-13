@@ -1,4 +1,6 @@
 import { createApp } from 'vue'
+//import { createPinia } from 'pinia';
+//import { getActivePinia } from 'pinia';
 
 /**
  * Загрузка компонентов Vue 
@@ -8,8 +10,15 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import routerfront from './front/route/router-front.js'; 
 const app = createApp(App);
+
+//const pinia = createPinia();
+
+//app.use(pinia);
+//console.log('PINIA CREATED:', pinia);
+//console.log('ACTIVE PINIA AFTER USE:', getActivePinia());
 app.use(routerfront);
 app.mount('#app');
+
 
 /**
  * Загрузка компонентов Vue 
@@ -22,13 +31,10 @@ const admin = createApp(Admin);
 admin.use(routeradmin);
 admin.mount('#admin');
 
+import '../sass/app.scss';
 
-
- import '../sass/app.scss';
-
- import axios  from 'axios';
- import Dropzone from "dropzone";
-
+import axios  from 'axios';
+import Dropzone from "dropzone";
 
 import * as bootstrap from 'bootstrap';
 window.bootstrap = bootstrap;
@@ -36,8 +42,8 @@ window.bootstrap = bootstrap;
 import 'admin-lte/dist/css/adminlte.min.css';
 import 'admin-lte';
 
-
-axios.defaults.withCredentials = true
+axios.defaults.withCredentials = true;
+axios.defaults.withXSRFToken = true;
 axios.defaults.baseURL = 'http://localhost:8889' // или из .env
 
 // Стили
@@ -51,17 +57,7 @@ import '../css/responsive.css';
 import '../css/post.css';
 import '../css/post-component.css';
 
-
-
-
 // Скрипты
 
  import './classie.js';
  import './skip-link-focus-fix.js';
- 
-
-
-
-
-
-

@@ -19,6 +19,7 @@ class MyBookController extends Controller
     public function index(Request $request)
     {
         $mybooks = MyBookMenu::where('is_visual', 1)->get();
+        //return response()->json(['mybook'=>$mybooks] );
         return AllPostResource::collection($mybooks);
     }
 
@@ -32,4 +33,5 @@ class MyBookController extends Controller
         $mybook = MybookPost::where('slug', $slug)->where('is_visual', 1)->firstOrFail();
         return new AllPostResource($mybook);
     }
-}
+
+    }

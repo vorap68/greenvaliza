@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Admin\Adding;
 
 use App\Http\Controllers\Controller;
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Storage;
  */
 class CardCreatorController extends Controller
 {
-    protected ImageService $imageService; 
+    protected ImageService $imageService;
 
     /**
      * Конструктор для внедрения сервиса обработки изображений
@@ -26,27 +27,29 @@ class CardCreatorController extends Controller
         $this->imageService = $imageService;
     }
 
-/**
- * метод для создания карточки меню в зависимости от категории (travel, guide, advice, mybook) 
- * @param string $title Заголовок карточки меню
- * @param string $slug Слаг для карточки меню, используемый в URL
- * @param string $description Описание карточки меню
- * @param Illuminate\Http\UploadedFile|null $image Загруженное изображение для карточки меню (необязательно)
- * @param string $category Категория, к которой относится карточка меню (travel, guide, advice, mybook)
- * @param string $type Тип карточки меню (например, 'tble' для таблицы, 'post' для поста)
- * @return object Возвращает созданную модель карточки меню в зависимости от категории
- */
+    /**
+     * метод для создания карточки меню в зависимости от категории (travel, guide, advice, mybook) 
+     * @param string $title Заголовок карточки меню
+     * @param string $slug Слаг для карточки меню, используемый в URL
+     * @param string $description Описание карточки меню
+     * @param Illuminate\Http\UploadedFile|null $image Загруженное изображение для карточки меню (необязательно)
+     * @param string $category Категория, к которой относится карточка меню (travel, guide, advice, mybook)
+     * @param string $type Тип карточки меню (например, 'tble' для таблицы, 'post' для поста)
+     * @return object Возвращает созданную модель карточки меню в зависимости от категории
+     */
     public function createCard($title, $slug, $description, $image = null, $category = 'travel', $type = 'tble')
     {
-       $imageName = $image?->getClientOriginalName() ?? '';
+      $imageName = $image?->getClientOriginalName() ?? '';
+     // dd('imageName',$imageName);
         $post      = [
             'title'       => $title,
             'slug'        => $slug,
             'description' => $description,
             'type'        => $type,
             'imageName'   => $imageName ?? '',
-];
-    switch ($category) {
+           
+        ];
+        switch ($category) {
             case 'travel':
                 return $post = TravelMenu::create($post);
                 break;
@@ -62,7 +65,7 @@ class CardCreatorController extends Controller
         }
     }
 
-    
+
 
     /**
      * метод для сохранения изображения на диске и создания ресайзов для карточки меню
@@ -77,12 +80,13 @@ class CardCreatorController extends Controller
      */
     public function createImage($imageContent, $category = 'travel', $postMenu)
     {
-        try{
-             // путь для сохранения изображения на диске, включая категорию и ID поста
+       try {
+            // путь для сохранения изображения на диске, включая категорию и ID поста
             $path = "images/categoryMenu/{$category}/{$postMenu->id}/original";
+            //dd('path',$path);
             // имя файла
             $filename = $imageContent->getClientOriginalName();
-           // сохраняем оригинал и проверяем успешность сохранения
+            // сохраняем оригинал и проверяем успешность сохранения
             Storage::disk('public')->putFileAs(
                 $path,
                 $imageContent,
@@ -92,26 +96,24 @@ class CardCreatorController extends Controller
             $fullPath = Storage::disk('public')->path(
                 "{$path}/{$filename}"
             );
-
+           // dd('fullPath',$fullPath);
             if (! file_exists($fullPath)) {
                 return ['success' => false, 'message' => 'Error saving image (controller)'];
             }
-    
-             //  передаём путь к ФАЙЛУ в сервис для создания ресайзов и сохранения их на диске
-             $res = $this->imageService->saveResizedImages($fullPath, null);
-             if (! $res) {
-                 return ['success' => false, 'message' => 'Error creating resized images (controller)'];
-             }
-                
-             return [
-                'success' => true,
-                 'message' => 'Image and resized versions saved successfully',
-                  'File_Location'=> $fullPath,
-             ];
-         } catch (\Exception $e) {
-             return ['success' => false, 'message' => 'Exception occurred: ' . $e->getMessage()];
-         }
-    }
-    
 
+            //  передаём путь к ФАЙЛУ в сервис для создания ресайзов и сохранения их на диске
+            $res = $this->imageService->saveResizedImages($fullPath, null);
+            if (! $res) {
+                return ['success' => false, 'message' => 'Error creating resized images (controller)'];
+            }
+
+            return [
+                'success' => true,
+                'message' => 'Image and resized versions saved successfully',
+                'File_Location' => $fullPath,
+            ];
+        } catch (\Exception $e) {
+            return ['success' => false, 'message' => 'Exception occurred: ' . $e->getMessage()];
+        }
+    }
 }

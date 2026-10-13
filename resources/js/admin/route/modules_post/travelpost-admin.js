@@ -5,7 +5,7 @@ const travelPostAdminRoutes = [
      * Маршруты для управления постами о путешествиях в админ панели
      * Касается всех постов и final и single
      */
-    {   path: '/admin/travelposts', component: () => import('../../travelPost/index.vue'),
+    {   path: '/admin/travelposts', component: () => import('../../travelPost/index.vue'), 
         name: 'travelPosts',
         props:true,
     },

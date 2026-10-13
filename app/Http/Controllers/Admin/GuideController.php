@@ -22,7 +22,7 @@ class GuideController extends Controller
      */
     public function index(Request $request){
         
-            $query = GuidePost::query();
+            $query = GuidePost::query()->withCount('comments');
         if ($request->has('search')) {
             $search = $request->input('search');
             $query  = $query->where('title', 'like', "%{$search}%");

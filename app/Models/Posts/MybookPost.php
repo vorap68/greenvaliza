@@ -4,6 +4,8 @@ namespace App\Models\Posts;
 use App\Models\Categories\MyBookMenu;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use App\Models\Comment;
 
 class MybookPost extends Model
 {
@@ -29,5 +31,11 @@ class MybookPost extends Model
     public function mybookMenu()
     {
         return $this->belongsTo(MyBookMenu::class, 'menu_id');
+    }
+
+    public function comments(): MorphMany
+    {
+        return $this->morphMany(Comment::class,'commentable');
+
     }
 }

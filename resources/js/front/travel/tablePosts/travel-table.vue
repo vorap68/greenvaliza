@@ -15,7 +15,7 @@
 * - TravelItemList: отображает список пунктов путешествия.
 */
 <template>
-  <BreadCrumb parent-slug="nashi-puteshestviya" parent-title="Наши путешествия" :current-title="travel.title" />
+  <BreadCrumb parent-slug="travel" parent-title="Наши путешествия" :current-title="travel.title" />
   <div class="post-container-block" :style="containerStyle">
     <div class="content-block" v-if="travel.content">
       <TravelHeader :header="travel.content.header" />

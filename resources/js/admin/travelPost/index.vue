@@ -57,16 +57,27 @@
                     <router-link :to="{ name: 'travelPostEdit', params: { id: travelpost.id } }"
                         class="btn btn-warning btn-sm">Редактирование</router-link>
 
-                    <router-link :to="{ name: 'PostImages', params: { id: travelpost.id, category: 'travelPost' } }"
+                    <router-link :to="{ name: 'PostImages', params: { id: travelpost.id, category: 'travelPost' } }" 
                         class="btn btn-secondary btn-sm">Картинки</router-link>
+                             <router-link v-if="travelpost.comment_count > 0" :to="{
+                               name: 'CommentEdit',
+                                params: {
+                                    postId: travelpost.id,
+                                    category: 'travel',
+                                    } 
+                                    }"
+                                     class="btn btn-primary btn-sm text-white">
+                        Комментарии ({{ travelpost.comment_count }})
+                    </router-link>
 
-
+                    <button v-else type="button" class="btn btn-secondary btn-sm text-white" disabled>
+                        Комментарии (0)
+                    </button>
                 </td>
             </tr>
-
         </tbody>
     </table>
-    <button class="btn btn-sm btn-secondary" :disabled="meta.current_page === 1" @click="page--; GetTravelPosts()">
+    <button class="btn btn-sm btn-secondary" :disabled="meta.current_page === 1" @click="page--; GetTravelPosts()"> 
         ←
     </button>
     <span class="mx-2">Страница {{ page }}</span>
@@ -97,7 +108,7 @@ import axios from 'axios';
  * @property {number} total - Общее количество элементов   
  */
 export default defineComponent({
-    name: 'TravelIndex',
+    name: 'TravelPosts',
 
     data() {
         return {

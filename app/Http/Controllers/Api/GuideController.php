@@ -32,4 +32,6 @@ class GuideController extends Controller
         return new AllPostResource($guide);
     }
 
+   
+
 }

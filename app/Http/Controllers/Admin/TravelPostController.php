@@ -21,7 +21,7 @@ class TravelPostController extends Controller
 
     public function index(Request $request)
 {
-    $query = TravelPost::query();
+    $query = TravelPost::query()->withCount('comments');
 
     // Поиск
     $search = $request->input('search');
